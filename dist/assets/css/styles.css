@@ -1,0 +1,25 @@
+body {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  scroll-behavior: smooth;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.hero-gradient {
+  background: radial-gradient(circle at top left, #38bdf8, #0f172a 60%);
+}
+
+.section-card {
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+}
+
+.blog-grid article:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 35px rgba(30, 64, 175, 0.18);
+}
+
+.day-button.active {
+  background-color: #0ea5e9;
+  color: white;
+  border-color: transparent;
+}
