@@ -1,25 +1,159 @@
 body {
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   scroll-behavior: smooth;
-  background-color: #f8fafc;
+  background-color: #ffffff;
   color: #0f172a;
 }
 
 .hero-gradient {
-  background: radial-gradient(circle at top left, #38bdf8, #0f172a 60%);
+  background: linear-gradient(135deg, #00bcd4 0%, #0891b2 50%, #0e7490 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-gradient::before {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: #ffffff;
+  border-radius: 50% 50% 0 0;
 }
 
 .section-card {
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 188, 212, 0.15);
+  border-radius: 24px;
+  border: 2px solid rgba(0, 188, 212, 0.1);
+  transition: all 0.3s ease;
+}
+
+.section-card:hover {
+  box-shadow: 0 20px 50px rgba(0, 188, 212, 0.25);
+  transform: translateY(-4px);
+}
+
+.blog-grid article {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid transparent;
 }
 
 .blog-grid article:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 35px rgba(30, 64, 175, 0.18);
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 188, 212, 0.3);
+  border-color: #00bcd4;
+}
+
+.day-button {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  font-weight: 600;
+  border: 2px solid #e2e8f0;
+}
+
+.day-button:hover {
+  background-color: #e0f7fa;
+  border-color: #00bcd4;
+  transform: scale(1.05);
 }
 
 .day-button.active {
-  background-color: #0ea5e9;
-  color: white;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #0f172a;
   border-color: transparent;
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+  font-weight: 700;
+}
+
+/* Titres avec style inspiré du livre */
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  color: #fbbf24;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  color: #00bcd4;
+}
+
+/* Boutons CTA style livre */
+.cta-button {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #0f172a;
+  font-weight: 700;
+  padding: 14px 32px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(251, 191, 36, 0.5);
+}
+
+/* Accents cyan */
+.accent-cyan {
+  color: #00bcd4;
+  font-weight: 600;
+}
+
+.bg-accent-cyan {
+  background-color: #e0f7fa;
+  border-left: 4px solid #00bcd4;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+/* Style des listes à puces (inspiré du livre) */
+ul li::marker {
+  color: #fbbf24;
+  font-size: 1.2em;
+}
+
+/* Badge ou étiquette style livre */
+.badge {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #0f172a;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+/* Sections avec fond cyan clair */
+.section-cyan {
+  background: linear-gradient(180deg, #e0f7fa 0%, #ffffff 100%);
+  padding: 60px 0;
+}
+
+/* Animation ondulée (inspirée du bas de la couverture) */
+.wave-divider {
+  position: relative;
+  height: 80px;
+  background: #00bcd4;
+}
+
+.wave-divider::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23ffffff'/%3E%3C/svg%3E") no-repeat;
+  background-size: cover;
 }
