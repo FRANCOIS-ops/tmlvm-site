@@ -1,20 +1,30 @@
-<header class="hero-gradient text-white">
-  <nav class="max-w-6xl mx-auto flex items-center justify-between py-6 px-6">
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travailler moins, vivre mieux</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div class="sticky-nav-container">
+  <nav class="max-w-6xl mx-auto flex items-center justify-between py-4 px-6 text-white">
     <div class="font-semibold tracking-wide text-xl">Travailler moins, vivre mieux</div>
     <div class="hidden md:flex gap-6 text-sm">
       <a href="#accueil" class="hover:text-cyan-200">Accueil</a>
       <a href="#livre" class="hover:text-cyan-200">Le livre</a>
       <a href="#methode" class="hover:text-cyan-200">Méthode 14 jours</a>
-      <a href="#benefices" class="hover:text-cyan-200">Bénéfices</a>
-      <a href="#auteurs" class="hover:text-cyan-200">Auteurs</a>
-      <a href="#achat" class="hover:text-cyan-200">Acheter</a>
       <a href="#blog" class="hover:text-cyan-200">Blog</a>
     </div>
     <a href="#achat" class="bg-white text-slate-900 font-semibold px-4 py-2 rounded-full shadow-lg">
       Commander
     </a>
   </nav>
+</div>
 
+<header class="hero-gradient text-white">
   <section id="accueil" class="max-w-6xl mx-auto px-6 py-20 grid gap-12 md:grid-cols-2 items-center">
     <div>
       <p class="uppercase tracking-[0.4em] text-cyan-200 text-xs mb-6">
@@ -22,20 +32,17 @@
       </p>
       <h1 class="text-4xl lg:text-5xl font-bold leading-tight mb-6">
         Vous répétez « Ça ira mieux le mois prochain » ?
-        Il est temps que ça aille mieux
-        <span class="text-cyan-200">maintenant</span>.
+        Il est temps que ça aille mieux <span class="text-cyan-200">maintenant</span>.
       </h1>
       <p class="text-lg text-cyan-100 mb-8">
         Un programme concret sur 14 jours pour reprendre la main sur votre charge de travail,
         limiter la fuite en avant et retrouver du temps pour ce qui compte.
       </p>
       <div class="flex flex-wrap gap-4">
-        <a href="#methode"
-           class="bg-cyan-500 hover:bg-cyan-400 transition text-slate-900 font-semibold px-6 py-3 rounded-full">
+        <a href="#methode" class="bg-cyan-500 hover:bg-cyan-400 transition text-slate-900 font-semibold px-6 py-3 rounded-full">
           Découvrir la méthode
         </a>
-        <a href="#blog"
-           class="border border-white text-white hover:bg-white hover:text-slate-900 transition font-semibold px-6 py-3 rounded-full">
+        <a href="#blog" class="border border-white text-white hover:bg-white hover:text-slate-900 transition font-semibold px-6 py-3 rounded-full">
           Lire le blog
         </a>
       </div>
@@ -48,10 +55,7 @@
         et bâtir un quotidien soutenable dès maintenant. »
       </p>
       <div class="flex items-center gap-4">
-        <img
-          src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80"
-          alt="Portrait lecteur"
-          class="w-14 h-14 rounded-full object-cover">
+        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80" alt="Portrait lecteur" class="w-14 h-14 rounded-full object-cover">
         <div>
           <p class="font-semibold">Lucie, manager commerciale</p>
           <p class="text-cyan-100 text-sm">Lectrice pilote</p>
@@ -62,8 +66,6 @@
 </header>
 
 <main class="space-y-24 py-16">
-
-  <!-- LIVRE -->
   <section id="livre" class="max-w-6xl mx-auto px-6 grid gap-12 md:grid-cols-2 items-center">
     <div class="section-card bg-white rounded-3xl p-10">
       <h2 class="text-3xl font-bold mb-6">Le livre « Travailler moins, vivre mieux »</h2>
@@ -72,84 +74,51 @@
         ce guide vous accompagne pas à pas pour reconquérir vos journées.
       </p>
       <ul class="space-y-4 text-slate-700">
-        <li class="flex gap-3">
-          <span class="text-cyan-500 font-bold">01</span>
-          Comprendre pourquoi la charge de travail ne diminue jamais.
-        </li>
-        <li class="flex gap-3">
-          <span class="text-cyan-500 font-bold">02</span>
-          Calmer l'urgence et poser des limites claires.
-        </li>
-        <li class="flex gap-3">
-          <span class="text-cyan-500 font-bold">03</span>
-          Utiliser l’IA comme coéquipière, sans déshumaniser le travail.
-        </li>
+        <li class="flex gap-3"><span class="text-cyan-500 font-bold">01</span> Comprendre pourquoi la charge de travail ne diminue jamais.</li>
+        <li class="flex gap-3"><span class="text-cyan-500 font-bold">02</span> Calmer l'urgence et poser des limites claires.</li>
+        <li class="flex gap-3"><span class="text-cyan-500 font-bold">03</span> Utiliser l’IA comme coéquipière, sans déshumaniser le travail.</li>
       </ul>
     </div>
-
     <div class="bg-slate-900 text-white section-card rounded-3xl p-10">
       <p class="text-cyan-200 uppercase tracking-[0.3em] text-xs mb-6">Philosophie</p>
       <h3 class="text-3xl font-semibold mb-4">Radicale sur le fond, douce dans la manière</h3>
-      <p class="text-slate-200">
-        La méthode refuse les promesses irréalistes et s’adapte à votre réalité.
-      </p>
+      <p class="text-slate-200">La méthode refuse les promesses irréalistes et s’adapte à votre réalité.</p>
     </div>
   </section>
 
-  <!-- MÉTHODE -->
   <section id="methode" class="max-w-6xl mx-auto px-6">
     <div class="text-center mb-12">
       <p class="text-cyan-500 uppercase tracking-[0.5em] text-xs mb-4">Programme guidé</p>
       <h2 class="text-3xl font-bold mb-4">La méthode en 14 jours</h2>
-      <p class="text-slate-600 max-w-3xl mx-auto">
-        Chaque jour propose une action unique, réalisable en moins de 30 minutes.
-      </p>
+      <p class="text-slate-600 max-w-3xl mx-auto">Chaque jour propose une action unique, réalisable en moins de 30 minutes.</p>
     </div>
-
     <div class="grid gap-8 lg:grid-cols-[1.1fr_1.2fr]">
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="day-buttons"></div>
-
-      <div class="section-card bg-white rounded-3xl p-8" id="day-detail">
-        <!-- Contenu injecté par method.js -->
-      </div>
+      <div class="section-card bg-white rounded-3xl p-8" id="day-detail"></div>
     </div>
   </section>
 
-  <!-- BLOG -->
   <section id="blog" class="max-w-6xl mx-auto px-6">
     <div class="flex flex-col lg:flex-row lg:items-center gap-8 mb-10">
       <div>
         <p class="text-cyan-500 uppercase tracking-[0.5em] text-xs mb-3">Blog pratique</p>
         <h2 class="text-3xl font-bold mb-3">Des articles pour les journées qui débordent</h2>
-        <p class="text-slate-600">
-          Situations réelles, plans d’action concrets et liens avec la méthode.
-        </p>
+        <p class="text-slate-600">Situations réelles, plans d’action concrets et liens avec la méthode.</p>
       </div>
       <div class="flex-1">
-        <input
-          id="blog-search"
-          type="search"
-          placeholder="Rechercher un article..."
-          class="w-full border border-slate-200 rounded-full px-5 py-3 shadow-sm">
+        <input id="blog-search" type="search" placeholder="Rechercher un article..." class="w-full border border-slate-200 rounded-full px-5 py-3 shadow-sm">
       </div>
     </div>
-
-    <div class="blog-grid grid gap-8 md:grid-cols-3" id="blog-list">
-      <!-- Articles injectés dynamiquement -->
-    </div>
-
+    <div class="blog-grid grid gap-8 md:grid-cols-3" id="blog-list"></div>
     <div class="flex items-center justify-center gap-3 mt-10" id="blog-pagination"></div>
   </section>
-
 </main>
 
 <footer class="bg-slate-900 text-white mt-20">
   <div class="max-w-6xl mx-auto px-6 py-12 grid gap-8 md:grid-cols-3">
     <div>
       <h4 class="font-semibold text-lg mb-3">Travailler moins, vivre mieux</h4>
-      <p class="text-slate-300">
-        Un guide pragmatique pour se libérer de la surcharge.
-      </p>
+      <p class="text-slate-300">Un guide pragmatique pour se libérer de la surcharge.</p>
     </div>
     <div>
       <h4 class="font-semibold text-lg mb-3">Pages</h4>
@@ -162,12 +131,8 @@
     <div>
       <h4 class="font-semibold text-lg mb-3">Newsletter</h4>
       <form class="flex gap-2">
-        <input type="email" placeholder="Votre email"
-               class="flex-1 rounded-full px-4 py-2 text-slate-900" required>
-        <button type="submit"
-                class="bg-cyan-500 px-4 py-2 rounded-full text-slate-900 font-semibold">
-          OK
-        </button>
+        <input type="email" placeholder="Votre email" class="flex-1 rounded-full px-4 py-2 text-slate-900" required>
+        <button type="submit" class="bg-cyan-500 px-4 py-2 rounded-full text-slate-900 font-semibold">OK</button>
       </form>
     </div>
   </div>
@@ -175,3 +140,5 @@
 
 <script src="/assets/js/method.js"></script>
 <script src="/assets/js/blog.js"></script>
+</body>
+</html>

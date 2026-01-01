@@ -34,28 +34,26 @@ def run_git(command):
     )
     return result.returncode, result.stdout, result.stderr
 
-def git_save_and_push(commit_message):
-    # 1️⃣ Toujours se synchroniser avec GitHub
-    code, out, err = run_git("git pull --rebase")
-    if code != 0:
-        raise Exception(f"Git pull failed:\n{err or out}")
+def git_save_and_push(commit_message="Update blog content"):
+    import subprocess
 
-    # 2️⃣ Ajouter les fichiers
-    code, _, err = run_git("git add .")
-    if code != 0:
-        raise Exception(f"Git add failed:\n{err}")
+    def run(cmd):
+        subprocess.check_call(cmd, shell=True)
 
-    # 3️⃣ Commit
-    code, out, err = run_git(f'git commit -m "{commit_message}"')
-    if code != 0:
-        if "nothing to commit" not in err.lower():
-            raise Exception(f"Git commit failed:\n{err}")
+    # 1. Add
+    run("git add .")
 
-    # 4️⃣ Push
-    code, _, err = run_git("git push")
-    if code != 0:
-        raise Exception(f"Git push failed:\n{err}")
+    # 2. Commit (sans planter si rien à commit)
+    try:
+        run(f'git commit -m "{commit_message}"')
+    except subprocess.CalledProcessError:
+        pass  # Rien à commit → OK
 
+    # 3. Pull rebase
+    run("git pull --rebase")
+
+    # 4. Push
+    run("git push")
 # ======================
 # SAVE ARTICLE
 # ======================

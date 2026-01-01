@@ -3,6 +3,8 @@ body {
   scroll-behavior: smooth;
   background-color: #ffffff;
   color: #0f172a;
+  /* Espace pour ne pas que le contenu passe sous le menu fixe */
+  padding-top: 72px; 
 }
 
 .hero-gradient {
@@ -68,7 +70,6 @@ body {
   font-weight: 700;
 }
 
-/* Titres avec style inspiré du livre */
 h1, h2, h3 {
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -83,7 +84,6 @@ h2 {
   color: #00bcd4;
 }
 
-/* Boutons CTA style livre */
 .cta-button {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   color: #0f172a;
@@ -102,7 +102,6 @@ h2 {
   box-shadow: 0 15px 35px rgba(251, 191, 36, 0.5);
 }
 
-/* Accents cyan */
 .accent-cyan {
   color: #00bcd4;
   font-weight: 600;
@@ -115,13 +114,11 @@ h2 {
   border-radius: 8px;
 }
 
-/* Style des listes à puces (inspiré du livre) */
 ul li::marker {
   color: #fbbf24;
   font-size: 1.2em;
 }
 
-/* Badge ou étiquette style livre */
 .badge {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   color: #0f172a;
@@ -134,13 +131,11 @@ ul li::marker {
   display: inline-block;
 }
 
-/* Sections avec fond cyan clair */
 .section-cyan {
   background: linear-gradient(180deg, #e0f7fa 0%, #ffffff 100%);
   padding: 60px 0;
 }
 
-/* Animation ondulée (inspirée du bas de la couverture) */
 .wave-divider {
   position: relative;
   height: 80px;
@@ -156,4 +151,16 @@ ul li::marker {
   height: 100%;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23ffffff'/%3E%3C/svg%3E") no-repeat;
   background-size: cover;
-}git
+}
+
+/* NOUVEAU : STYLE POUR LE MENU FIXE */
+.sticky-nav-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.95); /* Couleur foncée semi-transparente */
+  backdrop-filter: blur(8px); /* Effet flou */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
