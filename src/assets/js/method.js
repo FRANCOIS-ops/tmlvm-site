@@ -1,143 +1,136 @@
-// Données de la méthode en 14 jours
+// Données de la méthode en 15 jours
 const dayData = [
   {
     day: 1,
-    title: "Cartographier votre réalité",
-    description: "Listez tout ce qui vous occupe vraiment : tâches visibles, demandes informelles, notifications.",
+    title: "Les illusions du travail",
+    description: "Mon temps est une ressource limitée. Je le gère comme je gère le réservoir d’essence de ma voiture.",
     points: [
-      "Inventaire complet de vos canaux de sollicitations",
-      "Estimation du temps réellement passé vs temps perçu",
-      "Identification des urgences fictives"
+      "J’apprends à dire non à des tâches pour ne pas « tomber en panne ».",
+      "Je comprends que le travail est élastique : plus je lui laisse de temps, plus il en prend.",
+      "Compenser une situation de manque de ressources par un surcroît de travail met l'organisation à risque."
     ]
   },
   {
     day: 2,
-    title: "Calmer l'urgence",
-    description: "Fermez les canaux non essentiels pendant 30 minutes, mesurez la différence.",
+    title: "Mesurer son temps pour le réduire",
+    description: "Pour gérer mon temps efficacement, je mesure mon temps de travail et je le limite.",
     points: [
-      "Configurer des réponses automatiques",
-      "Bloquer des créneaux focus",
-      "Prévenir votre équipe"
+      "Je me libère du mythe du gros bosseur : ce qui compte est de travailler bien.",
+      "Limiter son temps de travail, c’est redevenir maître de celui-ci.",
+      "J’utilise un outil comme Toggl pour mesurer mon temps de travail."
     ]
   },
   {
     day: 3,
-    title: "Limiter la journée",
-    description: "Fixez une heure de fin non négociable pour éviter les soirées interminables.",
+    title: "Les gros cailloux d’abord !",
+    description: "Je choisis judicieusement là où j’investis mon temps en priorisant mes tâches (matrice Eisenhower).",
     points: [
-      "Choisir une heure réaliste",
-      "Planifier le rituel de fermeture",
-      "Préparer la journée suivante"
+      "Tâches urgentes et importantes (carré A) : à faire immédiatement.",
+      "Importantes mais non urgentes (carré B) : planification proactive.",
+      "Urgentes mais non importantes (carré C) : à déléguer ou négocier.",
+      "Non urgentes et non importantes (carré D) : à éviter."
     ]
   },
   {
     day: 4,
-    title: "Prioriser par impact",
-    description: "Classez vos tâches selon impact / énergie.",
+    title: "Chaque jour une page blanche",
+    description: "Commencez chaque jour avec une liste de tâches vierge, sans reprendre celle de la veille.",
     points: [
-      "Utiliser la matrice 2x2",
-      "Attribuer des durées",
-      "Reporter ce qui n'apporte pas"
+      "Utilisez un petit papier pour noter les tâches essentielles.",
+      "Numérotez les tâches selon leur importance.",
+      "Suivez cet ordre scrupuleusement."
     ]
   },
   {
     day: 5,
-    title: "Domestiquer les emails",
-    description: "Passez de la réactivité à des sessions contrôlées.",
+    title: "L’intelligence artificielle",
+    description: "L’IA peut grandement aider à prioriser les tâches grâce à son accès à un contexte large.",
     points: [
-      "Trois créneaux par jour",
-      "Filtres automatiques",
-      "Modèles de réponse"
-    ]
-  },
-  {
-    day: 6,
-    title: "Informer votre entourage",
-    description: "Annoncez vos nouvelles règles : disponibilité, délais, modes de réponse.",
-    points: [
-      "Message clair à l'équipe",
-      "Alignement avec le manager",
-      "Script pour les clients"
+      "Les principes fondamentaux d’organisation restent inchangés.",
+      "L’IA est un bon serviteur mais je reste seul décisionnaire.",
+      "L’intuition humaine (« tripes », « cœur ») devient cruciale."
     ]
   },
   {
     day: 7,
-    title: "Dire non sans culpabiliser",
-    description: "Utilisez la méthode Sandwich pour poser des limites fermes.",
+    title: "Votre boîte mail est un piège",
+    description: "La majorité des emails sont du « sable ». Y passer trop de temps met à risque les « gros cailloux ».",
     points: [
-      "Reconnaître la demande",
-      "Rappeler vos priorités",
-      "Proposer une alternative"
+      "Distinguer « canal d’information » et « canal de priorisation ».",
+      "Ne pas lire les emails au fil de l’eau mais par sessions.",
+      "Bannir les notifications."
     ]
   },
   {
     day: 8,
-    title: "Audit de réunions",
-    description: "Passez en revue vos réunions, gardez seulement celles avec un objectif.",
+    title: "Oui mais les autres ?",
+    description: "Quand on me demande une tâche, je vérifie l’importance et l’urgence avant d'accepter.",
     points: [
-      "Annuler ou décliner",
-      "Proposer un document partagé",
-      "Limiter la durée"
+      "Négocier les modalités ou la date de livraison.",
+      "Proposer des alternatives ou demander un arbitrage.",
+      "Ne pas prendre en charge les problèmes que les autres peuvent résoudre."
     ]
   },
   {
     day: 9,
-    title: "Déléguer intelligemment",
-    description: "Identifiez les tâches qui peuvent être confiées.",
+    title: "Les réunions",
+    description: "Les réunions inefficaces représentent une perte de temps considérable.",
     points: [
-      "Check-list de délégation",
-      "Clarté sur les attentes",
-      "Boucle de feedback"
+      "Avoir un agenda clair pour chaque réunion.",
+      "Préférer les formats engageants aux présentations passives.",
+      "Utiliser les réunions pour décider, non pour informer.",
+      "Documenter rapidement les décisions."
     ]
   },
   {
     day: 10,
-    title: "IA coéquipière",
-    description: "Utilisez l'IA pour préparer vos synthèses et vos drafts.",
+    title: "Commencer par la fin",
+    description: "Visualiser la destination finale pour orienter ses choix et gagner du temps.",
     points: [
-      "Lister vos cas d'usage",
-      "Tester un prompt",
-      "Réviser avant envoi"
+      "Écrire le discours de son propre enterrement (S. Covey).",
+      "Cadre de minimisation des regrets (J. Bezos).",
+      "Rédiger un « faux communiqué de presse » avant de lancer un projet."
     ]
   },
   {
     day: 11,
-    title: "Rituels d'énergie",
-    description: "Ajoutez des micro-pauses pour éviter les crashs d'attention.",
+    title: "Le sniper plutôt que le tromblon",
+    description: "Adopter une approche structurée pour résoudre les problèmes au lieu de proposer des solutions hâtives.",
     points: [
-      "Pause respiration",
-      "Étirements",
-      "Check émotionnel"
+      "Bien définir le problème et son origine.",
+      "Analyser les causes profondes.",
+      "Explorer toutes les solutions avant de recommander l'optimale."
     ]
   },
   {
     day: 12,
-    title: "Revue hebdo",
-    description: "Bilan sur vos progrès, ajustez vos limites.",
+    title: "Perdre du temps pour en gagner",
+    description: "Développer une vision stratégique est crucial pour ne pas s'enliser dans l'efficacité aveugle.",
     points: [
-      "Mesurer ce qui marche",
-      "Identifier les rechutes",
-      "Prévoir la semaine suivante"
+      "Se demander « suis-je dans la bonne jungle ? ».",
+      "Anticiper et créer l’avenir plutôt que de le subir.",
+      "Avoir une boussole (principes) plutôt qu'une carte (plan rigide)."
     ]
   },
   {
     day: 13,
-    title: "Négociation avec la hiérarchie",
-    description: "Préparez un échange basé sur les données collectées.",
+    title: "Le sens, moteur de l’efficacité",
+    description: "Un jour philo : plus nous mettons du sens, plus nous sommes motivés.",
     points: [
-      "Rappeler les faits",
-      "Proposer des ajustements",
-      "Demander un arbitrage"
+      "Salaire et estime sociale.",
+      "Nouvelles compétences (savoir, savoir-être, savoir-faire).",
+      "Service et sentiment d’utilité.",
+      "Épanouissement personnel."
     ]
   },
   {
     day: 14,
-    title: "Installer l'après",
-    description: "Créez votre tableau de bord personnel pour continuer.",
+    title: "Le grand bilan - conclusion",
+    description: "Clôture du parcours de 15 jours et projection vers la suite.",
     points: [
-      "Indicateurs simples",
-      "Routine mensuelle",
-      "Plan anti-rechute"
+      "Revue des apprentissages clés.",
+      "Mise en place de rituels durables.",
+      "Engagement à long terme."
     ]
   }
 ];
