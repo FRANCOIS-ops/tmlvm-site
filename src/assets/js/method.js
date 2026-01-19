@@ -1,4 +1,4 @@
-// Données de la méthode en 15 jours
+// Données de la méthode en 14 jours
 const dayData = [
   {
     day: 1,
@@ -126,7 +126,7 @@ const dayData = [
   {
     day: 14,
     title: "Le grand bilan - conclusion",
-    description: "Clôture du parcours de 15 jours et projection vers la suite.",
+    description: "Clôture du parcours de 14 jours et projection vers la suite.",
     points: [
       "Revue des apprentissages clés.",
       "Mise en place de rituels durables.",

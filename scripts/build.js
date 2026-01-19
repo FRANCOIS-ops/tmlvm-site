@@ -125,9 +125,9 @@ function buildBlogPagesForSEO(posts) {
 
     const nav = `
       <div class="flex items-center justify-center gap-3 mt-10">
-        ${page > 1 ? `<a class="px-4 py-2 rounded-full border" href="${page === 2 ? "/blog/" : `/blog/page/${page-1}/`}">Précédent</a>` : ""}
+        ${page > 1 ? `<a class="px-4 py-2 rounded-full border" href="${page === 2 ? "/blog/" : `/blog/page/${page - 1}/`}">Précédent</a>` : ""}
         <span class="text-slate-500">Page ${page} / ${totalPages}</span>
-        ${page < totalPages ? `<a class="px-4 py-2 rounded-full border" href="/blog/page/${page+1}/">Suivant</a>` : ""}
+        ${page < totalPages ? `<a class="px-4 py-2 rounded-full border" href="/blog/page/${page + 1}/">Suivant</a>` : ""}
       </div>
     `;
 
@@ -225,6 +225,9 @@ function cleanDist() {
 function copyStatic() {
   // Copie CSS/JS vers dist/assets
   copyDir(path.join(SRC, "assets"), path.join(DIST, "assets"));
+
+  // Copie robots.txt
+  fs.copyFileSync(path.join(SRC, "robots.txt"), path.join(DIST, "robots.txt"));
 }
 
 function build() {
