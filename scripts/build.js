@@ -228,6 +228,11 @@ function copyStatic() {
 
   // Copie robots.txt
   fs.copyFileSync(path.join(SRC, "robots.txt"), path.join(DIST, "robots.txt"));
+
+  // Copie page Eisenhower (standalone)
+  if (fs.existsSync(path.join(SRC, "pages", "eisenhower.html"))) {
+    fs.copyFileSync(path.join(SRC, "pages", "eisenhower.html"), path.join(DIST, "eisenhower.html"));
+  }
 }
 
 function build() {

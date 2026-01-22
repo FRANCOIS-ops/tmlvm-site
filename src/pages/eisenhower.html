@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Eisenhower Matrix</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --book-yellow: #fee600;
+            --book-blue: #00aee3;
+            --book-white: #ffffff;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-soft: #f9f9f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            background-color: var(--book-white);
+            color: var(--text-dark);
+        }
+
+        .matrix-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: 100vh;
+            width: 100vw;
+            gap: 2px;
+            background-color: #e0e0e0;
+            /* Subtle grid lines */
+        }
+
+        .quadrant {
+            position: relative;
+            background-color: var(--book-white);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quadrant-header {
+            font-weight: 700;
+            padding: 16px;
+            text-align: center;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            user-select: none;
+        }
+
+        .quadrant-content {
+            flex: 1;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Task Box Styling */
+        .text-box {
+            position: absolute;
+            min-width: 220px;
+            max-width: 300px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid;
+            cursor: move;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+
+        .text-box:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .text-box-content {
+            flex: 1;
+            outline: none;
+            min-height: 20px;
+            cursor: text;
+            padding-right: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        .text-box-content:empty:before {
+            content: attr(placeholder);
+            color: #bdc3c7;
+            font-weight: 400;
+        }
+
+        .text-box-content.done {
+            text-decoration: line-through;
+            color: #b2bec3;
+            font-weight: 400;
+        }
+
+        .text-box-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .text-box-done,
+        .text-box-close {
+            cursor: pointer;
+            color: #dfe6e9;
+            font-size: 14px;
+            transition: color 0.2s, transform 0.1s;
+        }
+
+        .text-box-done:hover {
+            color: #2ecc71;
+            transform: scale(1.2);
+        }
+
+        .text-box-done.completed {
+            color: #2ecc71;
+        }
+
+        .text-box-close:hover {
+            color: #ff7675;
+            transform: scale(1.2);
+        }
+
+        .dragging {
+            opacity: 0.9;
+            z-index: 1000;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* Control Panel Design */
+        .control-panel {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 12px 18px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 2000;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            cursor: grab;
+            user-select: none;
+        }
+
+        .control-panel:active {
+            cursor: grabbing;
+        }
+
+        .panel-handle {
+            color: #b2bec3;
+            margin-right: 6px;
+            cursor: grab;
+            font-size: 18px;
+        }
+
+        .btn {
+            background-color: var(--book-blue);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 174, 227, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 174, 227, 0.3);
+            background-color: #0099c7;
+        }
+
+        .btn-secondary {
+            background-color: #f5f6fa;
+            color: var(--text-light);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ebedf0;
+            color: #2d3436;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Quadrant Theming based on Book Palette */
+
+        /* Q1: Urgent & Important - Yellow Theme */
+        .quadrant-1 {
+            background-color: #fffdf0;
+        }
+
+        .quadrant-1 .quadrant-header {
+            background-color: var(--book-yellow);
+            color: #000;
+        }
+
+        .quadrant-1 .text-box {
+            border-left-color: var(--book-yellow);
+        }
+
+        /* Q2: Not Urgent & Important - Blue Theme */
+        .quadrant-2 {
+            background-color: #f0fbff;
+        }
+
+        .quadrant-2 .quadrant-header {
+            background-color: var(--book-blue);
+            color: white;
+        }
+
+        .quadrant-2 .text-box {
+            border-left-color: var(--book-blue);
+        }
+
+        /* Q3: Urgent & Not Important - Light Blue Accent */
+        .quadrant-3 {
+            background-color: #f4f7f8;
+        }
+
+        .quadrant-3 .quadrant-header {
+            background-color: #7ed6df;
+            color: #fff;
+        }
+
+        .quadrant-3 .text-box {
+            border-left-color: #7ed6df;
+        }
+
+        /* Q4: Not Urgent & Not Important - Soft Neutral */
+        .quadrant-4 {
+            background-color: #fafafa;
+        }
+
+        .quadrant-4 .quadrant-header {
+            background-color: #dfe6e9;
+            color: var(--text-light);
+        }
+
+        .quadrant-4 .text-box {
+            border-left-color: #b2bec3;
+        }
+
+        /* User hint */
+        .click-hint {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="click-hint" id="click-hint">Click anywhere to add a task</div>
+
+    <div class="matrix-container">
+        <!-- Layout aligned with axes request -->
+        <div class="quadrant quadrant-3" id="quadrant-3">
+            <div class="quadrant-header">Urgent & Not Important</div>
+            <div class="quadrant-content"></div>
+        </div>
+
+        <div class="quadrant quadrant-1" id="quadrant-1">
+            <div class="quadrant-header">Urgent & Important</div>
+            <div class="quadrant-content"></div>
+        </div>
+
+        <div class="quadrant quadrant-4" id="quadrant-4">
+            <div class="quadrant-header">Not Urgent & Not Important</div>
+            <div class="quadrant-content"></div>
+        </div>
+
+        <div class="quadrant quadrant-2" id="quadrant-2">
+            <div class="quadrant-header">Not Urgent & Important</div>
+            <div class="quadrant-content"></div>
+        </div>
+    </div>
+
+    <div class="control-panel" id="control-panel">
+        <div class="panel-handle" title="Drag to move toolbar">
+            <i class="fas fa-grip-vertical"></i>
+        </div>
+        <input type="file" id="import-file" accept=".xlsx,.xls,.csv" style="display: none;">
+        <button class="btn" id="import-btn" title="Import from Excel">
+            <i class="fas fa-file-import"></i> Import
+        </button>
+        <button class="btn" id="export-excel-btn" title="Export to Excel">
+            <i class="fas fa-file-excel"></i> Export
+        </button>
+        <button class="btn btn-secondary" id="clear-all-btn" title="Clear All">
+            <i class="fas fa-trash"></i> Clear
+        </button>
+    </div>
+
+    <script>
+        // Global variables
+        let taskIdCounter = 1;
+        let isDragging = false;
+        let currentDragElement = null;
+        let offsetX = 0, offsetY = 0;
+        let clickTimeout = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load tasks from local storage
+            loadTasks();
+
+            // Make the control panel draggable
+            makePanelDraggable(document.getElementById('control-panel'));
+
+            // Show hint briefly
+            const hint = document.getElementById('click-hint');
+            if (localStorage.getItem('eisenhowerMatrixTasks') === null || JSON.parse(localStorage.getItem('eisenhowerMatrixTasks')).length === 0) {
+                setTimeout(() => { hint.style.opacity = '1'; }, 1000);
+                setTimeout(() => { hint.style.opacity = '0'; }, 5000);
+            }
+
+            // Add click event to the entire document to create new text boxes
+            document.addEventListener('mousedown', function (e) {
+                // Track start position to distinguish click from drag
+                const startX = e.clientX;
+                const startY = e.clientY;
+
+                const onMouseUp = (upEvent) => {
+                    document.removeEventListener('mouseup', onMouseUp);
+
+                    // If the mouse moved significantly, it was a drag, not a click
+                    if (Math.abs(upEvent.clientX - startX) > 5 || Math.abs(upEvent.clientY - startY) > 5) {
+                        return;
+                    }
+
+                    // Don't create a new box if we're clicking on a button or existing text box
+                    if (upEvent.target.closest('.btn') ||
+                        upEvent.target.closest('.text-box') ||
+                        upEvent.target.closest('.text-box-close') ||
+                        upEvent.target.closest('.control-panel')) {
+                        return;
+                    }
+
+                    createTextBox(upEvent.clientX, upEvent.clientY);
+                    hint.style.opacity = '0';
+                };
+
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            // Add event listeners for control buttons
+            document.getElementById('clear-all-btn').addEventListener('click', clearAllTasks);
+            document.getElementById('export-excel-btn').addEventListener('click', exportTasksToExcel);
+            document.getElementById('import-btn').addEventListener('click', () => document.getElementById('import-file').click());
+            document.getElementById('import-file').addEventListener('change', importFromExcel);
+        });
+
+        // Make the control panel draggable
+        function makePanelDraggable(panel) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+            // Handle for dragging
+            const handle = panel.querySelector('.panel-handle');
+
+            // Load previous position if exists
+            const savedPos = localStorage.getItem('controlPanelPos');
+            if (savedPos) {
+                const { top, left } = JSON.parse(savedPos);
+                panel.style.top = top;
+                panel.style.left = left;
+                panel.style.bottom = 'auto';
+                panel.style.right = 'auto';
+            }
+
+            if (handle) {
+                handle.onmousedown = dragMouseDown;
+            } else {
+                panel.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // Get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // Call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // Calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // Set the element's new position:
+                panel.style.top = (panel.offsetTop - pos2) + "px";
+                panel.style.left = (panel.offsetLeft - pos1) + "px";
+                panel.style.bottom = 'auto';
+                panel.style.right = 'auto';
+            }
+
+            function closeDragElement() {
+                // Stop moving when mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+
+                // Save position
+                localStorage.setItem('controlPanelPos', JSON.stringify({
+                    top: panel.style.top,
+                    left: panel.style.left
+                }));
+            }
+        }
+
+        // Save tasks to local storage
+        function saveTasks() {
+            const tasks = [];
+            document.querySelectorAll('.text-box').forEach(box => {
+                const quadrantId = box.closest('.quadrant').id;
+                const content = box.querySelector('.text-box-content').innerHTML;
+
+                const isDone = box.querySelector('.text-box-content').classList.contains('done');
+
+                // Rank is based on Y position (higher task = lower top value = higher rank)
+                // We use a relative rank for storage: 1000 - top pixel value (approximate)
+                const topVal = parseFloat(box.style.top) || 0;
+                const rank = Math.round(1000 - topVal);
+                box.dataset.rank = rank;
+
+                tasks.push({
+                    id: box.id,
+                    quadrantId: quadrantId,
+                    content: content,
+                    left: box.style.left,
+                    top: box.style.top,
+                    done: isDone,
+                    rank: rank
+                });
+            });
+            localStorage.setItem('eisenhowerMatrixTasks', JSON.stringify(tasks));
+            localStorage.setItem('eisenhowerMatrixIdCounter', taskIdCounter.toString());
+        }
+
+        // Load tasks from local storage
+        function loadTasks() {
+            const storedTasks = localStorage.getItem('eisenhowerMatrixTasks');
+            const storedCounter = localStorage.getItem('eisenhowerMatrixIdCounter');
+
+            if (storedCounter) {
+                taskIdCounter = parseInt(storedCounter);
+            }
+
+            if (storedTasks) {
+                const tasks = JSON.parse(storedTasks);
+                tasks.forEach(task => {
+                    const quadrant = document.getElementById(task.quadrantId);
+                    if (!quadrant) return;
+
+                    const textBox = document.createElement('div');
+                    textBox.className = 'text-box';
+                    textBox.id = task.id;
+                    textBox.style.left = task.left;
+                    textBox.style.top = task.top;
+
+                    updateBoxColor(textBox, task.quadrantId);
+                    textBox.dataset.rank = task.rank || 0;
+
+                    const doneClass = task.done ? 'done' : '';
+                    const doneIconClass = task.done ? 'completed' : '';
+
+                    textBox.innerHTML = `
+                        <div class="text-box-content ${doneClass}" contenteditable="true" placeholder="Type here...">${task.content}</div>
+                        <div class="text-box-actions">
+                            <span class="text-box-done ${doneIconClass}" onclick="toggleDone('${task.id}')" title="Mark as done">
+                                <i class="fas fa-check"></i>
+                            </span>
+                            <span class="text-box-close" onclick="deleteTask('${task.id}')" title="Delete">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </div>
+                    `;
+
+                    quadrant.querySelector('.quadrant-content').appendChild(textBox);
+                    makeDraggable(textBox);
+
+                    // Add input listener for saving changes
+                    textBox.querySelector('.text-box-content').addEventListener('input', saveTasks);
+                });
+            }
+        }
+
+        // Create a new text box at specified coordinates
+        function createTextBox(x, y) {
+            const taskId = `task-${taskIdCounter++}`;
+
+            // Determine which quadrant the click is in
+            const quadrants = document.querySelectorAll('.quadrant');
+            let targetQuadrant = quadrants[0]; // Default
+
+            for (const quadrant of quadrants) {
+                const rect = quadrant.getBoundingClientRect();
+                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                    targetQuadrant = quadrant;
+                    break;
+                }
+            }
+
+            // Create the text box element
+            const textBox = document.createElement('div');
+            textBox.className = 'text-box';
+            textBox.id = taskId;
+
+            // Get the content area (where tasks actually live)
+            const contentArea = targetQuadrant.querySelector('.quadrant-content');
+            const contentRect = contentArea.getBoundingClientRect();
+            const style = window.getComputedStyle(contentArea);
+            const paddingLeft = parseFloat(style.paddingLeft) || 0;
+            const paddingTop = parseFloat(style.paddingTop) || 0;
+            const paddingRight = parseFloat(style.paddingRight) || 0;
+            const paddingBottom = parseFloat(style.paddingBottom) || 0;
+
+            // Calculate position relative to content area's content box (inside padding)
+            let relativeX = x - (contentRect.left + paddingLeft) - 75;
+            let relativeY = y - (contentRect.top + paddingTop) - 20;
+
+            // Content box dimensions
+            const contentBoxWidth = contentRect.width - paddingLeft - paddingRight;
+            const contentBoxHeight = contentRect.height - paddingTop - paddingBottom;
+
+            // Basic bounds check to keep it inside content box
+            relativeX = Math.max(0, Math.min(relativeX, contentBoxWidth - 150));
+            relativeY = Math.max(0, Math.min(relativeY, contentBoxHeight - 40));
+
+            textBox.style.left = `${relativeX}px`;
+            textBox.style.top = `${relativeY}px`;
+
+            // Set border color based on quadrant
+            const quadrantId = targetQuadrant.id;
+            updateBoxColor(textBox, quadrantId);
+            textBox.dataset.rank = 0;
+
+            // Create text box content
+            textBox.innerHTML = `
+                <div class="text-box-content" contenteditable="true" placeholder="Type here..."></div>
+                <div class="text-box-actions">
+                    <span class="text-box-done" onclick="toggleDone('${taskId}')" title="Mark as done">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text-box-close" onclick="deleteTask('${taskId}')" title="Delete">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            `;
+
+            // Add to the target quadrant
+            targetQuadrant.querySelector('.quadrant-content').appendChild(textBox);
+
+            // Make the text box draggable
+            makeDraggable(textBox);
+
+            // Add input listener for saving changes
+            textBox.querySelector('.text-box-content').addEventListener('input', saveTasks);
+
+            // Save state
+            saveTasks();
+
+            // Focus on the content for immediate editing
+            setTimeout(() => {
+                const content = textBox.querySelector('.text-box-content');
+                content.focus();
+            }, 50);
+        }
+
+        function updateBoxColor(textBox, quadrantId) {
+            const colors = {
+                'quadrant-1': '#fee600', // Yellow
+                'quadrant-2': '#00aee3', // Blue
+                'quadrant-3': '#7ed6df', // Light Blue
+                'quadrant-4': '#b2bec3'  // Grey
+            };
+            textBox.style.borderLeftColor = colors[quadrantId] || '#00aee3';
+        }
+
+        // Toggle done state
+        function toggleDone(taskId) {
+            const taskElement = document.getElementById(taskId);
+            if (taskElement) {
+                const content = taskElement.querySelector('.text-box-content');
+                const doneIcon = taskElement.querySelector('.text-box-done');
+                content.classList.toggle('done');
+                doneIcon.classList.toggle('completed');
+                saveTasks();
+            }
+        }
+
+        // Make an element draggable
+        function makeDraggable(element) {
+            const content = element.querySelector('.text-box-content');
+
+            // Allow dragging from anywhere on the box except content and action buttons
+            element.addEventListener('mousedown', function (e) {
+                // Don't start drag if clicking on content (for editing) or action buttons
+                if (e.target.closest('.text-box-content') || e.target.closest('.text-box-actions')) {
+                    return;
+                }
+                startDrag(e);
+            });
+
+            function startDrag(e) {
+                // Prevent text selection during drag
+                e.preventDefault();
+
+                currentDragElement = element;
+                isDragging = true;
+
+                // Calculate offset between mouse position and element position
+                const rect = element.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+
+                // Add dragging class for visual feedback
+                element.classList.add('dragging');
+
+                // Add event listeners for dragging and stopping
+                document.addEventListener('mousemove', drag);
+                document.addEventListener('mouseup', stopDrag);
+
+                // Clear any click timeout to prevent creating a new box
+                if (clickTimeout) {
+                    clearTimeout(clickTimeout);
+                    clickTimeout = null;
+                }
+            }
+
+            function drag(e) {
+                if (!isDragging || !currentDragElement) return;
+
+                // Get the parent content area (where tasks actually live)
+                const contentArea = element.parentElement; // .quadrant-content
+                const contentRect = contentArea.getBoundingClientRect();
+                const style = window.getComputedStyle(contentArea);
+                const paddingLeft = parseFloat(style.paddingLeft) || 0;
+                const paddingTop = parseFloat(style.paddingTop) || 0;
+                const paddingRight = parseFloat(style.paddingRight) || 0;
+                const paddingBottom = parseFloat(style.paddingBottom) || 0;
+
+                // Calculate new position relative to content area's content box
+                let newX = e.clientX - (contentRect.left + paddingLeft) - offsetX;
+                let newY = e.clientY - (contentRect.top + paddingTop) - offsetY;
+
+                // Constrain to content box boundaries
+                const elementRect = element.getBoundingClientRect();
+                const contentBoxWidth = contentRect.width - paddingLeft - paddingRight;
+                const contentBoxHeight = contentRect.height - paddingTop - paddingBottom;
+
+                newX = Math.max(0, Math.min(newX, contentBoxWidth - elementRect.width));
+                newY = Math.max(0, Math.min(newY, contentBoxHeight - elementRect.height));
+
+                // Apply new position
+                element.style.left = `${newX}px`;
+                element.style.top = `${newY}px`;
+
+                // Check if the element has crossed into a different quadrant
+                checkQuadrantChange(element, e.clientX, e.clientY);
+            }
+
+            function stopDrag() {
+                isDragging = false;
+
+                if (currentDragElement) {
+                    currentDragElement.classList.remove('dragging');
+                    currentDragElement = null;
+                }
+
+                // Remove event listeners
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', stopDrag);
+
+                // Save state after drag finishes
+                saveTasks();
+            }
+        }
+
+        // Check if an element has moved to a different quadrant
+        function checkQuadrantChange(element, mouseX, mouseY) {
+            const quadrants = document.querySelectorAll('.quadrant');
+            let newQuadrant = null;
+
+            // Find which quadrant the mouse is currently in
+            for (const quadrant of quadrants) {
+                const rect = quadrant.getBoundingClientRect();
+                if (mouseX >= rect.left && mouseX <= rect.right &&
+                    mouseY >= rect.top && mouseY <= rect.bottom) {
+                    newQuadrant = quadrant;
+                    break;
+                }
+            }
+
+            // If we found a new quadrant and it's different from current parent
+            if (newQuadrant && newQuadrant !== element.parentElement.parentElement) {
+                // Move the element to the new quadrant
+                const newQuadrantContent = newQuadrant.querySelector('.quadrant-content');
+                newQuadrantContent.appendChild(element);
+
+                // Update border color based on new quadrant
+                updateBoxColor(element, newQuadrant.id);
+            }
+        }
+
+        // Delete a task
+        function deleteTask(taskId) {
+            const taskElement = document.getElementById(taskId);
+            if (taskElement) {
+                taskElement.remove();
+                saveTasks(); // Save state after deletion
+            }
+        }
+
+        // Clear all tasks
+        function clearAllTasks() {
+            if (confirm("Are you sure you want to delete all tasks?")) {
+                const textBoxes = document.querySelectorAll('.text-box');
+                textBoxes.forEach(box => box.remove());
+                taskIdCounter = 1;
+                saveTasks(); // Save state after clearing
+            }
+        }
+
+        // Helper to collect tasks in a generic structure
+        function collectTasksForExport() {
+            const tasks = [];
+            const quadrants = document.querySelectorAll('.quadrant');
+
+            quadrants.forEach((quadrant) => {
+                const textBoxes = quadrant.querySelectorAll('.text-box');
+                const quadrantId = quadrant.id;
+                let quadrantNum = 0;
+
+                if (quadrantId === 'quadrant-1') quadrantNum = 1;
+                else if (quadrantId === 'quadrant-2') quadrantNum = 2;
+                else if (quadrantId === 'quadrant-3') quadrantNum = 3;
+                else if (quadrantId === 'quadrant-4') quadrantNum = 4;
+
+                textBoxes.forEach(box => {
+                    const content = box.querySelector('.text-box-content').textContent.trim();
+                    if (!content) return;
+
+                    const isDone = box.querySelector('.text-box-content').classList.contains('done');
+
+                    // Recalculate rank before export to be safe
+                    const topVal = parseFloat(box.style.top) || 0;
+                    const rank = Math.round(1000 - topVal);
+
+                    tasks.push({
+                        quadrant: quadrantNum,
+                        quadrantName: quadrant.querySelector('.quadrant-header').textContent,
+                        content: content,
+                        done: isDone,
+                        rank: rank
+                    });
+                });
+            });
+
+            return tasks;
+        }
+
+        // Export tasks as Excel-compatible .xls
+        function exportTasksToExcel() {
+            const tasks = collectTasksForExport();
+            // Sort by rank descending (highest rank first)
+            tasks.sort((a, b) => b.rank - a.rank);
+
+            let table = '<table border="1">';
+            table += '<tr><th>Task</th><th>Urgent</th><th>Important</th><th>Rank</th><th>Done</th></tr>';
+
+            tasks.forEach(task => {
+                const isUrgent = (task.quadrant === 1 || task.quadrant === 3) ? 'yes' : 'no';
+                const isImportant = (task.quadrant === 1 || task.quadrant === 2) ? 'yes' : 'no';
+
+                table += '<tr>' +
+                    '<td>' + task.content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</td>' +
+                    '<td>' + isUrgent + '</td>' +
+                    '<td>' + isImportant + '</td>' +
+                    '<td>' + (task.rank || 0) + '</td>' +
+                    '<td>' + (task.done ? 'yes' : 'no') + '</td>' +
+                    '</tr>';
+            });
+
+            table += '</table>';
+
+            const html = '<html><head><meta charset="UTF-8"></head><body>' + table + '</body></html>';
+            const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'eisenhower-matrix-tasks.xls';
+            a.click();
+
+            URL.revokeObjectURL(url);
+        }
+
+        // Import from Excel
+        function importFromExcel(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                try {
+                    const data = new Uint8Array(event.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+
+                    // Sort by rank (highest first)
+                    jsonData.sort((a, b) => {
+                        const rankA = parseInt(a.rank) || parseInt(a.Rank) || 0;
+                        const rankB = parseInt(b.rank) || parseInt(b.Rank) || 0;
+                        return rankB - rankA;
+                    });
+
+                    // Track vertical position per quadrant
+                    const quadrantPositions = {
+                        'quadrant-1': 60,
+                        'quadrant-2': 60,
+                        'quadrant-3': 60,
+                        'quadrant-4': 60
+                    };
+
+                    jsonData.forEach(row => {
+                        // Get task content
+                        const taskContent = row.task || row.Task || row.TASK || '';
+                        if (!taskContent.trim()) return;
+
+                        // Determine urgent/important
+                        const urgentRaw = row.urgent || row.Urgent || row.URGENT || 'no';
+                        const importantRaw = row.important || row.Important || row.IMPORTANT || 'no';
+                        const isUrgent = urgentRaw.toString().toLowerCase() === 'yes' || urgentRaw === '1' || urgentRaw === true;
+                        const isImportant = importantRaw.toString().toLowerCase() === 'yes' || importantRaw === '1' || importantRaw === true;
+
+                        // Get rank
+                        const rank = parseInt(row.rank) || parseInt(row.Rank) || 0;
+
+                        // Determine quadrant
+                        let quadrantId;
+                        if (isUrgent && isImportant) {
+                            quadrantId = 'quadrant-1';
+                        } else if (!isUrgent && isImportant) {
+                            quadrantId = 'quadrant-2';
+                        } else if (isUrgent && !isImportant) {
+                            quadrantId = 'quadrant-3';
+                        } else {
+                            quadrantId = 'quadrant-4';
+                        }
+
+                        // Create the task
+                        const quadrant = document.getElementById(quadrantId);
+                        const taskId = `task-${taskIdCounter++}`;
+
+                        const textBox = document.createElement('div');
+                        textBox.className = 'text-box';
+                        textBox.id = taskId;
+                        textBox.style.left = '20px';
+                        textBox.style.top = `${quadrantPositions[quadrantId]}px`;
+                        textBox.dataset.rank = rank;
+
+                        updateBoxColor(textBox, quadrantId);
+
+                        textBox.innerHTML = `
+                            <div class="text-box-content" contenteditable="true" placeholder="Type here...">${taskContent}</div>
+                            <div class="text-box-actions">
+                                <span class="text-box-done" onclick="toggleDone('${taskId}')" title="Mark as done">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="text-box-close" onclick="deleteTask('${taskId}')" title="Delete">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </div>
+                        `;
+
+                        quadrant.querySelector('.quadrant-content').appendChild(textBox);
+                        makeDraggable(textBox);
+                        textBox.querySelector('.text-box-content').addEventListener('input', saveTasks);
+
+                        // Increment position for next task in same quadrant
+                        quadrantPositions[quadrantId] += 45;
+                    });
+
+                    saveTasks();
+                    alert(`Successfully imported ${jsonData.length} tasks!`);
+                } catch (error) {
+                    console.error('Import error:', error);
+                    alert('Error importing file. Please make sure it is a valid Excel file with columns: task, urgent, important, rank');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+
+            // Reset file input
+            e.target.value = '';
+        }
+    </script>
+</body>
+
+</html>
