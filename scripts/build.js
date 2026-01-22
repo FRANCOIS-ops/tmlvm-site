@@ -233,6 +233,11 @@ function copyStatic() {
   if (fs.existsSync(path.join(SRC, "pages", "eisenhower.html"))) {
     fs.copyFileSync(path.join(SRC, "pages", "eisenhower.html"), path.join(DIST, "eisenhower.html"));
   }
+
+  // Copie page Chrono (standalone)
+  if (fs.existsSync(path.join(SRC, "pages", "chrono.html"))) {
+    fs.copyFileSync(path.join(SRC, "pages", "chrono.html"), path.join(DIST, "chrono.html"));
+  }
 }
 
 function build() {
