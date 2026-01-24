@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Interactive Eisenhower Matrix</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -29,20 +29,59 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            overflow: hidden;
             background-color: var(--book-white);
             color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* ===== DESKTOP LAYOUT ===== */
+        .app-shell {
+            display: grid;
+            grid-template-columns: 0.2fr 0.8fr;
+            grid-template-rows: 1fr;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .left-pane {
+            border-right: 2px solid #e0e0e0;
+            background: #fdfdfd;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .left-pane-header {
+            padding: 16px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            border-bottom: 1px solid #ececec;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .left-pane-content {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+            padding: 10px;
+            min-height: 200px;
         }
 
         .matrix-container {
             display: grid;
+            grid-template-areas:
+                "q2 q1"
+                "q4 q3";
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            height: 100vh;
-            width: 100vw;
+            height: 100%;
+            width: 100%;
             gap: 2px;
             background-color: #e0e0e0;
-            /* Subtle grid lines */
         }
 
         .quadrant {
@@ -51,39 +90,66 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            border: 1px solid #e0e0e0;
+        }
+
+        #quadrant-1 {
+            grid-area: q1;
+        }
+
+        #quadrant-2 {
+            grid-area: q2;
+        }
+
+        #quadrant-3 {
+            grid-area: q3;
+        }
+
+        #quadrant-4 {
+            grid-area: q4;
         }
 
         .quadrant-header {
+            flex-shrink: 0;
             font-weight: 700;
-            padding: 16px;
+            padding: 12px 8px;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             user-select: none;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .quadrant-content {
             flex: 1;
             position: relative;
-            padding: 20px;
+            padding: 10px;
+            overflow: hidden;
+            min-height: 100px;
         }
 
-        /* Task Box Styling */
+        /* Text Box Styling */
         .text-box {
             position: absolute;
-            min-width: 220px;
-            max-width: 300px;
+            min-width: 180px;
+            max-width: 280px;
             background-color: white;
             border-radius: 4px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border-left: 6px solid;
+            border-left: 5px solid;
             cursor: move;
             z-index: 10;
             display: flex;
             align-items: center;
-            padding: 10px 14px;
+            padding: 8px 10px;
             transition: transform 0.1s, box-shadow 0.2s;
+            will-change: transform;
+            touch-action: none;
         }
 
         .text-box:hover {
@@ -93,13 +159,15 @@
         .text-box-content {
             flex: 1;
             outline: none;
-            min-height: 20px;
+            min-height: 18px;
             cursor: text;
-            padding-right: 12px;
-            font-size: 14px;
+            padding-right: 50px;
+            font-size: 13px;
             font-weight: 500;
             color: var(--text-dark);
-            line-height: 1.4;
+            line-height: 1.3;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .text-box-content:empty:before {
@@ -115,18 +183,29 @@
         }
 
         .text-box-actions {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
             flex-shrink: 0;
         }
 
         .text-box-done,
-        .text-box-close {
+        .text-box-close,
+        .text-box-classify {
             cursor: pointer;
             color: #dfe6e9;
-            font-size: 14px;
+            font-size: 12px;
             transition: color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
         }
 
         .text-box-done:hover {
@@ -143,6 +222,11 @@
             transform: scale(1.2);
         }
 
+        .text-box-classify:hover {
+            color: #626ecc;
+            transform: scale(1.2);
+        }
+
         .dragging {
             opacity: 0.9;
             z-index: 1000;
@@ -150,19 +234,19 @@
             transform: scale(1.02);
         }
 
-        /* Control Panel Design */
+        /* Control Panel */
         .control-panel {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.9);
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 18px;
+            padding: 10px 14px;
             border-radius: 50px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             z-index: 2000;
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
             border: 1px solid rgba(0, 0, 0, 0.05);
             cursor: grab;
@@ -175,26 +259,29 @@
 
         .panel-handle {
             color: #b2bec3;
-            margin-right: 6px;
+            margin-right: 4px;
             cursor: grab;
-            font-size: 18px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
         }
 
         .btn {
             background-color: var(--book-blue);
             color: white;
             border: none;
-            padding: 10px 18px;
+            padding: 8px 14px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-family: 'Montserrat', sans-serif;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             box-shadow: 0 4px 10px rgba(0, 174, 227, 0.2);
+            white-space: nowrap;
         }
 
         .btn:hover {
@@ -215,9 +302,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
         }
 
-        /* Quadrant Theming based on Book Palette */
-
-        /* Q1: Urgent & Important - Yellow Theme */
+        /* Quadrant Theming */
         .quadrant-1 {
             background-color: #fffdf0;
         }
@@ -231,7 +316,6 @@
             border-left-color: var(--book-yellow);
         }
 
-        /* Q2: Not Urgent & Important - Blue Theme */
         .quadrant-2 {
             background-color: #f0fbff;
         }
@@ -245,7 +329,6 @@
             border-left-color: var(--book-blue);
         }
 
-        /* Q3: Urgent & Not Important - Light Blue Accent */
         .quadrant-3 {
             background-color: #f4f7f8;
         }
@@ -259,7 +342,6 @@
             border-left-color: #7ed6df;
         }
 
-        /* Q4: Not Urgent & Not Important - Soft Neutral */
         .quadrant-4 {
             background-color: #fafafa;
         }
@@ -273,7 +355,7 @@
             border-left-color: #b2bec3;
         }
 
-        /* User hint */
+        /* Click Hint */
         .click-hint {
             position: fixed;
             top: 20px;
@@ -289,6 +371,249 @@
             transition: opacity 0.5s;
             z-index: 500;
         }
+
+        /* ===== MOBILE LAYOUT ===== */
+        @media (max-width: 768px) {
+            .app-shell {
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .left-pane {
+                order: 10;
+                /* Parking area at the very end */
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #e0e0e0;
+                max-height: 30vh;
+                min-height: 120px;
+            }
+
+            .left-pane-header {
+                padding: 12px;
+                font-size: 0.8rem;
+            }
+
+            .left-pane-content {
+                padding: 8px;
+                min-height: 80px;
+                overflow: hidden;
+            }
+
+            .matrix-container {
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                gap: 0;
+                background-color: transparent;
+            }
+
+            .quadrant {
+                width: 100%;
+                min-height: 150px;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .quadrant-1 {
+                order: 1;
+            }
+
+            .quadrant-2 {
+                order: 2;
+            }
+
+            .quadrant-3 {
+                order: 3;
+            }
+
+            .quadrant-4 {
+                order: 4;
+            }
+
+            .quadrant:last-child {
+                border-bottom: none;
+            }
+
+            .quadrant-header {
+                font-size: 0.9rem;
+                padding: 14px 12px;
+            }
+
+            .quadrant-content {
+                min-height: 150px;
+                padding: 12px;
+                overflow: hidden;
+            }
+
+            .text-box {
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
+                min-width: 100%;
+                max-width: 100%;
+                margin-bottom: 8px;
+                padding: 10px 12px;
+            }
+
+            .text-box-content {
+                font-size: 14px;
+                padding-right: 55px;
+            }
+
+            .text-box-actions {
+                right: 8px;
+            }
+
+            .text-box-done,
+            .text-box-close,
+            .text-box-classify {
+                font-size: 14px;
+                width: 24px;
+                height: 24px;
+            }
+
+            .control-panel {
+                position: fixed;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                right: auto;
+                padding: 8px 12px;
+                gap: 6px;
+                max-width: 95vw;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .panel-handle {
+                display: none;
+            }
+
+            .btn {
+                padding: 10px 14px;
+                font-size: 0.7rem;
+            }
+
+            .btn span {
+                display: none;
+            }
+
+            .btn i {
+                font-size: 16px;
+            }
+
+            .click-hint {
+                display: none;
+            }
+
+            body {
+                overflow-y: auto;
+                padding-bottom: 80px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .btn {
+                padding: 10px 12px;
+            }
+
+            .quadrant-header {
+                font-size: 0.8rem;
+                padding: 12px 10px;
+            }
+        }
+
+        /* Classification Popup */
+        .classification-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            display: none;
+            width: 250px;
+        }
+
+        .popup-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .popup-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .popup-option {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .popup-option:hover {
+            background: #e9ecef;
+        }
+
+        .popup-option i {
+            color: var(--book-blue);
+        }
+
+        .popup-cancel {
+            margin-top: 12px;
+            padding: 8px;
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .popup-cancel:hover {
+            background: #f8f9fa;
+            color: #495057;
+        }
+
+        /* Return to home link */
+        .return-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 3000;
+            color: #2d3436;
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+
+        .return-home:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -296,33 +621,35 @@
     <div class="click-hint" id="click-hint">Click anywhere to add a task</div>
 
     <!-- Return to Home -->
-    <a href="index.html"
-        style="position: fixed; top: 20px; left: 20px; z-index: 3000; color: #2d3436; font-size: 24px; background: rgba(255,255,255,0.8); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-decoration: none; transition: transform 0.2s;"
-        onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"
-        title="Retour à l'accueil">
+    <a href="index.html" class="return-home" title="Retour à l'accueil">
         <i class="fas fa-arrow-left"></i>
     </a>
 
-    <div class="matrix-container">
-        <!-- Layout aligned with axes request -->
-        <div class="quadrant quadrant-3" id="quadrant-3">
-            <div class="quadrant-header">Urgent & Not Important</div>
-            <div class="quadrant-content"></div>
+    <div class="app-shell">
+        <div class="left-pane" id="left-pane">
+            <div class="left-pane-header">Task Parking Area</div>
+            <div class="left-pane-content" id="parking-content"></div>
         </div>
+        <div class="matrix-container">
+            <div class="quadrant quadrant-2" id="quadrant-2">
+                <div class="quadrant-header">Important but not urgent</div>
+                <div class="quadrant-content"></div>
+            </div>
 
-        <div class="quadrant quadrant-1" id="quadrant-1">
-            <div class="quadrant-header">Urgent & Important</div>
-            <div class="quadrant-content"></div>
-        </div>
+            <div class="quadrant quadrant-1" id="quadrant-1">
+                <div class="quadrant-header">Urgent & Important</div>
+                <div class="quadrant-content"></div>
+            </div>
 
-        <div class="quadrant quadrant-4" id="quadrant-4">
-            <div class="quadrant-header">Not Urgent & Not Important</div>
-            <div class="quadrant-content"></div>
-        </div>
+            <div class="quadrant quadrant-3" id="quadrant-3">
+                <div class="quadrant-header">Urgent but not important</div>
+                <div class="quadrant-content"></div>
+            </div>
 
-        <div class="quadrant quadrant-2" id="quadrant-2">
-            <div class="quadrant-header">Not Urgent & Important</div>
-            <div class="quadrant-content"></div>
+            <div class="quadrant quadrant-4" id="quadrant-4">
+                <div class="quadrant-header">Not urgent & not important</div>
+                <div class="quadrant-content"></div>
+            </div>
         </div>
     </div>
 
@@ -332,83 +659,145 @@
         </div>
         <input type="file" id="import-file" accept=".xlsx,.xls,.csv" style="display: none;">
         <button class="btn" id="import-btn" title="Import from Excel">
-            <i class="fas fa-file-import"></i> Import
+            <i class="fas fa-file-import"></i> <span>Import</span>
         </button>
         <button class="btn" id="export-excel-btn" title="Export to Excel">
-            <i class="fas fa-file-excel"></i> Export
+            <i class="fas fa-file-excel"></i> <span>Export</span>
+        </button>
+        <button class="btn btn-secondary" id="reset-btn" title="Reset to parking area">
+            <i class="fas fa-undo"></i> <span>Reset</span>
         </button>
         <button class="btn btn-secondary" id="clear-all-btn" title="Clear All">
-            <i class="fas fa-trash"></i> Clear
+            <i class="fas fa-trash"></i> <span>Clear</span>
         </button>
+    </div>
+
+    <div class="classification-popup" id="classification-popup">
+        <div class="popup-title">Move Task To:</div>
+        <div class="popup-options">
+            <div class="popup-option" data-target="quadrant-1">
+                <i class="fas fa-bolt"></i> Urgent & Important
+            </div>
+            <div class="popup-option" data-target="quadrant-2">
+                <i class="fas fa-calendar-check"></i> Important but not urgent
+            </div>
+            <div class="popup-option" data-target="quadrant-3">
+                <i class="fas fa-exclamation-circle"></i> Urgent but not important
+            </div>
+            <div class="popup-option" data-target="quadrant-4">
+                <i class="fas fa-sliders-h"></i> Not urgent & not important
+            </div>
+            <div class="popup-option" data-target="parking">
+                <i class="fas fa-parking"></i> Parking Area
+            </div>
+        </div>
+        <div class="popup-cancel" id="popup-cancel">Cancel</div>
     </div>
 
     <script>
         // Global variables
         let taskIdCounter = 1;
-        let isDragging = false;
-        let currentDragElement = null;
-        let offsetX = 0, offsetY = 0;
-        let clickTimeout = null;
+        let isMobile = window.innerWidth <= 768;
+
+        // Check mobile on resize
+        window.addEventListener('resize', () => {
+            isMobile = window.innerWidth <= 768;
+        });
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function () {
-            // Load tasks from local storage
             loadTasks();
 
-            // Make the control panel draggable
-            makePanelDraggable(document.getElementById('control-panel'));
+            if (!isMobile) {
+                makePanelDraggable(document.getElementById('control-panel'));
+            }
 
-            // Show hint briefly
+            // Show hint briefly on desktop
             const hint = document.getElementById('click-hint');
-            if (localStorage.getItem('eisenhowerMatrixTasks') === null || JSON.parse(localStorage.getItem('eisenhowerMatrixTasks')).length === 0) {
+            if (!isMobile && (localStorage.getItem('eisenhowerMatrixTasks') === null || JSON.parse(localStorage.getItem('eisenhowerMatrixTasks')).length === 0)) {
                 setTimeout(() => { hint.style.opacity = '1'; }, 1000);
                 setTimeout(() => { hint.style.opacity = '0'; }, 5000);
             }
 
-            // Add click event to the entire document to create new text boxes
-            document.addEventListener('mousedown', function (e) {
-                // Track start position to distinguish click from drag
-                const startX = e.clientX;
-                const startY = e.clientY;
+            // Event delegation for creating tasks
+            document.addEventListener('click', handleCreateTask);
+            document.addEventListener('touchend', handleCreateTask);
 
-                const onMouseUp = (upEvent) => {
-                    document.removeEventListener('mouseup', onMouseUp);
+            // Control button events - use both click and touchend for mobile
+            const importBtn = document.getElementById('import-btn');
+            const exportBtn = document.getElementById('export-excel-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const clearBtn = document.getElementById('clear-all-btn');
+            const importFile = document.getElementById('import-file');
+            const popup = document.getElementById('classification-popup');
+            const popupCancel = document.getElementById('popup-cancel');
 
-                    // If the mouse moved significantly, it was a drag, not a click
-                    if (Math.abs(upEvent.clientX - startX) > 5 || Math.abs(upEvent.clientY - startY) > 5) {
-                        return;
-                    }
-
-                    // Don't create a new box if we're clicking on a button or existing text box
-                    if (upEvent.target.closest('.btn') ||
-                        upEvent.target.closest('.text-box') ||
-                        upEvent.target.closest('.text-box-close') ||
-                        upEvent.target.closest('.control-panel')) {
-                        return;
-                    }
-
-                    createTextBox(upEvent.clientX, upEvent.clientY);
-                    hint.style.opacity = '0';
-                };
-
-                document.addEventListener('mouseup', onMouseUp);
+            importBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                importFile.click();
             });
 
-            // Add event listeners for control buttons
-            document.getElementById('clear-all-btn').addEventListener('click', clearAllTasks);
-            document.getElementById('export-excel-btn').addEventListener('click', exportTasksToExcel);
-            document.getElementById('import-btn').addEventListener('click', () => document.getElementById('import-file').click());
-            document.getElementById('import-file').addEventListener('change', importFromExcel);
+            exportBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                exportTasksToExcel();
+            });
+
+            resetBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                moveAllTasksToLeftPane();
+            });
+
+            clearBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                clearAllTasks();
+            });
+
+            importFile.addEventListener('change', importFromExcel);
+
+            // Popup handling
+            popupCancel.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.text-box-classify') && !e.target.closest('.popup-option') && !e.target.closest('.popup-cancel')) {
+                    popup.style.display = 'none';
+                }
+            });
         });
 
-        // Make the control panel draggable
+        function handleCreateTask(e) {
+            // Ignore if it's a button, text box, or control panel interaction
+            if (e.target.closest('.btn') ||
+                e.target.closest('.text-box') ||
+                e.target.closest('.control-panel') ||
+                e.target.closest('.quadrant-header') ||
+                e.target.closest('.left-pane-header') ||
+                e.target.closest('input') ||
+                e.target.closest('.classification-popup')) {
+                return;
+            }
+
+            const clientX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
+            const clientY = e.clientY || (e.changedTouches && e.changedTouches[0].clientY);
+
+            if (!clientX || !clientY) return;
+
+            createTextBox(clientX, clientY);
+
+            const hint = document.getElementById('click-hint');
+            if (hint) hint.style.opacity = '0';
+        }
+
+        // Make the control panel draggable (desktop only)
         function makePanelDraggable(panel) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-            // Handle for dragging
             const handle = panel.querySelector('.panel-handle');
 
-            // Load previous position if exists
             const savedPos = localStorage.getItem('controlPanelPos');
             if (savedPos) {
                 const { top, left } = JSON.parse(savedPos);
@@ -416,46 +805,37 @@
                 panel.style.left = left;
                 panel.style.bottom = 'auto';
                 panel.style.right = 'auto';
+                panel.style.transform = 'none';
             }
 
             if (handle) {
                 handle.onmousedown = dragMouseDown;
-            } else {
-                panel.onmousedown = dragMouseDown;
             }
 
             function dragMouseDown(e) {
-                e = e || window.event;
                 e.preventDefault();
-                // Get the mouse cursor position at startup:
                 pos3 = e.clientX;
                 pos4 = e.clientY;
                 document.onmouseup = closeDragElement;
-                // Call a function whenever the cursor moves:
                 document.onmousemove = elementDrag;
             }
 
             function elementDrag(e) {
-                e = e || window.event;
                 e.preventDefault();
-                // Calculate the new cursor position:
                 pos1 = pos3 - e.clientX;
                 pos2 = pos4 - e.clientY;
                 pos3 = e.clientX;
                 pos4 = e.clientY;
-                // Set the element's new position:
                 panel.style.top = (panel.offsetTop - pos2) + "px";
                 panel.style.left = (panel.offsetLeft - pos1) + "px";
                 panel.style.bottom = 'auto';
                 panel.style.right = 'auto';
+                panel.style.transform = 'none';
             }
 
             function closeDragElement() {
-                // Stop moving when mouse button is released:
                 document.onmouseup = null;
                 document.onmousemove = null;
-
-                // Save position
                 localStorage.setItem('controlPanelPos', JSON.stringify({
                     top: panel.style.top,
                     left: panel.style.left
@@ -467,16 +847,18 @@
         function saveTasks() {
             const tasks = [];
             document.querySelectorAll('.text-box').forEach(box => {
-                const quadrantId = box.closest('.quadrant').id;
+                const quadrant = box.closest('.quadrant');
+                const leftPane = box.closest('.left-pane');
+                let quadrantId = 'left-pane';
+
+                if (quadrant) {
+                    quadrantId = quadrant.id;
+                }
+
                 const content = box.querySelector('.text-box-content').innerHTML;
-
                 const isDone = box.querySelector('.text-box-content').classList.contains('done');
-
-                // Rank is based on Y position (higher task = lower top value = higher rank)
-                // We use a relative rank for storage: 1000 - top pixel value (approximate)
                 const topVal = parseFloat(box.style.top) || 0;
                 const rank = Math.round(1000 - topVal);
-                box.dataset.rank = rank;
 
                 tasks.push({
                     id: box.id,
@@ -504,16 +886,28 @@
             if (storedTasks) {
                 const tasks = JSON.parse(storedTasks);
                 tasks.forEach(task => {
-                    const quadrant = document.getElementById(task.quadrantId);
-                    if (!quadrant) return;
+                    let parentContainer;
+                    if (task.quadrantId === 'left-pane') {
+                        parentContainer = document.getElementById('parking-content');
+                    } else {
+                        const quadrant = document.getElementById(task.quadrantId);
+                        if (!quadrant) return;
+                        parentContainer = quadrant.querySelector('.quadrant-content');
+                    }
+
+                    if (!parentContainer) return;
 
                     const textBox = document.createElement('div');
                     textBox.className = 'text-box';
                     textBox.id = task.id;
-                    textBox.style.left = task.left;
-                    textBox.style.top = task.top;
 
-                    updateBoxColor(textBox, task.quadrantId);
+                    if (!isMobile) {
+                        textBox.style.left = task.left;
+                        textBox.style.top = task.top;
+                    }
+
+                    const quadrantIdForColor = task.quadrantId === 'left-pane' ? null : task.quadrantId;
+                    updateBoxColor(textBox, quadrantIdForColor);
                     textBox.dataset.rank = task.rank || 0;
 
                     const doneClass = task.done ? 'done' : '';
@@ -522,112 +916,242 @@
                     textBox.innerHTML = `
                         <div class="text-box-content ${doneClass}" contenteditable="true" placeholder="Type here...">${task.content}</div>
                         <div class="text-box-actions">
-                            <span class="text-box-done ${doneIconClass}" onclick="toggleDone('${task.id}')" title="Mark as done">
+                            <span class="text-box-classify" title="Change classification">
+                                <i class="fas fa-square"></i>
+                            </span>
+                            <span class="text-box-done ${doneIconClass}" title="Mark as done">
                                 <i class="fas fa-check"></i>
                             </span>
-                            <span class="text-box-close" onclick="deleteTask('${task.id}')" title="Delete">
+                            <span class="text-box-close" title="Delete">
                                 <i class="fas fa-times"></i>
                             </span>
                         </div>
                     `;
 
-                    quadrant.querySelector('.quadrant-content').appendChild(textBox);
-                    makeDraggable(textBox);
-
-                    // Add input listener for saving changes
-                    textBox.querySelector('.text-box-content').addEventListener('input', saveTasks);
+                    parentContainer.appendChild(textBox);
+                    attachTaskEventListeners(textBox);
                 });
             }
         }
 
-        // Create a new text box at specified coordinates
+        // Attach event listeners to a task box
+        function attachTaskEventListeners(textBox) {
+            const taskId = textBox.id;
+            const content = textBox.querySelector('.text-box-content');
+            const doneBtn = textBox.querySelector('.text-box-done');
+            const closeBtn = textBox.querySelector('.text-box-close');
+            const classifyBtn = textBox.querySelector('.text-box-classify');
+            const popup = document.getElementById('classification-popup');
+
+            // Save on input
+            content.addEventListener('input', saveTasks);
+
+            // Done button
+            doneBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleDone(taskId);
+            });
+
+            doneBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleDone(taskId);
+            });
+
+            // Close button
+            closeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                deleteTask(taskId);
+            });
+
+            closeBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                deleteTask(taskId);
+            });
+
+            // Classify button - show popup
+            const openPopup = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (isMobile) {
+                    popup.style.top = '50%';
+                    popup.style.left = '50%';
+                    popup.style.transform = 'translate(-50%, -50%)';
+                } else {
+                    const rect = textBox.getBoundingClientRect();
+                    popup.style.top = `${rect.top + window.scrollY}px`;
+                    popup.style.left = `${rect.right + window.scrollX + 10}px`;
+                    popup.style.transform = 'none';
+
+                    // Keep popup in bounds
+                    const popupRect = popup.getBoundingClientRect();
+                    if (rect.right + 260 > window.innerWidth) {
+                        popup.style.left = `${rect.left - 260}px`;
+                    }
+                }
+
+                popup.style.display = 'block';
+
+                // Set the current task context for the popup
+                popup.dataset.activeTaskId = taskId;
+
+                // Remove existing listeners to avoid duplicates
+                document.querySelectorAll('.popup-option').forEach(option => {
+                    option.removeEventListener('click', handlePopupOption);
+                });
+
+                // Add new listeners
+                document.querySelectorAll('.popup-option').forEach(option => {
+                    option.addEventListener('click', handlePopupOption);
+                });
+            };
+
+            classifyBtn.addEventListener('click', openPopup);
+            classifyBtn.addEventListener('touchend', openPopup);
+
+            // Make draggable (desktop only)
+            if (!isMobile) {
+                makeDraggable(textBox);
+            }
+        }
+
+        // Handle classification popup option selection
+        function handlePopupOption(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const targetId = this.dataset.target;
+            const popup = document.getElementById('classification-popup');
+            popup.style.display = 'none';
+
+            const taskId = popup.dataset.activeTaskId;
+            if (!taskId) return;
+
+            moveTaskToTarget(taskId, targetId);
+        }
+
+        function moveTaskToTarget(taskId, targetId) {
+            const element = document.getElementById(taskId);
+            if (!element) return;
+
+            let newContainer;
+            if (targetId === 'parking') {
+                newContainer = document.getElementById('parking-content');
+            } else {
+                const quadrant = document.getElementById(targetId);
+                newContainer = quadrant ? quadrant.querySelector('.quadrant-content') : null;
+            }
+
+            if (newContainer) {
+                const newRect = newContainer.getBoundingClientRect();
+                let newLeft, newTop;
+
+                if (targetId === 'parking') {
+                    newLeft = newRect.width - element.offsetWidth - 10;
+                    // Find max Y position in parking area to append nicely
+                    let maxY = 10;
+                    const parkingTasks = newContainer.querySelectorAll('.text-box');
+                    parkingTasks.forEach(task => {
+                        const tTop = parseFloat(task.style.top) || 0;
+                        if (tTop > maxY) maxY = tTop;
+                    });
+                    newTop = maxY + 45;
+                } else {
+                    newLeft = 10;
+                    newTop = 10;
+                }
+
+                element.style.left = `${newLeft}px`;
+                element.style.top = `${newTop}px`;
+                newContainer.appendChild(element);
+                updateBoxColor(element, targetId === 'parking' ? null : targetId);
+                saveTasks();
+            }
+        }
+
+        // Create a new text box
         function createTextBox(x, y) {
             const taskId = `task-${taskIdCounter++}`;
+            let targetContainer = null;
 
-            // Determine which quadrant the click is in
-            const quadrants = document.querySelectorAll('.quadrant');
-            let targetQuadrant = quadrants[0]; // Default
-
-            for (const quadrant of quadrants) {
-                const rect = quadrant.getBoundingClientRect();
-                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    targetQuadrant = quadrant;
-                    break;
+            // Check parking area
+            const parkingContent = document.getElementById('parking-content');
+            if (parkingContent) {
+                const parkingRect = parkingContent.getBoundingClientRect();
+                if (x >= parkingRect.left && x <= parkingRect.right && y >= parkingRect.top && y <= parkingRect.bottom) {
+                    targetContainer = parkingContent;
                 }
             }
 
-            // Create the text box element
+            // Check quadrants
+            if (!targetContainer) {
+                const quadrants = document.querySelectorAll('.quadrant-content');
+                for (const qContent of quadrants) {
+                    const rect = qContent.getBoundingClientRect();
+                    if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                        targetContainer = qContent;
+                        break;
+                    }
+                }
+            }
+
+            if (!targetContainer) return;
+
             const textBox = document.createElement('div');
             textBox.className = 'text-box';
             textBox.id = taskId;
 
-            // Get the content area (where tasks actually live)
-            const contentArea = targetQuadrant.querySelector('.quadrant-content');
-            const contentRect = contentArea.getBoundingClientRect();
-            const style = window.getComputedStyle(contentArea);
-            const paddingLeft = parseFloat(style.paddingLeft) || 0;
-            const paddingTop = parseFloat(style.paddingTop) || 0;
-            const paddingRight = parseFloat(style.paddingRight) || 0;
-            const paddingBottom = parseFloat(style.paddingBottom) || 0;
+            if (!isMobile) {
+                const containerRect = targetContainer.getBoundingClientRect();
+                let relativeX = x - containerRect.left - 90;
+                let relativeY = y - containerRect.top - 15;
 
-            // Calculate position relative to content area's content box (inside padding)
-            let relativeX = x - (contentRect.left + paddingLeft) - 75;
-            let relativeY = y - (contentRect.top + paddingTop) - 20;
+                const boxWidth = 180;
+                const boxHeight = 35;
+                relativeX = Math.max(5, Math.min(relativeX, containerRect.width - boxWidth - 5));
+                relativeY = Math.max(5, Math.min(relativeY, containerRect.height - boxHeight - 5));
 
-            // Content box dimensions
-            const contentBoxWidth = contentRect.width - paddingLeft - paddingRight;
-            const contentBoxHeight = contentRect.height - paddingTop - paddingBottom;
+                textBox.style.left = `${relativeX}px`;
+                textBox.style.top = `${relativeY}px`;
+            }
 
-            // Basic bounds check to keep it inside content box
-            relativeX = Math.max(0, Math.min(relativeX, contentBoxWidth - 150));
-            relativeY = Math.max(0, Math.min(relativeY, contentBoxHeight - 40));
-
-            textBox.style.left = `${relativeX}px`;
-            textBox.style.top = `${relativeY}px`;
-
-            // Set border color based on quadrant
-            const quadrantId = targetQuadrant.id;
+            const parentQuadrant = targetContainer.closest('.quadrant');
+            const quadrantId = parentQuadrant ? parentQuadrant.id : null;
             updateBoxColor(textBox, quadrantId);
-            textBox.dataset.rank = 0;
 
-            // Create text box content
             textBox.innerHTML = `
                 <div class="text-box-content" contenteditable="true" placeholder="Type here..."></div>
                 <div class="text-box-actions">
-                    <span class="text-box-done" onclick="toggleDone('${taskId}')" title="Mark as done">
+                    <span class="text-box-classify" title="Change classification">
+                        <i class="fas fa-square"></i>
+                    </span>
+                    <span class="text-box-done" title="Mark as done">
                         <i class="fas fa-check"></i>
                     </span>
-                    <span class="text-box-close" onclick="deleteTask('${taskId}')" title="Delete">
+                    <span class="text-box-close" title="Delete">
                         <i class="fas fa-times"></i>
                     </span>
                 </div>
             `;
 
-            // Add to the target quadrant
-            targetQuadrant.querySelector('.quadrant-content').appendChild(textBox);
-
-            // Make the text box draggable
-            makeDraggable(textBox);
-
-            // Add input listener for saving changes
-            textBox.querySelector('.text-box-content').addEventListener('input', saveTasks);
-
-            // Save state
+            targetContainer.appendChild(textBox);
+            attachTaskEventListeners(textBox);
             saveTasks();
 
-            // Focus on the content for immediate editing
             setTimeout(() => {
-                const content = textBox.querySelector('.text-box-content');
-                content.focus();
+                textBox.querySelector('.text-box-content').focus();
             }, 50);
         }
 
         function updateBoxColor(textBox, quadrantId) {
             const colors = {
-                'quadrant-1': '#fee600', // Yellow
-                'quadrant-2': '#00aee3', // Blue
-                'quadrant-3': '#7ed6df', // Light Blue
-                'quadrant-4': '#b2bec3'  // Grey
+                'quadrant-1': '#fee600',
+                'quadrant-2': '#00aee3',
+                'quadrant-3': '#7ed6df',
+                'quadrant-4': '#b2bec3'
             };
             textBox.style.borderLeftColor = colors[quadrantId] || '#00aee3';
         }
@@ -644,118 +1168,174 @@
             }
         }
 
-        // Make an element draggable
+        // Make an element draggable (Desktop & Mobile)
         function makeDraggable(element) {
-            const content = element.querySelector('.text-box-content');
+            let isDragging = false;
+            let startX, startY, initialLeft, initialTop;
 
-            // Allow dragging from anywhere on the box except content and action buttons
-            element.addEventListener('mousedown', function (e) {
-                // Don't start drag if clicking on content (for editing) or action buttons
-                if (e.target.closest('.text-box-content') || e.target.closest('.text-box-actions')) {
-                    return;
-                }
-                startDrag(e);
-            });
+            const onStart = (e) => {
+                if (e.target.closest('.text-box-content') || e.target.closest('.text-box-actions')) return;
 
-            function startDrag(e) {
-                // Prevent text selection during drag
-                e.preventDefault();
+                // For mobile, only one finger drag
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
 
-                currentDragElement = element;
                 isDragging = true;
-
-                // Calculate offset between mouse position and element position
-                const rect = element.getBoundingClientRect();
-                offsetX = e.clientX - rect.left;
-                offsetY = e.clientY - rect.top;
-
-                // Add dragging class for visual feedback
                 element.classList.add('dragging');
 
-                // Add event listeners for dragging and stopping
-                document.addEventListener('mousemove', drag);
-                document.addEventListener('mouseup', stopDrag);
+                startX = clientX;
+                startY = clientY;
+                initialLeft = parseFloat(element.style.left) || 0;
+                initialTop = parseFloat(element.style.top) || 0;
 
-                // Clear any click timeout to prevent creating a new box
-                if (clickTimeout) {
-                    clearTimeout(clickTimeout);
-                    clickTimeout = null;
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchend', onEnd);
+            };
+
+            const onMove = (e) => {
+                if (!isDragging) return;
+                if (e.type === 'touchmove') e.preventDefault(); // Prevent scrolling
+
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+
+                const deltaX = clientX - startX;
+                const deltaY = clientY - startY;
+
+                element.style.left = `${initialLeft + deltaX}px`;
+                element.style.top = `${initialTop + deltaY}px`;
+
+                const containerChanged = checkQuadrantChange(element, clientX, clientY);
+                if (containerChanged) {
+                    startX = clientX;
+                    startY = clientY;
+                    initialLeft = parseFloat(element.style.left) || 0;
+                    initialTop = parseFloat(element.style.top) || 0;
                 }
-            }
+            };
 
-            function drag(e) {
-                if (!isDragging || !currentDragElement) return;
-
-                // Get the parent content area (where tasks actually live)
-                const contentArea = element.parentElement; // .quadrant-content
-                const contentRect = contentArea.getBoundingClientRect();
-                const style = window.getComputedStyle(contentArea);
-                const paddingLeft = parseFloat(style.paddingLeft) || 0;
-                const paddingTop = parseFloat(style.paddingTop) || 0;
-                const paddingRight = parseFloat(style.paddingRight) || 0;
-                const paddingBottom = parseFloat(style.paddingBottom) || 0;
-
-                // Calculate new position relative to content area's content box
-                let newX = e.clientX - (contentRect.left + paddingLeft) - offsetX;
-                let newY = e.clientY - (contentRect.top + paddingTop) - offsetY;
-
-                // Constrain to content box boundaries
-                const elementRect = element.getBoundingClientRect();
-                const contentBoxWidth = contentRect.width - paddingLeft - paddingRight;
-                const contentBoxHeight = contentRect.height - paddingTop - paddingBottom;
-
-                newX = Math.max(0, Math.min(newX, contentBoxWidth - elementRect.width));
-                newY = Math.max(0, Math.min(newY, contentBoxHeight - elementRect.height));
-
-                // Apply new position
-                element.style.left = `${newX}px`;
-                element.style.top = `${newY}px`;
-
-                // Check if the element has crossed into a different quadrant
-                checkQuadrantChange(element, e.clientX, e.clientY);
-            }
-
-            function stopDrag() {
+            const onEnd = () => {
+                if (!isDragging) return;
                 isDragging = false;
-
-                if (currentDragElement) {
-                    currentDragElement.classList.remove('dragging');
-                    currentDragElement = null;
-                }
-
-                // Remove event listeners
-                document.removeEventListener('mousemove', drag);
-                document.removeEventListener('mouseup', stopDrag);
-
-                // Save state after drag finishes
+                element.classList.remove('dragging');
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchend', onEnd);
                 saveTasks();
-            }
+            };
+
+            element.addEventListener('mousedown', onStart);
+            element.addEventListener('touchstart', onStart, { passive: false });
         }
 
-        // Check if an element has moved to a different quadrant
-        function checkQuadrantChange(element, mouseX, mouseY) {
-            const quadrants = document.querySelectorAll('.quadrant');
-            let newQuadrant = null;
+        // Check if element moved to a different container
+        function checkQuadrantChange(element, clientX, clientY) {
+            const quadrants = document.querySelectorAll('.quadrant-content');
+            const parkingContent = document.getElementById('parking-content');
+            let newContainer = null;
 
-            // Find which quadrant the mouse is currently in
-            for (const quadrant of quadrants) {
-                const rect = quadrant.getBoundingClientRect();
-                if (mouseX >= rect.left && mouseX <= rect.right &&
-                    mouseY >= rect.top && mouseY <= rect.bottom) {
-                    newQuadrant = quadrant;
-                    break;
+            // Check parking area first
+            if (parkingContent) {
+                const parkingRect = parkingContent.getBoundingClientRect();
+                if (clientX >= parkingRect.left && clientX <= parkingRect.right &&
+                    clientY >= parkingRect.top && clientY <= parkingRect.bottom) {
+                    newContainer = parkingContent;
                 }
             }
 
-            // If we found a new quadrant and it's different from current parent
-            if (newQuadrant && newQuadrant !== element.parentElement.parentElement) {
-                // Move the element to the new quadrant
-                const newQuadrantContent = newQuadrant.querySelector('.quadrant-content');
-                newQuadrantContent.appendChild(element);
-
-                // Update border color based on new quadrant
-                updateBoxColor(element, newQuadrant.id);
+            // Check quadrants
+            if (!newContainer) {
+                for (const qContent of quadrants) {
+                    const rect = qContent.getBoundingClientRect();
+                    if (clientX >= rect.left && clientX <= rect.right &&
+                        clientY >= rect.top && clientY <= rect.bottom) {
+                        newContainer = qContent;
+                        break;
+                    }
+                }
             }
+
+            const currentContainer = element.parentElement;
+
+            if (newContainer && newContainer !== currentContainer) {
+                const newRect = newContainer.getBoundingClientRect();
+                const currentRect = currentContainer.getBoundingClientRect();
+
+                const currentLeft = parseFloat(element.style.left) || 0;
+                const currentTop = parseFloat(element.style.top) || 0;
+
+                const absoluteY = currentRect.top + currentTop;
+                let newTop = absoluteY - newRect.top;
+                let newLeft;
+
+                // Identification of quadrant pairs (Left Side: Q2, Q4 | Right Side: Q1, Q3)
+                const currentQuadrant = currentContainer.closest('.quadrant')?.id;
+                const newQuadrant = newContainer.closest('.quadrant')?.id;
+
+                const leftSideIds = ['quadrant-2', 'quadrant-4'];
+                const rightSideIds = ['quadrant-1', 'quadrant-3'];
+
+                if (newContainer.id === 'parking-content') {
+                    // Moving to Parking Area (Left of matrix): Snap to right side of parking
+                    newLeft = newRect.width - element.offsetWidth - 10;
+                } else if (currentContainer.id === 'parking-content') {
+                    // Moving from Parking to Matrix: Snap to left side of quadrant
+                    newLeft = 10;
+                } else if (leftSideIds.includes(newQuadrant) && rightSideIds.includes(currentQuadrant)) {
+                    // Right-to-Left move: Snap to right side of the new left quadrant
+                    newLeft = newRect.width - element.offsetWidth - 10;
+                } else {
+                    // Left-to-Right or vertical move: Snap to left side
+                    newLeft = 10;
+                }
+
+                // Boundaries check for Y to ensure the task stays visible
+                newTop = Math.max(5, Math.min(newTop, newRect.height - element.offsetHeight - 5));
+
+                element.style.left = `${newLeft}px`;
+                element.style.top = `${newTop}px`;
+
+                newContainer.appendChild(element);
+
+                const parentQuadrant = newContainer.closest('.quadrant');
+                const quadrantId = parentQuadrant ? parentQuadrant.id : null;
+                updateBoxColor(element, quadrantId);
+                return true;
+            }
+            return false;
+        }
+
+        // Move all tasks to left pane
+        function moveAllTasksToLeftPane() {
+            const parkingContent = document.getElementById('parking-content');
+            if (!parkingContent) return;
+
+            const allTasks = document.querySelectorAll('.text-box');
+
+            if (isMobile) {
+                // On mobile, just move tasks without positioning
+                allTasks.forEach(box => {
+                    parkingContent.appendChild(box);
+                    updateBoxColor(box, null);
+                });
+            } else {
+                // On desktop, preserve Y position
+                const paneRect = parkingContent.getBoundingClientRect();
+                let yOffset = 10;
+
+                allTasks.forEach(box => {
+                    box.style.left = '10px';
+                    box.style.top = `${yOffset}px`;
+                    yOffset += 45;
+                    parkingContent.appendChild(box);
+                    updateBoxColor(box, null);
+                });
+            }
+
+            saveTasks();
         }
 
         // Delete a task
@@ -763,7 +1343,7 @@
             const taskElement = document.getElementById(taskId);
             if (taskElement) {
                 taskElement.remove();
-                saveTasks(); // Save state after deletion
+                saveTasks();
             }
         }
 
@@ -773,55 +1353,51 @@
                 const textBoxes = document.querySelectorAll('.text-box');
                 textBoxes.forEach(box => box.remove());
                 taskIdCounter = 1;
-                saveTasks(); // Save state after clearing
+                saveTasks();
             }
         }
 
-        // Helper to collect tasks in a generic structure
+        // Collect tasks for export
         function collectTasksForExport() {
             const tasks = [];
-            const quadrants = document.querySelectorAll('.quadrant');
 
-            quadrants.forEach((quadrant) => {
-                const textBoxes = quadrant.querySelectorAll('.text-box');
+            document.querySelectorAll('.text-box').forEach(box => {
+                const quadrant = box.closest('.quadrant');
+                if (!quadrant) return;
+
+                const content = box.querySelector('.text-box-content').textContent.trim();
+                if (!content) return;
+
+                const isDone = box.querySelector('.text-box-content').classList.contains('done');
                 const quadrantId = quadrant.id;
-                let quadrantNum = 0;
 
+                let quadrantNum = 0;
                 if (quadrantId === 'quadrant-1') quadrantNum = 1;
                 else if (quadrantId === 'quadrant-2') quadrantNum = 2;
                 else if (quadrantId === 'quadrant-3') quadrantNum = 3;
                 else if (quadrantId === 'quadrant-4') quadrantNum = 4;
 
-                textBoxes.forEach(box => {
-                    const content = box.querySelector('.text-box-content').textContent.trim();
-                    if (!content) return;
+                const topVal = parseFloat(box.style.top) || 0;
+                const rank = Math.round(1000 - topVal);
 
-                    const isDone = box.querySelector('.text-box-content').classList.contains('done');
-
-                    // Recalculate rank before export to be safe
-                    const topVal = parseFloat(box.style.top) || 0;
-                    const rank = Math.round(1000 - topVal);
-
-                    tasks.push({
-                        quadrant: quadrantNum,
-                        quadrantName: quadrant.querySelector('.quadrant-header').textContent,
-                        content: content,
-                        done: isDone,
-                        rank: rank
-                    });
+                tasks.push({
+                    quadrant: quadrantNum,
+                    quadrantName: quadrant.querySelector('.quadrant-header').textContent,
+                    content: content,
+                    done: isDone,
+                    rank: rank
                 });
             });
 
             return tasks;
         }
 
-        // Export tasks as Excel-compatible .xls
+        // Export to Excel
         function exportTasksToExcel() {
             const tasks = collectTasksForExport();
-            // Sort by rank descending (highest rank first)
             tasks.sort((a, b) => b.rank - a.rank);
 
-            let table = '<table border="1">';
+            let table = '<table border=\\\"1\\">';
             table += '<tr><th>Task</th><th>Urgent</th><th>Important</th><th>Rank</th><th>Done</th></tr>';
 
             tasks.forEach(task => {
@@ -839,15 +1415,16 @@
 
             table += '</table>';
 
-            const html = '<html><head><meta charset="UTF-8"></head><body>' + table + '</body></html>';
+            const html = '<html><head><meta charset=\\\"UTF-8\\\"></head><body>' + table + '</body></html>';
             const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
             const url = URL.createObjectURL(blob);
 
             const a = document.createElement('a');
             a.href = url;
             a.download = 'eisenhower-matrix-tasks.xls';
+            document.body.appendChild(a);
             a.click();
-
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
 
@@ -864,90 +1441,83 @@
                     const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                     const jsonData = XLSX.utils.sheet_to_json(firstSheet);
 
-                    // Sort by rank (highest first)
                     jsonData.sort((a, b) => {
                         const rankA = parseInt(a.rank) || parseInt(a.Rank) || 0;
                         const rankB = parseInt(b.rank) || parseInt(b.Rank) || 0;
                         return rankB - rankA;
                     });
 
-                    // Track vertical position per quadrant
                     const quadrantPositions = {
-                        'quadrant-1': 60,
-                        'quadrant-2': 60,
-                        'quadrant-3': 60,
-                        'quadrant-4': 60
+                        'quadrant-1': 10,
+                        'quadrant-2': 10,
+                        'quadrant-3': 10,
+                        'quadrant-4': 10
                     };
 
+                    let importedCount = 0;
+
                     jsonData.forEach(row => {
-                        // Get task content
                         const taskContent = row.task || row.Task || row.TASK || '';
                         if (!taskContent.trim()) return;
 
-                        // Determine urgent/important
                         const urgentRaw = row.urgent || row.Urgent || row.URGENT || 'no';
                         const importantRaw = row.important || row.Important || row.IMPORTANT || 'no';
                         const isUrgent = urgentRaw.toString().toLowerCase() === 'yes' || urgentRaw === '1' || urgentRaw === true;
-                        const isImportant = importantRaw.toString().toLowerCase() === 'yes' || importantRaw === '1' || importantRaw === true;
+                        const isImportant = importantRaw.toString().toLowerCase() === 'yes' || importantRaw === '1' || urgentRaw === true;
 
-                        // Get rank
-                        const rank = parseInt(row.rank) || parseInt(row.Rank) || 0;
-
-                        // Determine quadrant
                         let quadrantId;
-                        if (isUrgent && isImportant) {
-                            quadrantId = 'quadrant-1';
-                        } else if (!isUrgent && isImportant) {
-                            quadrantId = 'quadrant-2';
-                        } else if (isUrgent && !isImportant) {
-                            quadrantId = 'quadrant-3';
-                        } else {
-                            quadrantId = 'quadrant-4';
-                        }
+                        if (isUrgent && isImportant) quadrantId = 'quadrant-1';
+                        else if (!isUrgent && isImportant) quadrantId = 'quadrant-2';
+                        else if (isUrgent && !isImportant) quadrantId = 'quadrant-3';
+                        else quadrantId = 'quadrant-4';
 
-                        // Create the task
                         const quadrant = document.getElementById(quadrantId);
-                        const taskId = `task-${taskIdCounter++}`;
+                        if (!quadrant) return;
 
+                        const taskId = `task-${taskIdCounter++}`;
                         const textBox = document.createElement('div');
                         textBox.className = 'text-box';
                         textBox.id = taskId;
-                        textBox.style.left = '20px';
-                        textBox.style.top = `${quadrantPositions[quadrantId]}px`;
-                        textBox.dataset.rank = rank;
+
+                        if (!isMobile) {
+                            textBox.style.left = '10px';
+                            textBox.style.top = `${quadrantPositions[quadrantId]}px`;
+                            quadrantPositions[quadrantId] += 40;
+                        }
 
                         updateBoxColor(textBox, quadrantId);
 
+                        const doneRaw = row.done || row.Done || row.DONE || 'no';
+                        const isDone = doneRaw.toString().toLowerCase() === 'yes' || doneRaw === '1' || doneRaw === true;
+
                         textBox.innerHTML = `
-                            <div class="text-box-content" contenteditable="true" placeholder="Type here...">${taskContent}</div>
+                            <div class="text-box-content ${isDone ? 'done' : ''}" contenteditable="true" placeholder="Type here...">${taskContent}</div>
                             <div class="text-box-actions">
-                                <span class="text-box-done" onclick="toggleDone('${taskId}')" title="Mark as done">
+                                <span class="text-box-classify" title="Change classification">
+                                    <i class="fas fa-square"></i>
+                                </span>
+                                <span class="text-box-done ${isDone ? 'completed' : ''}" title="Mark as done">
                                     <i class="fas fa-check"></i>
                                 </span>
-                                <span class="text-box-close" onclick="deleteTask('${taskId}')" title="Delete">
+                                <span class="text-box-close" title="Delete">
                                     <i class="fas fa-times"></i>
                                 </span>
                             </div>
                         `;
 
                         quadrant.querySelector('.quadrant-content').appendChild(textBox);
-                        makeDraggable(textBox);
-                        textBox.querySelector('.text-box-content').addEventListener('input', saveTasks);
-
-                        // Increment position for next task in same quadrant
-                        quadrantPositions[quadrantId] += 45;
+                        attachTaskEventListeners(textBox);
+                        importedCount++;
                     });
 
                     saveTasks();
-                    alert(`Successfully imported ${jsonData.length} tasks!`);
+                    alert(`Successfully imported ${importedCount} tasks!`);
                 } catch (error) {
                     console.error('Import error:', error);
                     alert('Error importing file. Please make sure it is a valid Excel file with columns: task, urgent, important, rank');
                 }
             };
             reader.readAsArrayBuffer(file);
-
-            // Reset file input
             e.target.value = '';
         }
     </script>
