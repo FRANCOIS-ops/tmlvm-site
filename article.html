@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Travailler moins, vivre mieux</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gray-matter/4.0.3/gray-matter.min.js"></script>
+    <style>
+        /* Custom Prose for Markdown */
+        .prose h1 {
+            @apply text-3xl font-bold mb-6 text-slate-900;
+        }
+
+        .prose h2 {
+            @apply text-2xl font-bold mt-8 mb-4 text-slate-900;
+        }
+
+        .prose h3 {
+            @apply text-xl font-bold mt-6 mb-3 text-slate-900;
+        }
+
+        .prose p {
+            @apply mb-4 text-slate-700 leading-relaxed;
+        }
+
+        .prose ul {
+            @apply list-disc list-inside mb-4 text-slate-700;
+        }
+
+        .prose ol {
+            @apply list-decimal list-inside mb-4 text-slate-700;
+        }
+
+        .prose li {
+            @apply mb-2;
+        }
+
+        .prose blockquote {
+            @apply border-l-4 border-cyan-500 pl-4 py-2 my-4 italic text-slate-600 bg-slate-50 rounded-r-lg;
+        }
+
+        .prose strong {
+            @apply font-bold text-slate-900;
+        }
+
+        .prose a {
+            @apply text-cyan-600 hover:text-cyan-700 transition-colors;
+        }
+
+        .prose img {
+            @apply rounded-xl shadow-lg my-8 w-full max-w-3xl mx-auto;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen">
+
+    <!-- Nav Simplified -->
+    <nav class="bg-slate-900 text-white py-4 px-6 fixed w-full top-0 z-50">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="font-bold flex items-center gap-2 hover:text-cyan-400 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Retour à l'accueil
+            </a>
+            <span class="text-sm text-slate-400 uppercase tracking-widest">Blog</span>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6 pt-32 pb-20">
+        <div id="loading" class="text-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto mb-4"></div>
+            <p class="text-slate-500">Chargement de l'article...</p>
+        </div>
+
+        <article id="article-content" class="hidden">
+            <header class="mb-10 text-center">
+                <span id="article-category"
+                    class="inline-block bg-cyan-100 text-cyan-800 text-xs px-3 py-1 rounded-full uppercase tracking-widest font-bold mb-4"></span>
+                <h1 id="article-title" class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+                </h1>
+                <div class="flex items-center justify-center gap-4 text-slate-500 text-sm">
+                    <span id="article-date"></span>
+                </div>
+            </header>
+
+            <div id="markdown-body" class="prose max-w-none bg-white p-8 md:p-12 rounded-3xl shadow-sm">
+                <!-- Markdown content will be injected here -->
+            </div>
+        </article>
+
+        <div id="error-message" class="hidden text-center py-20">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Oups ! Article introuvable.</h2>
+            <p class="text-slate-500 mb-6">Il semble que cet article n'existe pas ou a été déplacé.</p>
+            <a href="index.html#blog"
+                class="inline-block bg-cyan-500 text-white px-6 py-3 rounded-full font-bold hover:bg-cyan-600 transition">Retourner
+                au blog</a>
+        </div>
+    </main>
+
+    <footer class="text-center py-8 text-slate-400 text-sm">
+        &copy; 2026 Travailler moins, vivre mieux.
+    </footer>
+
+    <script>
+        async function loadArticle() {
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('slug');
+
+            if (!slug) {
+                showError();
+                return;
+            }
+
+            try {
+                // 1. Get metadata from index
+                const indexRes = await fetch('articles.json');
+                if (!indexRes.ok) throw new Error("Index fetch failed");
+                const index = await indexRes.json();
+
+                const articleMeta = index.find(a => a.slug === slug);
+                if (!articleMeta) {
+                    showError();
+                    return;
+                }
+
+                // 2. Fetch Markdown content
+                // Assuming content is in content/blog/{slug}.md
+                const mdRes = await fetch(`content/blog/${slug}.md`);
+                if (!mdRes.ok) throw new Error("Markdown fetch failed");
+                const text = await mdRes.text();
+
+                // 3. Parse Frontmatter (Simple regex parser since gray-matter didn't verify cleanly via CDN sometimes)
+                const matterResult = parseFrontMatter(text);
+
+                // 4. Update UI
+                document.title = `${articleMeta.title} | Travailler moins, vivre mieux`;
+                document.getElementById('article-title').textContent = articleMeta.title;
+                document.getElementById('article-category').textContent = articleMeta.category || 'Article';
+                document.getElementById('article-date').textContent = formatDate(articleMeta.publishedAt);
+
+                // 5. Render Markdown
+                document.getElementById('markdown-body').innerHTML = marked.parse(matterResult.content);
+
+                // Show
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('article-content').classList.remove('hidden');
+
+            } catch (err) {
+                console.error(err);
+                showError();
+            }
+        }
+
+        function showError() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error-message').classList.remove('hidden');
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
+        }
+
+        // Simple FrontMatter Parser
+        function parseFrontMatter(text) {
+            const pattern = /^---\s*[\r\n]+([\s\S]*?)[\r\n]+---\s*[\r\n]+([\s\S]*)$/;
+            const match = text.match(pattern);
+
+            if (match) {
+                return {
+                    data: match[1], // We use metadata from articles.json mostly, this is just to separate
+                    content: match[2]
+                };
+            }
+            return { data: '', content: text };
+        }
+
+        loadArticle();
+    </script>
+</body>
+
+</html>

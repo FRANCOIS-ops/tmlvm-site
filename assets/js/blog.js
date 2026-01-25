@@ -11,7 +11,7 @@ let filteredArticles = [];
 let currentPage = 1;
 
 // Chargement de l’index des articles
-fetch("/content/blog/index.json")
+fetch("articles.json")
   .then(res => {
     if (!res.ok) throw new Error("Impossible de charger l’index du blog");
     return res.json();
@@ -59,14 +59,14 @@ function renderArticles() {
         ${article.category || "Article"}
       </p>
       <h3 class="text-xl font-semibold mb-3">
-        <a href="/blog/${article.slug}/" class="hover:text-cyan-600">
+        <a href="article.html?slug=${article.slug}" class="hover:text-cyan-600">
           ${article.title}
         </a>
       </h3>
       <p class="text-slate-600 flex-1">
         ${article.excerpt || ""}
       </p>
-      <a href="/blog/${article.slug}/"
+      <a href="article.html?slug=${article.slug}"
          class="text-cyan-600 font-semibold mt-4">
         Lire l’article →
       </a>
