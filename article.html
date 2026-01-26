@@ -126,7 +126,7 @@
 
                 const articleMeta = index.find(a => a.slug === slug);
                 if (!articleMeta) {
-                    showError();
+                    showError(`Article non trouvé dans l'index pour le slug '${slug}'`);
                     return;
                 }
 
@@ -154,13 +154,20 @@
 
             } catch (err) {
                 console.error(err);
-                showError();
+                showError(err.message);
             }
         }
 
-        function showError() {
+        function showError(msg) {
             document.getElementById('loading').classList.add('hidden');
-            document.getElementById('error-message').classList.remove('hidden');
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.classList.remove('hidden');
+            if (msg) {
+                const p = document.createElement('p');
+                p.className = "text-red-500 font-mono text-sm mt-4 bg-red-50 p-2 rounded border border-red-100";
+                p.textContent = "Détail technique : " + msg;
+                errorDiv.appendChild(p);
+            }
         }
 
         function formatDate(dateString) {
