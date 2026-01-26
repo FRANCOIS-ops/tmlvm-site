@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog | Travailler moins, vivre mieux</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gray-matter/4.0.3/gray-matter.min.js"></script>
-    <style>
+    <style type="text/tailwindcss">
         /* Custom Prose for Markdown */
         .prose h1 {
             @apply text-3xl font-bold mb-6 text-slate-900;
@@ -131,9 +131,9 @@
                 }
 
                 // 2. Fetch Markdown content
-                // Assuming content is in content/blog/{slug}.md
-                const mdRes = await fetch(`content/blog/${slug}.md`);
-                if (!mdRes.ok) throw new Error("Markdown fetch failed");
+                const filePath = articleMeta.file || `content/blog/${slug}.md`;
+                const mdRes = await fetch(filePath);
+                if (!mdRes.ok) throw new Error(`Markdown fetch failed: ${mdRes.statusText}`);
                 const text = await mdRes.text();
 
                 // 3. Parse Frontmatter (Simple regex parser since gray-matter didn't verify cleanly via CDN sometimes)

@@ -1,0 +1,117 @@
+[
+  {
+    "slug": "seneque-vie-passe",
+    "title": "Tandis qu’on l’ajourne, la vie passe",
+    "category": "Philosophie et Travail",
+    "publishedAt": "2026-01-24",
+    "excerpt": "Sénèque nous rappelle l’urgence de bien vivre. Si nous passons notre temps à travailler, nous allons perdre notre vie à essayer de la gagner.",
+    "keywords": [
+      "\"Sénèque\"",
+      " \"philosophie\"",
+      " \"vie\"",
+      " \"temps\"",
+      " \"équilibre\"",
+      " \"efficacité\"",
+      " \"enseignement\""
+    ],
+    "file": "content/blog/seneque-vie-passe.md"
+  },
+  {
+    "slug": "loi-parkinson",
+    "title": "Le travail est élastique",
+    "category": "Efficacité Personnelle",
+    "publishedAt": "2026-01-23",
+    "excerpt": "Le travail est une notion élastique : plus vous lui donnez de temps, plus il en prend. Découvrez la loi de Parkinson.",
+    "keywords": [
+      "\"Loi de Parkinson\"",
+      " \"efficacité\"",
+      " \"temps de travail\"",
+      " \"productivité\"",
+      " \"limites\"",
+      " \"Toggl\""
+    ],
+    "file": "content/blog/loi-parkinson.md"
+  },
+  {
+    "slug": "ia-schneider",
+    "title": "Je ne suis pas du tout d’accord avec le DRH de Schneider sur l'AI.",
+    "category": "Technologie et Travail",
+    "publishedAt": "2026-01-22",
+    "excerpt": "L'IA va-t-elle libérer du temps de travail ? L'histoire montre que le temps gagné par la technologie est rarement rendu aux salariés. Décryptage.",
+    "keywords": [
+      "\"IA\"",
+      " \"intelligence artificielle\"",
+      " \"temps de travail\"",
+      " \"productivité\"",
+      " \"histoire\"",
+      " \"futur du travail\""
+    ],
+    "file": "content/blog/ia-schneider.md"
+  },
+  {
+    "slug": "reunionnite",
+    "title": "Réunionnite aiguë",
+    "category": "Efficacité Collective",
+    "publishedAt": "2026-01-21",
+    "excerpt": "Les réunions représentent près de la moitié du temps de travail d’un manager… Et si on apprenait à dire non ?",
+    "keywords": [
+      "\"réunions\"",
+      " \"productivité\"",
+      " \"efficacité\"",
+      " \"management\"",
+      " \"temps\"",
+      " \"multitasking\""
+    ],
+    "file": "content/blog/reunionnite.md"
+  },
+  {
+    "slug": "non-gentil",
+    "title": "Non, je ne suis pas gentil",
+    "category": "Management",
+    "publishedAt": "2026-01-20",
+    "excerpt": "Limiter le temps de travail de ses équipes n'est pas un acte de gentillesse, c'est une stratégie de performance durable. Découvrez pourquoi.",
+    "keywords": [
+      "\"management\"",
+      " \"performance\"",
+      " \"limites\"",
+      " \"burnout\"",
+      " \"efficacité\"",
+      " \"équipes\""
+    ],
+    "file": "content/blog/non-gentil.md"
+  },
+  {
+    "slug": "55h-limite",
+    "title": "55h : la limite à ne surtout pas franchir",
+    "category": "Santé et Productivité",
+    "publishedAt": "2026-01-19",
+    "excerpt": "J’avais 21 ans, je travaillais 90h par semaine... jusqu'à m'endormir au volant. Découvrez pourquoi travailler trop est dangereux pour votre santé et contre-productif.",
+    "keywords": [
+      "\"burnout\"",
+      " \"santé\"",
+      " \"productivité\"",
+      " \"limites\"",
+      " \"Toggl\"",
+      " \"AVC\"",
+      " \"travail\""
+    ],
+    "file": "content/blog/55h-limite.md"
+  },
+  {
+    "slug": "lancement-livre",
+    "title": "Rdv le 22 janvier 2026 en librairie!",
+    "category": "Actualités",
+    "publishedAt": "2026-01-19",
+    "excerpt": "Nous lançons 'Travailler moins, vivre mieux' : une méthode en 14 jours, radicale et progressive, pour reprendre le contrôle.",
+    "keywords": [
+      "\"livre\"",
+      " \"lancement\"",
+      " \"Travailler moins vivre mieux\"",
+      " \"méthode\"",
+      " \"AVC\"",
+      " \"santé\"",
+      " \"équilibre\""
+    ],
+    "file": "content/blog/lancement-livre.md"
+  }
+]

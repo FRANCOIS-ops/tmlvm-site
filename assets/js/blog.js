@@ -26,7 +26,11 @@ fetch("articles.json")
   .catch(err => {
     console.error(err);
     blogList.innerHTML =
-      "<p class='text-slate-500'>Impossible de charger les articles.</p>";
+      `<div class="text-center p-8 bg-red-50 rounded-xl border border-red-100">
+         <p class="text-red-600 font-bold mb-2">Erreur de chargement des articles</p>
+         <p class="text-sm text-red-500 font-mono">${err.message}</p>
+         <p class="text-xs text-slate-400 mt-4">Vérifiez que vous consultez bien le site via un serveur local (http://localhost:...) et non directement le fichier.</p>
+       </div>`;
   });
 
 // Rendu principal
