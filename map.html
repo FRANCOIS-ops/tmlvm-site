@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Où commander le livre ? - Travailler moins, vivre mieux</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+
+    <div class="sticky-nav-container">
+        <nav class="max-w-6xl mx-auto flex items-center justify-between py-4 px-6 text-white">
+            <div class="font-semibold tracking-wide text-xl"><a href="index.html">Travailler moins, vivre mieux</a>
+            </div>
+            <!-- Desktop Actions -->
+            <div class="hidden md:flex items-center gap-6 text-sm">
+                <a href="index.html#accueil" class="hover:text-cyan-200">Accueil</a>
+                <a href="index.html#livre" class="hover:text-cyan-200">Le livre</a>
+                <a href="index.html#methode" class="hover:text-cyan-200">Méthode 14 jours</a>
+                <a href="index.html#blog" class="hover:text-cyan-200">Blog</a>
+                <a href="eisenhower.html" class="hover:text-cyan-200">Matrice Eisenhower</a>
+                <a href="chrono.html" class="hover:text-cyan-200">Chrono</a>
+                <a href="https://amzn.to/4q85EPO" target="_blank" rel="noopener noreferrer"
+                    class="bg-white text-slate-900 font-semibold px-4 py-2 rounded-full shadow-lg ml-2">
+                    Commander
+                </a>
+            </div>
+
+            <!-- Mobile Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+
+            <!-- Mobile Menu Overlay -->
+            <div id="mobile-menu"
+                class="hidden absolute top-20 left-0 w-full bg-slate-900 border-t border-slate-700 md:hidden flex-col p-6 space-y-4 shadow-xl z-50">
+                <a href="index.html#accueil" class="block hover:text-cyan-200 text-lg">Accueil</a>
+                <a href="index.html#livre" class="block hover:text-cyan-200 text-lg">Le livre</a>
+                <a href="index.html#methode" class="block hover:text-cyan-200 text-lg">Méthode 14 jours</a>
+                <a href="index.html#blog" class="block hover:text-cyan-200 text-lg">Blog</a>
+                <a href="eisenhower.html" class="block hover:text-cyan-200 text-lg">Matrice Eisenhower</a>
+                <a href="chrono.html" class="block hover:text-cyan-200 text-lg">Chrono</a>
+                <a href="https://amzn.to/4q85EPO" target="_blank" rel="noopener noreferrer"
+                    class="inline-block bg-white text-slate-900 font-semibold px-6 py-3 rounded-full text-center mt-4">
+                    Commander
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <header class="hero-gradient text-white">
+        <section class="max-w-6xl mx-auto px-6 py-20 text-center">
+            <h1 class="text-4xl lg:text-5xl font-bold leading-tight mb-6">
+                Où commander le livre ?
+            </h1>
+            <p class="text-lg text-cyan-100 max-w-2xl mx-auto">
+                Retrouvez "Travailler moins, vivre mieux" et sa version anglaise "Work Less, Live Better" sur Amazon en
+                Europe.
+            </p>
+        </section>
+    </header>
+
+    <main class="py-16 bg-slate-50">
+        <section class="max-w-4xl mx-auto px-6">
+
+            <div class="mb-12 rounded-xl overflow-hidden shadow-2xl">
+                <img src="assets/images/europe-map.png" alt="Carte de l'Europe" class="w-full h-auto object-cover">
+            </div>
+
+            <h2 class="text-3xl font-bold text-center mb-12 text-slate-900">Choisissez votre pays</h2>
+
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+                <!-- France -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-600">France 🇫🇷</h3>
+                    <div class="space-y-4 w-full">
+                        <a href="https://amzn.to/4q85EPO" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-fr.png" alt="Version Française"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">Version Française</p>
+                            <p class="text-sm text-slate-500">Travailler Moins, Vivre Mieux</p>
+                        </a>
+                        <div class="border-t border-slate-100 my-2"></div>
+                        <a href="https://amzn.to/49P4Bzl" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-en.png" alt="English Version"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">English Version</p>
+                            <p class="text-sm text-slate-500">Work Less, Live Better</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Germany -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-600">Germany 🇩🇪</h3>
+                    <div class="space-y-4 w-full">
+                        <a href="https://amzn.to/4q3GnWH" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-fr.png" alt="Version Française"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">Version Française</p>
+                            <p class="text-sm text-slate-500">Travailler Moins, Vivre Mieux</p>
+                        </a>
+                        <div class="border-t border-slate-100 my-2"></div>
+                        <a href="https://amzn.to/4rlKlem" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-en.png" alt="English Version"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">English Version</p>
+                            <p class="text-sm text-slate-500">Work Less, Live Better</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- UK -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-600">United Kingdom 🇬🇧</h3>
+                    <div class="space-y-4 w-full">
+                        <a href="https://amzn.to/4k5v0w8" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-fr.png" alt="Version Française"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">Version Française</p>
+                            <p class="text-sm text-slate-500">Travailler Moins, Vivre Mieux</p>
+                        </a>
+                        <div class="border-t border-slate-100 my-2"></div>
+                        <a href="https://amzn.to/4r8b7aJ" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-en.png" alt="English Version"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">English Version</p>
+                            <p class="text-sm text-slate-500">Work Less, Live Better</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Spain -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-600">Spain 🇪🇸</h3>
+                    <div class="space-y-4 w-full">
+                        <a href="https://amzn.to/49RV9va" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-fr.png" alt="Version Française"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">Version Française</p>
+                            <p class="text-sm text-slate-500">Travailler Moins, Vivre Mieux</p>
+                        </a>
+                        <div class="border-t border-slate-100 my-2"></div>
+                        <a href="https://amzn.to/4a3VadY" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-en.png" alt="English Version"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">English Version</p>
+                            <p class="text-sm text-slate-500">Work Less, Live Better</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Italy -->
+                <div
+                    class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition flex flex-col items-center text-center">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-600">Italy 🇮🇹</h3>
+                    <div class="space-y-4 w-full">
+                        <a href="https://amzn.to/3NX5HQS" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-fr.png" alt="Version Française"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">Version Française</p>
+                            <p class="text-sm text-slate-500">Travailler Moins, Vivre Mieux</p>
+                        </a>
+                        <div class="border-t border-slate-100 my-2"></div>
+                        <a href="https://amzn.to/4rhN0FV" target="_blank" class="block group">
+                            <div class="relative overflow-hidden rounded-lg mb-2 mx-auto w-32 shadow-md">
+                                <img src="assets/images/book-cover-en.png" alt="English Version"
+                                    class="w-full h-auto group-hover:scale-105 transition">
+                            </div>
+                            <p class="font-semibold text-slate-800">English Version</p>
+                            <p class="text-sm text-slate-500">Work Less, Live Better</p>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-white mt-20">
+        <div class="max-w-6xl mx-auto px-6 py-12 grid gap-8 md:grid-cols-3">
+            <div>
+                <h4 class="font-semibold text-lg mb-3">Travailler moins, vivre mieux</h4>
+                <p class="text-slate-300">Un guide pragmatique pour se libérer de la surcharge.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-3">Pages</h4>
+                <ul class="space-y-2 text-slate-300">
+                    <li><a href="index.html#livre" class="hover:text-white">Le livre</a></li>
+                    <li><a href="index.html#methode" class="hover:text-white">Méthode</a></li>
+                    <li><a href="index.html#blog" class="hover:text-white">Blog</a></li>
+                    <li><a href="eisenhower.html" class="hover:text-white">Matrice Eisenhower</a></li>
+                    <li><a href="chrono.html" class="hover:text-white">Chrono</a></li>
+                    <li><a href="map.html" class="hover:text-white">Commander</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-3">Suivez-nous</h4>
+                <div class="flex flex-col gap-3">
+                    <a href="https://www.linkedin.com/in/francoisleborgne/" target="_blank" rel="noopener noreferrer"
+                        class="flex items-center gap-2 text-slate-300 hover:text-white transition group">
+                        <svg class="w-5 h-5 fill-current text-cyan-500 group-hover:text-white transition"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                        </svg>
+                        François Leborgne
+                    </a>
+                    <a href="https://www.linkedin.com/in/marie-leborgne-lucas-a4283321b/" target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center gap-2 text-slate-300 hover:text-white transition group">
+                        <svg class="w-5 h-5 fill-current text-cyan-500 group-hover:text-white transition"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                        </svg>
+                        Marie Leborgne Lucas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById("mobile-menu-btn");
+        const menu = document.getElementById("mobile-menu");
+
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+            menu.classList.toggle("flex");
+        });
+    </script>
+</body>
+
+</html>
