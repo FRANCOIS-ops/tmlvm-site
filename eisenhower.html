@@ -977,24 +977,44 @@
                 e.preventDefault();
                 e.stopPropagation();
 
+                popup.style.display = 'block';
+                popup.style.visibility = 'hidden';
+
                 if (isMobile) {
                     popup.style.top = '50%';
                     popup.style.left = '50%';
                     popup.style.transform = 'translate(-50%, -50%)';
                 } else {
                     const rect = textBox.getBoundingClientRect();
-                    popup.style.top = `${rect.top + window.scrollY}px`;
-                    popup.style.left = `${rect.right + window.scrollX + 10}px`;
-                    popup.style.transform = 'none';
-
-                    // Keep popup in bounds
                     const popupRect = popup.getBoundingClientRect();
-                    if (rect.right + 260 > window.innerWidth) {
-                        popup.style.left = `${rect.left - 260}px`;
+                    const viewportHeight = window.innerHeight;
+                    const viewportWidth = window.innerWidth;
+
+                    // Default position: top-left of popup at top-right of task
+                    let top = rect.top; // Desktop CSS has fixed body, so no scrollY needed usually, but rect.top is safe relative to viewport for fixed pos
+                    let left = rect.right + 10;
+
+                    // Vertical Check: overflow bottom?
+                    if (top + popupRect.height > viewportHeight - 20) {
+                        // Position upwards roughly aligning bottom of popup with bottom of task
+                        top = rect.bottom - popupRect.height;
+
+                        // If it still overflows top (unlikely but possible), simple clamp
+                        if (top < 10) top = 10;
                     }
+
+                    // Horizontal Check: overflow right?
+                    if (left + popupRect.width > viewportWidth - 20) {
+                        // Position to the left of the task
+                        left = rect.left - popupRect.width - 10;
+                    }
+
+                    popup.style.top = `${top}px`;
+                    popup.style.left = `${left}px`;
+                    popup.style.transform = 'none';
                 }
 
-                popup.style.display = 'block';
+                popup.style.visibility = 'visible';
 
                 // Set the current task context for the popup
                 popup.dataset.activeTaskId = taskId;

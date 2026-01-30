@@ -25,3 +25,11 @@ Here are some of the illustrations drawn by Clément for the book:
 ![Illustration 4](/assets/images/blog/working-less-living-better/illustration-4.png)
 
 ![Illustration 5](/assets/images/blog/working-less-living-better/illustration-5.png)
+
+## Order the book
+
+*   [Amazon.fr](https://amzn.to/49P4Bzl)
+*   [Amazon.de](https://amzn.to/4rlKlem)
+*   [Amazon.co.uk](https://amzn.to/4r8b7aJ)
+*   [Amazon.es](https://amzn.to/4a3VadY)
+*   [Amazon.it](https://amzn.to/4rhN0FV)
