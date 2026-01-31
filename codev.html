@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codev Facilitator Tool</title>
+    <!-- Google Analytics Tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BR9V0WPVZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-0BR9V0WPVZ');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --codev-yellow: #fee600;
+            --codev-blue: #00aee3;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .bg-codev-yellow {
+            background-color: var(--codev-yellow);
+        }
+
+        .text-codev-blue {
+            color: var(--codev-blue);
+        }
+
+        .bg-codev-blue {
+            background-color: var(--codev-blue);
+        }
+
+        .border-codev-blue {
+            border-color: var(--codev-blue);
+        }
+
+        .border-codev-yellow {
+            border-color: var(--codev-yellow);
+        }
+
+        .step-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-active {
+            border-left: 8px solid var(--codev-blue);
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .timer-warning {
+            color: #f97316;
+            /* Orange */
+        }
+
+        .timer-danger {
+            color: #ef4444;
+            /* Red */
+        }
+
+        @keyframes bounce-once {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-20px);
+            }
+
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-bounce-once {
+            animation: bounce-once 1s ease 1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--codev-blue);
+            border-radius: 4px;
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 font-medium">
+
+    <div id="app" class="max-w-5xl mx-auto pb-20">
+
+        <!-- Header & Language -->
+        <header class="py-6 px-4 text-center">
+            <div class="flex justify-center gap-4 mb-4">
+                <button onclick="setLanguage('en')"
+                    class="text-2xl grayscale hover:grayscale-0 transition-all cursor-pointer opacity-50 hover:opacity-100"
+                    id="lang-en">🇬🇧</button>
+                <button onclick="setLanguage('fr')"
+                    class="text-2xl grayscale hover:grayscale-0 transition-all cursor-pointer opacity-50 hover:opacity-100"
+                    id="lang-fr">🇫🇷</button>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-800 text-codev-blue tracking-tight uppercase" id="ui-title">CODEV
+                FACILITATOR</h1>
+            <p class="text-slate-600 font-semibold text-sm md:text-base" id="ui-subtitle">Professional Codevelopment
+                Session Management</p>
+        </header>
+
+        <!-- Sticky Progress/Setup -->
+        <section
+            class="sticky-header bg-white/95 backdrop-blur-md border-b border-slate-100 p-4 md:p-6 mb-8 mx-0 md:rounded-b-3xl">
+            <div class="flex justify-end mb-4 md:absolute md:top-6 md:right-6">
+                <button onclick="resetSession()"
+                    class="text-xs font-700 text-slate-400 hover:text-red-500 flex items-center gap-1 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    <span id="ui-reset">RESET SESSION</span>
+                </button>
+            </div>
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div class="w-full lg:w-2/5">
+                    <h2 class="text-[10px] font-800 text-codev-blue mb-2 uppercase tracking-[0.2em]"
+                        id="ui-setup-title">Session Setup</h2>
+                    <label class="block text-xs font-700 text-slate-700 mb-2 uppercase tracking-wider"
+                        id="ui-total-time-label">Total Session Time (minutes)</label>
+                    <div class="flex items-center gap-3">
+                        <button onclick="adjustTime(-5)"
+                            class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-600 hover:bg-slate-200 transition-colors">-</button>
+                        <div class="flex-1 flex flex-col">
+                            <input type="range" id="sessionDurationInput" min="40" max="120" step="5" value="60"
+                                class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-codev-blue">
+                        </div>
+                        <button onclick="adjustTime(5)"
+                            class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-600 hover:bg-slate-200 transition-colors">+</button>
+                        <div class="relative group min-w-[60px]">
+                            <input type="number" id="sessionDurationOverride" value="60"
+                                class="w-14 text-2xl font-800 text-codev-blue bg-transparent border-b-2 border-transparent focus:border-codev-blue outline-none text-center">
+                            <span class="text-codev-blue font-800 text-2xl">'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-3/5">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-xs font-700 text-slate-700 uppercase tracking-wider"
+                            id="ui-progress-label">Session Progress</span>
+                        <span id="progressText" class="text-sm font-800 text-codev-blue">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
+                        <div id="progressBar" class="bg-codev-blue h-full transition-all duration-500"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Steps Container -->
+        <div id="stepsContainer" class="space-y-4 px-4">
+            <!-- Steps will be injected here -->
+        </div>
+
+        <!-- Time's Up Modal -->
+        <div id="timesUpModal"
+            class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+            <div
+                class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl border-4 border-red-500 animate-bounce-once">
+                <div
+                    class="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-800 text-slate-900 mb-2" id="ui-modal-title">TIME IS UP!</h2>
+                <p class="text-slate-700 mb-6 font-semibold" id="ui-modal-desc">Transition to the next step or use a
+                    Joker.</p>
+                <button onclick="closeModal()"
+                    class="w-full bg-red-500 hover:bg-red-600 text-white font-700 py-3 rounded-xl transition-colors"
+                    id="ui-modal-btn">ACKNOWLEDGE</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const i18n = {
+            en: {
+                title: "CODEV FACILITATOR",
+                subtitle: "Professional Codevelopment Session Management",
+                setup: "Session Setup",
+                totalTime: "Total Session Time (minutes)",
+                reset: "RESET SESSION",
+                progress: "Session Progress",
+                currentStep: "CURRENT STEP",
+                switchTo: "SWITCH TO STEP",
+                joker: "+2' JOKER",
+                modalTitle: "TIME IS UP!",
+                modalDesc: "Transition to the next step or use a Joker.",
+                modalBtn: "ACKNOWLEDGE",
+                steps: [
+                    {
+                        title: "Step 0: Introduction",
+                        content: `
+                            <div class="grid md:grid-cols-2 gap-4 text-sm mt-4">
+                                <div class="bg-slate-50 p-4 rounded-xl">
+                                    <h4 class="font-bold text-codev-blue mb-2">Roles Definition:</h4>
+                                    <ul class="space-y-1.5 list-disc pl-4 font-medium text-slate-700">
+                                        <li><strong class="font-bold">Client:</strong> Presents topic, listens openly, takes action.</li>
+                                        <li><strong class="font-bold">Consultants:</strong> Helping attitude, ask questions, share learnings.</li>
+                                        <li><strong class="font-bold">Animator:</strong> Ensures framework, facilitates cooperation.</li>
+                                        <li><strong class="font-bold">Observer:</strong> (Optional) Observes with grid, shares at end.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded-xl">
+                                    <h4 class="font-bold text-codev-blue mb-2">Group Contract:</h4>
+                                    <ul class="space-y-1.5 list-disc pl-4 font-medium text-slate-700">
+                                        <li>Confidentiality</li>
+                                        <li>Non-judgement & Respect</li>
+                                        <li>Strict timing to ensure rhythm & delivery</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        title: "Step 1: Client's Presentation",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Allow the Client to explain their situation without interruption.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Context and background</li>
+                                <li>Real stakes & Problem to solve</li>
+                                <li>Client's expectations</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-orange-600 uppercase tracking-tight">⚠️ Note: Group listens actively, no questions yet.</p>
+                        `
+                    },
+                    {
+                        title: "Step 2: Clarification",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Deepen understanding of the situation.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Consultants ask questions only</li>
+                                <li>Explore blind spots & reformulate</li>
+                                <li>Help the Client clarify their real request</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-red-500 uppercase tracking-tight">🚫 Strictly no advice—only questions.</p>
+                        `
+                    },
+                    {
+                        title: "Step 3: Contract",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Define precisely what the Client needs.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>What does the Client expect?</li>
+                                <li>Help with decision, prioritisation, or understanding?</li>
+                                <li>Final formulation: <strong class="font-bold text-codev-blue">"I would like to leave with..."</strong></li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Step 4: Sharing – Consultation",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">The group provides input to the Client.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Share experiences (not prescriptions)</li>
+                                <li>Open new perspectives & feelings</li>
+                                <li>Suggest hypotheses and possible actions</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-codev-blue uppercase tracking-tight">📝 Client listens and takes notes without responding.</p>
+                        `
+                    },
+                    {
+                        title: "Step 5: Review & Action Plan",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Help the Client formalise what they retain.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>What have I understood?</li>
+                                <li>What do I retain and what will I do?</li>
+                                <li>Décisions spécifiques ou plan d'action</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-green-600 uppercase tracking-tight">💡 Only the client speaks at this stage.</p>
+                        `
+                    },
+                    {
+                        title: "Step 6: Learning & Integration",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Enable the whole group to learn.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Share individual learnings</li>
+                                <li>Feedback on contributions</li>
+                                <li>Application in own practice</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-codev-blue uppercase tracking-tight">🔄 Each participant (including the client) shares what they've learned.</p>
+                        `
+                    },
+                    {
+                        title: "Step 7: Feedback – Closing",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Close the session and reinforce the contract.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Final impressions</li>
+                                <li>Quick "weather report" round</li>
+                                <li>Closing remarks from Animator</li>
+                            </ul>
+                        `
+                    }
+                ]
+            },
+            fr: {
+                title: "FACILITATEUR CODEV",
+                subtitle: "Gestion Professionnelle de Séance de Codéveloppement",
+                setup: "Configuration de la Séance",
+                totalTime: "Durée Totale (minutes)",
+                reset: "RÉINITIALISER",
+                progress: "Progression de la Séance",
+                currentStep: "ÉTAPE ACTUELLE",
+                switchTo: "PASSER À L'ÉTAPE",
+                joker: "+2' JOKER",
+                modalTitle: "TEMPS ÉCOULÉ !",
+                modalDesc: "Passez à l'étape suivante ou utilisez un Joker.",
+                modalBtn: "COMPRIS",
+                steps: [
+                    {
+                        title: "Étape 0 : Introduction",
+                        content: `
+                            <div class="grid md:grid-cols-2 gap-4 text-sm mt-4">
+                                <div class="bg-slate-50 p-4 rounded-xl">
+                                    <h4 class="font-bold text-codev-blue mb-2">Définition des Rôles :</h4>
+                                    <ul class="space-y-1.5 list-disc pl-4 font-medium text-slate-700">
+                                        <li><strong class="font-bold">Client :</strong> Présente son sujet, écoute, passe à l'action.</li>
+                                        <li><strong class="font-bold">Consultants :</strong> Attitude d'aide, questionnent, partagent.</li>
+                                        <li><strong class="font-bold">Animateur :</strong> Garant du cadre, facilite la coopération.</li>
+                                        <li><strong class="font-bold">Observateur :</strong> (Optionnel) Observe et partage à la fin.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded-xl">
+                                    <h4 class="font-bold text-codev-blue mb-2">Contrat de Groupe :</h4>
+                                    <ul class="space-y-1.5 list-disc pl-4 font-medium text-slate-700">
+                                        <li>Confidentialité</li>
+                                        <li>Non-jugement & Respect</li>
+                                        <li>Timing strict pour garantir le résultat</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        title: "Étape 1 : Présentation du Client",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Le client expose sa situation sans interruption.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Contexte et historique</li>
+                                <li>Enjeux réels & Problématique</li>
+                                <li>Attentes du client</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-orange-600 uppercase tracking-tight">⚠️ Note : Le groupe écoute, pas de questions à ce stade.</p>
+                        `
+                    },
+                    {
+                        title: "Étape 2 : Clarification",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Approfondir la compréhension de la situation.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Questions des consultants uniquement</li>
+                                <li>Explorer les zones d'ombre</li>
+                                <li>Aider le client à préciser sa demande</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-red-500 uppercase tracking-tight">🚫 Strictement aucun conseil — que des questions.</p>
+                        `
+                    },
+                    {
+                        title: "Étape 3 : Contrat",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Définir précisément le besoin du client.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Qu'attend le client du groupe ?</li>
+                                <li>Aide à la décision, priorité, compréhension ?</li>
+                                <li>Formulation finale : <strong class="font-bold text-codev-blue">"Je souhaite repartir avec..."</strong></li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Étape 4 : Consultation (Partage)",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Le groupe apporte ses contributions.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Partage d'expériences (pas d'ordonnance)</li>
+                                <li>Ouvrir de nouvelles perspectives</li>
+                                <li>Suggérer des hypothèses et actions</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-codev-blue uppercase tracking-tight">📝 Le client écoute et note sans répondre.</p>
+                        `
+                    },
+                    {
+                        title: "Étape 5 : Synthèse & Plan d'Action",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Aider le client à formaliser ce qu'il retient.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Qu'ai-je compris ?</li>
+                                <li>Que vais-je mettre en œuvre ?</li>
+                                <li>Décisions spécifiques ou plan d'action</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-green-600 uppercase tracking-tight">💡 Seul le client parle à cette étape.</p>
+                        `
+                    },
+                    {
+                        title: "Étape 6 : Apprentissages & Intégration",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Permettre à tout le groupe d'apprendre.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Partage des apprentissages individuels</li>
+                                <li>Feedback sur les contributions</li>
+                                <li>Application dans sa propre pratique</li>
+                            </ul>
+                            <p class="mt-3 text-xs font-bold text-codev-blue uppercase tracking-tight">🔄 Chaque participant (y compris le client) partage ce qu'il a appris.</p>
+                        `
+                    },
+                    {
+                        title: "Étape 7 : Évaluation - Conclusion",
+                        content: `
+                            <p class="text-sm font-semibold text-slate-600 mb-2 italic">Clore la séance et renforcer le contrat.</p>
+                            <ul class="text-sm space-y-1.5 list-disc pl-5 font-medium text-slate-700">
+                                <li>Impressions finales</li>
+                                <li>Tour de météo rapide</li>
+                                <li>Mots de la fin par l'animateur</li>
+                            </ul>
+                        `
+                    }
+                ]
+            }
+        };
+
+        const stepsBaseData = [
+            { id: 0, percent: 0, fixedTime: 5 },
+            { id: 1, percent: 10 },
+            { id: 2, percent: 20 },
+            { id: 3, percent: 10 },
+            { id: 4, percent: 30 },
+            { id: 5, percent: 10 },
+            { id: 6, percent: 15 },
+            { id: 7, percent: 5 }
+        ];
+
+        let state = {
+            language: 'en',
+            totalDuration: 60,
+            activeStep: 0,
+            completedSteps: [],
+            collapsedSteps: [],
+            timers: {}, // seconds left
+            timerStartTime: null, // when current timer started
+            secondsLeftAtStart: null,
+            timerIntervalId: null,
+            audioEnabled: false
+        };
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function init() {
+            // Load language from storage if any
+            const storedLang = localStorage.getItem('codev-lang');
+            if (storedLang) state.language = storedLang;
+
+            updateTimerCalculations();
+            renderApp();
+
+            // Interaction to unlock audio
+            document.addEventListener('click', () => {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                state.audioEnabled = true;
+            }, { once: true });
+        }
+
+        function setLanguage(lang) {
+            state.language = lang;
+            localStorage.setItem('codev-lang', lang);
+            renderApp();
+        }
+
+        const sessionDurationInput = document.getElementById('sessionDurationInput');
+        const sessionDurationOverride = document.getElementById('sessionDurationOverride');
+
+        sessionDurationInput.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            state.totalDuration = val;
+            sessionDurationOverride.value = val;
+            updateTimerCalculations();
+        });
+
+        sessionDurationOverride.addEventListener('change', (e) => {
+            let val = parseInt(e.target.value);
+            if (isNaN(val)) val = 60;
+            if (val < 1) val = 1;
+            state.totalDuration = val;
+            sessionDurationInput.value = val;
+            updateTimerCalculations();
+        });
+
+        function adjustTime(delta) {
+            state.totalDuration = Math.max(1, state.totalDuration + delta);
+            sessionDurationInput.value = state.totalDuration;
+            sessionDurationOverride.value = state.totalDuration;
+            updateTimerCalculations();
+        }
+
+        function renderApp() {
+            // Update UI Labels
+            const lang = i18n[state.language];
+            document.getElementById('ui-title').innerText = lang.title;
+            document.getElementById('ui-subtitle').innerText = lang.subtitle;
+            document.getElementById('ui-setup-title').innerText = lang.setup;
+            document.getElementById('ui-total-time-label').innerText = lang.totalTime;
+            document.getElementById('ui-reset').innerText = lang.reset;
+            document.getElementById('ui-progress-label').innerText = lang.progress;
+            document.getElementById('ui-modal-title').innerText = lang.modalTitle;
+            document.getElementById('ui-modal-desc').innerText = lang.modalDesc;
+            document.getElementById('ui-modal-btn').innerText = lang.modalBtn;
+
+            // Flag highlights
+            document.getElementById('lang-en').classList.toggle('grayscale-0', state.language === 'en');
+            document.getElementById('lang-en').classList.toggle('opacity-100', state.language === 'en');
+            document.getElementById('lang-fr').classList.toggle('grayscale-0', state.language === 'fr');
+            document.getElementById('lang-fr').classList.toggle('opacity-100', state.language === 'fr');
+
+            renderSteps();
+        }
+
+        function renderSteps() {
+            const container = document.getElementById('stepsContainer');
+            container.innerHTML = '';
+
+            const langSteps = i18n[state.language].steps;
+            const uiStrings = i18n[state.language];
+
+            stepsBaseData.forEach((base, index) => {
+                const isCompleted = state.completedSteps.includes(base.id);
+                const isActive = state.activeStep === base.id;
+                const isCollapsed = state.collapsedSteps.includes(base.id);
+
+                const stepEl = document.createElement('div');
+                stepEl.id = `step-card-${base.id}`;
+                stepEl.className = `step-card bg-white rounded-2xl border-2 transition-all duration-300 ${isActive ? 'step-active border-codev-blue shadow-lg' : 'border-slate-100'}`;
+
+                if (isCollapsed) {
+                    stepEl.innerHTML = `
+                        <div class="p-3 flex items-center justify-between cursor-pointer" onclick="toggleCollapse(${base.id})">
+                            <div class="flex items-center gap-4">
+                                <div class="w-6 h-6 rounded-full ${isCompleted ? 'bg-codev-yellow border-codev-yellow text-slate-900' : 'bg-slate-100'} flex items-center justify-center text-[10px] font-bold">
+                                    ${isCompleted ? '✓' : ''}
+                                </div>
+                                <h3 class="text-sm font-700 text-slate-600">${langSteps[index].title}</h3>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-xs font-mono font-bold text-slate-400">${formatTime(state.timers[base.id])}</span>
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    stepEl.innerHTML = `
+                        <div class="p-4 md:p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <button onclick="toggleComplete(${base.id})" class="focus:outline-none">
+                                        <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${isCompleted ? 'bg-codev-yellow border-codev-yellow text-slate-900' : 'border-slate-200'}">
+                                            ${isCompleted ? '✓' : ''}
+                                        </div>
+                                    </button>
+                                    <h3 class="text-lg md:text-xl font-800 ${isActive ? 'text-codev-blue' : 'text-slate-700'}">${langSteps[index].title}</h3>
+                                </div>
+                                <button onclick="toggleCollapse(${base.id})" class="p-1 hover:bg-slate-50 rounded">
+                                    <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                                </button>
+                            </div>
+
+                            <div class="flex flex-col lg:flex-row gap-6">
+                                <div class="flex-1 text-sm md:text-base">
+                                    ${langSteps[index].content}
+                                </div>
+
+                                <div class="bg-slate-50 p-4 rounded-2xl min-w-[220px] border border-slate-100 flex flex-col items-center">
+                                    <div id="timer-display-${base.id}" class="text-4xl font-900 mb-4 font-mono tracking-tighter ${getTimerColorClass(state.timers[base.id])}">
+                                        ${formatTime(state.timers[base.id])}
+                                    </div>
+                                    <div class="flex gap-2 w-full">
+                                        <button id="btn-play-${base.id}" onclick="toggleTimer(${base.id})" 
+                                            class="flex-1 ${isActive && state.timerIntervalId ? 'bg-slate-700' : 'bg-codev-blue'} hover:opacity-90 text-white p-2 rounded-lg transition-colors flex items-center justify-center">
+                                            <svg id="icon-${base.id}" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                                ${isActive && state.timerIntervalId ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />' : '<path d="M8 5v14l11-7z" />'}
+                                            </svg>
+                                        </button>
+                                        <button onclick="resetTimer(${base.id})" class="bg-slate-200 hover:bg-slate-300 text-slate-600 p-2 rounded-lg transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                            </svg>
+                                        </button>
+                                        <button onclick="addJoker(${base.id})" class="bg-codev-yellow hover:opacity-90 text-slate-900 font-700 text-[10px] px-2 rounded-lg transition-colors leading-tight">
+                                            ${uiStrings.joker}
+                                        </button>
+                                    </div>
+                                    <div class="mt-4 w-full">
+                                        <button onclick="setActive(${base.id})" class="w-full text-[10px] font-700 py-1.5 rounded-md ${isActive ? 'bg-codev-blue text-white' : 'bg-slate-200 text-slate-500'}">
+                                            ${isActive ? uiStrings.currentStep : uiStrings.switchTo}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                container.appendChild(stepEl);
+            });
+            updateProgress();
+        }
+
+        function updateTimerCalculations() {
+            stepsBaseData.forEach(step => {
+                if (state.timerIntervalId && state.activeStep === step.id) return;
+                let mins = step.fixedTime || Math.round((step.percent / 100) * state.totalDuration);
+                state.timers[step.id] = mins * 60;
+            });
+            renderSteps();
+        }
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function getTimerColorClass(seconds) {
+            if (seconds <= 0) return 'timer-danger';
+            if (seconds <= 60) return 'timer-warning';
+            return '';
+        }
+
+        function toggleTimer(id) {
+            if (state.timerIntervalId && state.activeStep === id) {
+                // Pause current
+                clearInterval(state.timerIntervalId);
+                state.timerIntervalId = null;
+                state.timerStartTime = null;
+                renderSteps();
+            } else {
+                // Start new (or resume)
+                if (state.timerIntervalId) {
+                    clearInterval(state.timerIntervalId);
+                }
+
+                setActive(id, false);
+                state.timerStartTime = Date.now();
+                state.secondsLeftAtStart = state.timers[id];
+
+                state.timerIntervalId = setInterval(tick, 100);
+                renderSteps();
+            }
+        }
+
+        function tick() {
+            if (!state.timerStartTime) return;
+
+            const elapsed = Math.floor((Date.now() - state.timerStartTime) / 1000);
+            const remaining = Math.max(0, state.secondsLeftAtStart - elapsed);
+
+            if (remaining !== state.timers[state.activeStep]) {
+                state.timers[state.activeStep] = remaining;
+
+                const display = document.getElementById(`timer-display-${state.activeStep}`);
+                if (display) {
+                    display.innerText = formatTime(remaining);
+                    display.className = `text-4xl font-900 mb-4 font-mono tracking-tighter ${getTimerColorClass(remaining)}`;
+                }
+
+                if (remaining <= 0) {
+                    clearInterval(state.timerIntervalId);
+                    state.timerIntervalId = null;
+                    state.timerStartTime = null;
+                    showTimeUp();
+                    renderSteps();
+                }
+            }
+        }
+
+        function resetTimer(id) {
+            if (state.timerIntervalId && state.activeStep === id) {
+                clearInterval(state.timerIntervalId);
+                state.timerIntervalId = null;
+            }
+            const step = stepsBaseData.find(s => s.id === id);
+            let mins = step.fixedTime || Math.round((step.percent / 100) * state.totalDuration);
+            state.timers[id] = mins * 60;
+            renderSteps();
+        }
+
+        function addJoker(id) {
+            state.timers[id] += 120;
+            if (state.timerIntervalId && state.activeStep === id) {
+                state.secondsLeftAtStart += 120;
+            }
+            renderSteps();
+        }
+
+        function setActive(id, shouldRender = true) {
+            const wasRunning = !!state.timerIntervalId;
+            const prevId = state.activeStep;
+            state.activeStep = id;
+
+            // Auto-expand active step
+            state.collapsedSteps = state.collapsedSteps.filter(sid => sid !== id);
+
+            if (shouldRender) {
+                if (wasRunning) {
+                    toggleTimer(id);
+                } else {
+                    renderSteps();
+                }
+                document.getElementById(`step-card-${id}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function toggleComplete(id) {
+            if (state.completedSteps.includes(id)) {
+                // Uncheck: remove from completed and expand the step
+                state.completedSteps = state.completedSteps.filter(s => s !== id);
+                state.collapsedSteps = state.collapsedSteps.filter(s => s !== id);
+            } else {
+                // Check: add to completed and collapse the step
+                state.completedSteps.push(id);
+                state.collapsedSteps.push(id);
+                if (id < 7 && state.activeStep === id) {
+                    setActive(id + 1);
+                }
+            }
+            renderSteps();
+        }
+
+        function toggleCollapse(id) {
+            if (state.collapsedSteps.includes(id)) {
+                state.collapsedSteps = state.collapsedSteps.filter(s => s !== id);
+            } else {
+                state.collapsedSteps.push(id);
+            }
+            renderSteps();
+        }
+
+        function updateProgress() {
+            let weightedSum = 0;
+            state.completedSteps.forEach(id => {
+                const step = stepsBaseData.find(s => s.id === id);
+                if (id > 0) weightedSum += step.percent;
+            });
+
+            const percentage = Math.min(100, weightedSum);
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            if (progressBar) progressBar.style.width = percentage + '%';
+            if (progressText) progressText.innerText = percentage + '%';
+        }
+
+        function resetSession() {
+            if (confirm(state.language === 'fr' ? "Réinitialiser la séance ?" : "Reset the entire session?")) {
+                if (state.timerIntervalId) clearInterval(state.timerIntervalId);
+                state = {
+                    ...state,
+                    activeStep: 0,
+                    completedSteps: [],
+                    collapsedSteps: [],
+                    timers: {},
+                    timerIntervalId: null,
+                    timerStartTime: null
+                };
+                updateTimerCalculations();
+                renderApp();
+            }
+        }
+
+        function showTimeUp() {
+            document.getElementById('timesUpModal').classList.remove('hidden');
+            if (state.audioEnabled) {
+                try {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.5);
+                } catch (e) { }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('timesUpModal').classList.add('hidden');
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
