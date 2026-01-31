@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://francois-ops.github.io/tmlvm-site/sitemap.xml
+Sitemap: https://travaillermieux.fr/sitemap.xml

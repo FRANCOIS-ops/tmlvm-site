@@ -2,69 +2,69 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Static Pages -->
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/</loc>
+    <loc>https://travaillermieux.fr/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/map.html</loc>
+    <loc>https://travaillermieux.fr/map.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/chrono.html</loc>
+    <loc>https://travaillermieux.fr/chrono.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/eisenhower.html</loc>
+    <loc>https://travaillermieux.fr/eisenhower.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <!-- Blog Articles -->
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=podcast-courrier-cadres</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=podcast-courrier-cadres</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=working-less-living-better</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=working-less-living-better</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=seneque-vie-passe</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=seneque-vie-passe</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=loi-parkinson</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=loi-parkinson</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=ia-schneider</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=ia-schneider</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=reunionnite</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=reunionnite</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=non-gentil</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=non-gentil</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=55h-limite</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=55h-limite</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://francois-ops.github.io/tmlvm-site/article.html?slug=lancement-livre</loc>
+    <loc>https://travaillermieux.fr/article.html?slug=lancement-livre</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
