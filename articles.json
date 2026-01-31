@@ -1,5 +1,21 @@
 [
   {
+    "slug": "podcast-courrier-cadres",
+    "title": "Podcast Courrier Cadres: Non, ça ne va pas.",
+    "category": "Actualités",
+    "publishedAt": "2026-01-31",
+    "excerpt": "C'est ce que j'ai répondu dans le podcast Good Job. J'ai un peu cassé l'ambiance, mais je n'avais pas envie de donner la réponse automatique.",
+    "keywords": [
+      "\"podcast\"",
+      " \"good job\"",
+      " \"courrier cadres\"",
+      " \"burnout\"",
+      " \"santé mentale\"",
+      " \"travail\""
+    ],
+    "file": "content/blog/podcast-courrier-cadres.md"
+  },
+  {
     "slug": "working-less-living-better",
     "title": "Working Less, Living Better",
     "category": "Actualités",
