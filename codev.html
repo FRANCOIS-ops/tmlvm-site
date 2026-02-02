@@ -114,10 +114,43 @@
             z-index: 40;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
+
+        .return-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 50;
+            color: var(--codev-blue);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 1px solid #e2e8f0;
+        }
+
+        .return-home:hover {
+            background: #fff;
+            transform: scale(1.1);
+            color: var(--codev-yellow);
+            border-color: var(--codev-yellow);
+        }
     </style>
 </head>
 
 <body class="text-slate-800 font-medium">
+    <!-- Return Link -->
+    <a href="index.html" class="return-home" title="Return to Home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+    </a>
 
     <div id="app" class="max-w-5xl mx-auto pb-20">
 
