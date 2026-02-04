@@ -145,11 +145,13 @@
 
     <div class="w-full max-w-md relative">
         <!-- Language Toggles -->
-        <div class="absolute top-0 right-0 p-2 flex gap-2">
-            <button onclick="setLanguage('fr')" id="btn-fr" class="text-2xl hover:scale-110 transition-transform"
-                title="Français">🇫🇷</button>
+        <div class="flex justify-end gap-2 mb-2">
+            <button onclick="setLanguage('fr')" id="btn-fr"
+                class="text-xs font-bold uppercase py-1 px-2 rounded hover:bg-white/20 text-white transition-colors border border-white/20"
+                title="Français">FR</button>
             <button onclick="setLanguage('en')" id="btn-en"
-                class="text-2xl hover:scale-110 transition-transform opacity-50" title="English">🇬🇧</button>
+                class="text-xs font-bold uppercase py-1 px-2 rounded hover:bg-white/20 text-white transition-colors border border-white/20 opacity-50"
+                title="English">EN</button>
         </div>
         <!-- Header -->
         <div class="text-center mb-4">
@@ -776,22 +778,30 @@
 
             weekRangeEl.textContent = getWeekRangeLabel(start);
 
-            const seconds = data.totalSeconds || 0;
-            weeklySeconds += seconds;
+            const dayLabels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+            let weeklySeconds = 0;
+            const rows = [];
 
-            const hours = seconds / 3600;
-            const isToday = (new Date()).toDateString() === d.toDateString();
-            const dateStr = `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}`;
-            const fullDateIso = d.toISOString();
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(start);
+                d.setDate(d.getDate() + i);
+                const data = loadDataForDate(d);
+                const seconds = data.totalSeconds || 0;
+                weeklySeconds += seconds;
 
-            // Danger sign if >11h
-            const dangerSign = hours > 11 ?
-                '<span title="Attention : dépassement dangereux" style="color:#ff0000; font-weight:bold; margin-left:4px;">⚠</span>' : '';
+                const hours = seconds / 3600;
+                const isToday = (new Date()).toDateString() === d.toDateString();
+                const dateStr = `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}`;
+                const fullDateIso = d.toISOString();
 
-            // Dynamic color
-            const color = getColorCode(hours);
+                // Danger sign if >11h
+                const dangerSign = hours > 11 ?
+                    '<span title="Attention : dépassement dangereux" style="color:#ff0000; font-weight:bold; margin-left:4px;">⚠</span>' : '';
 
-            rows.push(`
+                // Dynamic color
+                const color = getColorCode(hours);
+
+                rows.push(`
                     <div onclick="openOverrideModal('${fullDateIso}')" class="weekly-day-row flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3 transition-colors ${isToday ? 'ring-2 ring-[#fee600]/70' : ''}">
                         <div class="flex items-center gap-3">
                             <div class="w-10 text-gray-700 font-semibold">${DICTIONARY[currentLang].days[i]}</div>
@@ -801,23 +811,23 @@
                         <div class="time-display text-gray-800 font-bold" style="color:${color}">${formatTime(seconds)}</div>
                     </div>
                 `);
-        }
+            }
 
-        const weeklyHours = weeklySeconds / 3600;
-        const weeklyColor = getWeeklyColorCode(weeklyHours);
-        weeklyTotalEl.textContent = formatTime(weeklySeconds);
-        weeklyTotalEl.style.color = weeklyColor;
+            const weeklyHours = weeklySeconds / 3600;
+            const weeklyColor = getWeeklyColorCode(weeklyHours);
+            weeklyTotalEl.textContent = formatTime(weeklySeconds);
+            weeklyTotalEl.style.color = weeklyColor;
 
-        if (weeklyHours >= 50) {
-            weeklyDangerEl.classList.remove('hidden');
-            weeklyDangerEl.classList.add('inline-block');
-            weeklyDangerEl.style.color = '#fff';
-        } else {
-            weeklyDangerEl.classList.add('hidden');
-            weeklyDangerEl.classList.remove('inline-block');
-        }
+            if (weeklyHours >= 50) {
+                weeklyDangerEl.classList.remove('hidden');
+                weeklyDangerEl.classList.add('inline-block');
+                weeklyDangerEl.style.color = '#fff';
+            } else {
+                weeklyDangerEl.classList.add('hidden');
+                weeklyDangerEl.classList.remove('inline-block');
+            }
 
-        weekDaysEl.innerHTML = rows.join('');
+            weekDaysEl.innerHTML = rows.join('');
         }
 
         // Modal edit state
