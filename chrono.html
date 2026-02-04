@@ -142,39 +142,50 @@
         </svg>
     </a>
 
-    <div class="w-full max-w-md">
+
+    <div class="w-full max-w-md relative">
+        <!-- Language Toggles -->
+        <div class="absolute top-0 right-0 p-2 flex gap-2">
+            <button onclick="setLanguage('fr')" id="btn-fr" class="text-2xl hover:scale-110 transition-transform"
+                title="Français">🇫🇷</button>
+            <button onclick="setLanguage('en')" id="btn-en"
+                class="text-2xl hover:scale-110 transition-transform opacity-50" title="English">🇬🇧</button>
+        </div>
         <!-- Header -->
         <div class="text-center mb-4">
-            <h1 class="text-white text-2xl font-bold mb-2">Travailler moins, vivre mieux</h1>
-            <p class="text-white/80 font-light text-sm">Mesurez votre temps de travail</p>
+            <h1 class="text-white text-2xl font-bold mb-2" data-i18n="title">Travailler moins, vivre mieux</h1>
+            <p class="text-white/80 font-light text-sm" data-i18n="subtitle">Mesurez votre temps de travail</p>
         </div>
 
         <!-- Reset Week Button -->
         <div class="text-center mb-4">
             <button onclick="resetWeek()"
-                class="bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-4 rounded-full transition-colors">
+                class="bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-4 rounded-full transition-colors"
+                data-i18n="resetWeek">
                 Réinitialiser semaine
             </button>
         </div>
 
         <!-- Main Timer Card -->
         <div class="card rounded-3xl shadow-2xl p-8 mb-6">
-            <!-- Status indicator -->
+            <!-- Author's Note: Status text is handled dynamically in JS but we can add default i18n -->
             <div class="flex items-center justify-center mb-6">
                 <div id="statusDot" class="w-3 h-3 rounded-full bg-gray-300 mr-2"></div>
-                <span id="statusText" class="text-gray-500 font-medium text-sm uppercase tracking-wider">En pause</span>
+                <span id="statusText" class="text-gray-500 font-medium text-sm uppercase tracking-wider"
+                    data-i18n="statusPause">En pause</span>
             </div>
 
             <!-- Current Session Timer -->
             <div class="text-center mb-8">
-                <p class="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">Session en cours</p>
+                <p class="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2" data-i18n="sessionCurrent">
+                    Session en cours</p>
                 <div id="currentTime" class="time-display text-6xl font-bold text-gray-800">
                     00:00:00
                 </div>
                 <button id="currentStart" onclick="openRunningStartModal()"
                     class="mt-3 inline-flex items-center justify-center gap-2 text-xs font-semibold text-gray-500 hover:text-gray-800 transition-colors clickable-time"
                     title="Cliquer pour modifier l’heure de départ">
-                    <span class="text-gray-400">Début :</span>
+                    <span class="text-gray-400" data-i18n="startLabel">Début :</span>
                     <span id="currentStartLabel" class="time-display">–</span>
                 </button>
             </div>
@@ -198,7 +209,8 @@
 
             <!-- Today's Total -->
             <div class="bg-gradient-to-r from-[#00aee3] to-[#0095c4] rounded-2xl p-6 text-center">
-                <p class="text-white/80 font-medium text-xs uppercase tracking-wider mb-1">Total aujourd'hui</p>
+                <p class="text-white/80 font-medium text-xs uppercase tracking-wider mb-1" data-i18n="totalToday">Total
+                    aujourd'hui</p>
                 <div id="totalTime" class="time-display text-4xl font-bold text-white">
                     00:00:00
                 </div>
@@ -208,9 +220,9 @@
         <!-- Sessions History -->
         <div class="card rounded-3xl shadow-2xl p-6">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="font-bold text-gray-800">Sessions du jour</h2>
+                <h2 class="font-bold text-gray-800" data-i18n="sessionsToday">Sessions du jour</h2>
                 <button onclick="clearSessions()"
-                    class="text-xs text-gray-400 hover:text-red-500 font-medium transition-colors">
+                    class="text-xs text-gray-400 hover:text-red-500 font-medium transition-colors" data-i18n="clear">
                     Effacer
                 </button>
             </div>
@@ -222,12 +234,13 @@
         <!-- Weekly Summary -->
         <div class="card rounded-3xl shadow-2xl p-6 mt-6">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="font-bold text-gray-800">Semaine en cours</h2>
+                <h2 class="font-bold text-gray-800" data-i18n="weekCurrent">Semaine en cours</h2>
                 <span id="weekRange" class="text-xs text-gray-400 font-medium"></span>
             </div>
 
             <div class="bg-gradient-to-r from-[#00aee3] to-[#0095c4] rounded-2xl p-5 text-center mb-4">
-                <p class="text-white/80 font-medium text-xs uppercase tracking-wider mb-1">Total semaine</p>
+                <p class="text-white/80 font-medium text-xs uppercase tracking-wider mb-1" data-i18n="totalWeek">Total
+                    semaine</p>
                 <div class="flex items-center justify-center gap-2">
                     <div id="weeklyTotal" class="time-display text-3xl font-bold text-white">00:00:00</div>
                     <span id="weeklyDanger" class="hidden text-2xl" title="Dépassement de 50h hebdomadaires">⚠</span>
@@ -238,7 +251,7 @@
         </div>
 
         <!-- Footer -->
-        <p class="text-center text-white/60 text-xs mt-6 font-light">
+        <p class="text-center text-white/60 text-xs mt-6 font-light" data-i18n="savedLocally">
             Les données sont sauvegardées localement
         </p>
     </div>
@@ -249,8 +262,10 @@
         <div class="relative w-full max-w-md card rounded-3xl shadow-2xl p-6">
             <div class="flex items-start justify-between gap-4 mb-4">
                 <div>
-                    <h3 class="text-gray-800 font-extrabold text-lg">Modifier une session</h3>
-                    <p class="text-gray-500 text-sm">Ajustez l’heure de début et de fin (format 24h).</p>
+                    <h3 class="text-gray-800 font-extrabold text-lg" data-i18n="modalEditTitle">Modifier une session
+                    </h3>
+                    <p class="text-gray-500 text-sm" data-i18n="modalEditDesc">Ajustez l’heure de début et de fin
+                        (format 24h).</p>
                 </div>
                 <button
                     class="w-10 h-10 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-500 flex items-center justify-center"
@@ -261,12 +276,14 @@
 
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <label class="block">
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Début</span>
+                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                        data-i18n="labelStart">Début</span>
                     <input id="editStart" type="time"
                         class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#00aee3]/40" />
                 </label>
                 <label class="block">
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Fin</span>
+                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                        data-i18n="labelEnd">Fin</span>
                     <input id="editEnd" type="time"
                         class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#00aee3]/40" />
                 </label>
@@ -276,22 +293,25 @@
 
             <div class="flex items-center justify-between gap-3">
                 <button onclick="deleteSessionFromModal()"
-                    class="px-4 py-3 rounded-xl bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors">
+                    class="px-4 py-3 rounded-xl bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors"
+                    data-i18n="btnDelete">
                     Supprimer
                 </button>
                 <div class="flex items-center gap-3">
                     <button onclick="closeEditModal()"
-                        class="px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-colors">
+                        class="px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-colors"
+                        data-i18n="btnCancel">
                         Annuler
                     </button>
                     <button onclick="saveEditedSession()"
-                        class="px-5 py-3 rounded-xl bg-[#fee600] text-gray-900 font-extrabold hover:brightness-95 transition-all shadow-[0_10px_25px_rgba(254,230,0,.35)]">
+                        class="px-5 py-3 rounded-xl bg-[#fee600] text-gray-900 font-extrabold hover:brightness-95 transition-all shadow-[0_10px_25px_rgba(254,230,0,.35)]"
+                        data-i18n="btnSave">
                         Enregistrer
                     </button>
                 </div>
             </div>
 
-            <div class="mt-4 text-xs text-gray-400">
+            <div class="mt-4 text-xs text-gray-400" data-i18n="hintNextDay">
                 Astuce : si l’heure de fin est plus tôt que le début, la session sera comptée comme se terminant le
                 lendemain.
             </div>
@@ -304,8 +324,9 @@
         <div class="relative w-full max-w-md card rounded-3xl shadow-2xl p-6">
             <div class="flex items-start justify-between gap-4 mb-4">
                 <div>
-                    <h3 class="text-gray-800 font-extrabold text-lg">Modifier le départ</h3>
-                    <p class="text-gray-500 text-sm">Changez la date et l’heure de départ de la session en cours.</p>
+                    <h3 class="text-gray-800 font-extrabold text-lg" data-i18n="modalStartTitle">Modifier le départ</h3>
+                    <p class="text-gray-500 text-sm" data-i18n="modalStartDesc">Changez la date et l’heure de départ de
+                        la session en cours.</p>
                 </div>
                 <button
                     class="w-10 h-10 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-500 flex items-center justify-center"
@@ -315,7 +336,8 @@
             </div>
 
             <label class="block mb-4">
-                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Départ (date + heure)</span>
+                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    data-i18n="labelStartDateTime">Départ (date + heure)</span>
                 <input id="runningStartInput" type="datetime-local"
                     class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#00aee3]/40" />
             </label>
@@ -324,16 +346,18 @@
 
             <div class="flex items-center justify-end gap-3">
                 <button onclick="closeRunningStartModal()"
-                    class="px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-colors">
+                    class="px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-colors"
+                    data-i18n="btnCancel">
                     Annuler
                 </button>
                 <button onclick="saveRunningStart()"
-                    class="px-5 py-3 rounded-xl bg-[#fee600] text-gray-900 font-extrabold hover:brightness-95 transition-all shadow-[0_10px_25px_rgba(254,230,0,.35)]">
+                    class="px-5 py-3 rounded-xl bg-[#fee600] text-gray-900 font-extrabold hover:brightness-95 transition-all shadow-[0_10px_25px_rgba(254,230,0,.35)]"
+                    data-i18n="btnSave">
                     Enregistrer
                 </button>
             </div>
 
-            <div class="mt-4 text-xs text-gray-400">
+            <div class="mt-4 text-xs text-gray-400" data-i18n="hintForgot">
                 Astuce : vous pouvez corriger un oubli (ex: vous avez démarré le chrono en retard).
             </div>
         </div>
@@ -345,8 +369,10 @@
         <div class="relative w-full max-w-md card rounded-3xl shadow-2xl p-6">
             <div class="flex items-start justify-between gap-4 mb-4">
                 <div>
-                    <h3 class="text-gray-800 font-extrabold text-lg">Modifier le total du jour</h3>
-                    <p id="overrideDayLabel" class="text-gray-500 text-sm">Saisissez le temps total pour ce jour.</p>
+                    <h3 class="text-gray-800 font-extrabold text-lg" data-i18n="modalOverrideTitle">Modifier le total du
+                        jour</h3>
+                    <p id="overrideDayLabel" class="text-gray-500 text-sm" data-i18n="modalOverrideDesc">Saisissez le
+                        temps total pour ce jour.</p>
                 </div>
                 <button
                     class="w-10 h-10 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-500 flex items-center justify-center"
@@ -357,13 +383,15 @@
 
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <label class="block">
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Heures</span>
+                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                        data-i18n="labelHours">Heures</span>
                     <input id="overrideHours" type="number" min="0" max="23"
                         class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#00aee3]/40"
                         placeholder="0" />
                 </label>
                 <label class="block">
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Minutes</span>
+                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                        data-i18n="labelMinutes">Minutes</span>
                     <input id="overrideMinutes" type="number" min="0" max="59"
                         class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#00aee3]/40"
                         placeholder="0" />
@@ -372,16 +400,18 @@
 
             <div class="flex items-center justify-end gap-3">
                 <button onclick="closeOverrideModal()"
-                    class="px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-colors">
+                    class="px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-colors"
+                    data-i18n="btnCancel">
                     Annuler
                 </button>
                 <button onclick="saveOverride()"
-                    class="px-5 py-3 rounded-xl bg-[#fee600] text-gray-900 font-extrabold hover:brightness-95 transition-all shadow-[0_10px_25px_rgba(254,230,0,.35)]">
+                    class="px-5 py-3 rounded-xl bg-[#fee600] text-gray-900 font-extrabold hover:brightness-95 transition-all shadow-[0_10px_25px_rgba(254,230,0,.35)]"
+                    data-i18n="btnSave">
                     Enregistrer
                 </button>
             </div>
 
-            <div class="mt-4 text-xs text-red-400">
+            <div class="mt-4 text-xs text-red-400" data-i18n="hintOverrideWarn">
                 Attention : écraser le total supprimera l'historique des sessions pour cette journée.
             </div>
         </div>
@@ -392,6 +422,129 @@
         let startTime = null;
         let elapsedTime = 0;
         let timerInterval = null;
+        let currentLang = 'fr';
+
+        const DICTIONARY = {
+            fr: {
+                title: "Travailler moins, vivre mieux",
+                subtitle: "Mesurez votre temps de travail",
+                resetWeek: "Réinitialiser semaine",
+                statusPause: "En pause",
+                statusRunning: "En cours",
+                sessionCurrent: "Session en cours",
+                startLabel: "Début :",
+                totalToday: "Total aujourd'hui",
+                sessionsToday: "Sessions du jour",
+                clear: "Effacer",
+                noSessions: "Aucune session enregistrée",
+                weekCurrent: "Semaine en cours",
+                totalWeek: "Total semaine",
+                savedLocally: "Les données sont sauvegardées localement",
+                modalEditTitle: "Modifier une session",
+                modalEditDesc: "Ajustez l’heure de début et de fin (format 24h).",
+                labelStart: "Début",
+                labelEnd: "Fin",
+                btnDelete: "Supprimer",
+                btnCancel: "Annuler",
+                btnSave: "Enregistrer",
+                hintNextDay: "Astuce : si l’heure de fin est plus tôt que le début, la session sera comptée comme se terminant le lendemain.",
+                modalStartTitle: "Modifier le départ",
+                modalStartDesc: "Changez la date et l’heure de départ de la session en cours.",
+                labelStartDateTime: "Départ (date + heure)",
+                hintForgot: "Astuce : vous pouvez corriger un oubli (ex: vous avez démarré le chrono en retard).",
+                modalOverrideTitle: "Modifier le total du jour",
+                modalOverrideDesc: "Saisissez le temps total pour ce jour (écrasera l'historique).",
+                labelHours: "Heures",
+                labelMinutes: "Minutes",
+                hintOverrideWarn: "Attention : écraser le total supprimera l'historique des sessions pour cette journée.",
+                confirmReset: "Effacer toutes les données de la semaine ?",
+                alertReset: "Semaine réinitialisée.",
+                confirmDelete: "Supprimer cette session ?",
+                confirmClearDay: "Effacer toutes les sessions du jour ?",
+                alertStopFirst: "Stoppez le chronomètre avant de modifier les sessions.",
+                alertInvalidTime: "Veuillez saisir des heures valides (HH:MM).",
+                alertZeroDuration: "La durée ne peut pas être 00:00.",
+                alertInvalidDate: "Date invalide",
+                days: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
+            },
+            en: {
+                title: "Work Less, Live Better",
+                subtitle: "Track your working time",
+                resetWeek: "Reset Week",
+                statusPause: "Paused",
+                statusRunning: "Running",
+                sessionCurrent: "Current Session",
+                startLabel: "Start:",
+                totalToday: "Total Today",
+                sessionsToday: "Today's Sessions",
+                clear: "Clear",
+                noSessions: "No sessions recorded",
+                weekCurrent: "Current Week",
+                totalWeek: "Total Week",
+                savedLocally: "Data is saved locally",
+                modalEditTitle: "Edit Session",
+                modalEditDesc: "Adjust start and end times (24h format).",
+                labelStart: "Start",
+                labelEnd: "End",
+                btnDelete: "Delete",
+                btnCancel: "Cancel",
+                btnSave: "Save",
+                hintNextDay: "Tip: if end time is earlier than start time, session counts as ending the next day.",
+                modalStartTitle: "Edit Start Time",
+                modalStartDesc: "Change the start date and time of the current session.",
+                labelStartDateTime: "Start (Date + Time)",
+                hintForgot: "Tip: fix a forgotten start (e.g., started working earlier).",
+                modalOverrideTitle: "Edit Daily Total",
+                modalOverrideDesc: "Enter total time for this day (overwrites history).",
+                labelHours: "Hours",
+                labelMinutes: "Minutes",
+                hintOverrideWarn: "Warning: overriding total will clear session history for this day.",
+                confirmReset: "Clear all data for the week?",
+                alertReset: "Week reset.",
+                confirmDelete: "Delete this session?",
+                confirmClearDay: "Clear all sessions for today?",
+                alertStopFirst: "Stop the timer before editing sessions.",
+                alertInvalidTime: "Please enter valid times (HH:MM).",
+                alertZeroDuration: "Duration cannot be 00:00.",
+                alertInvalidDate: "Invalid Date",
+                days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            }
+        };
+
+        function setLanguage(lang) {
+            if (!DICTIONARY[lang]) return;
+            currentLang = lang;
+            localStorage.setItem('timetracker_lang', lang);
+
+            // Update Toggles
+            document.getElementById('btn-fr').style.opacity = lang === 'fr' ? '1' : '0.5';
+            document.getElementById('btn-en').style.opacity = lang === 'en' ? '1' : '0.5';
+
+            // Update Texts
+            const dict = DICTIONARY[lang];
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    if (el.tagName === 'INPUT' && el.getAttribute('placeholder')) {
+                        el.setAttribute('placeholder', dict[key]);
+                    } else {
+                        el.textContent = dict[key];
+                    }
+                }
+            });
+
+            // Update Dynamic UI
+            updateUI(); // Updates status text
+            updateSessionsList(); // Updates list text (if empty)
+            updateWeeklySummary(); // Updates days
+            updateCurrentTime(); // Updates dynamic start label
+        }
+
+        function initLanguage() {
+            const saved = localStorage.getItem('timetracker_lang');
+            setLanguage(saved || 'fr');
+        }
 
 
         // Date helpers
@@ -421,7 +574,7 @@
 
         // Reset entire week data
         function resetWeek() {
-            if (!confirm('Effacer toutes les données de la semaine ?')) return;
+            if (!confirm(DICTIONARY[currentLang].confirmReset)) return;
             const start = getStartOfWeek(new Date());
             for (let i = 0; i < 7; i++) {
                 const d = new Date(start);
@@ -436,7 +589,7 @@
             updateSessionsList();
             updateWeeklySummary();
             document.getElementById('currentTime').textContent = '00:00:00';
-            alert('Semaine réinitialisée.');
+            alert(DICTIONARY[currentLang].alertReset);
         }
 
         // Load data from localStorage (for today)
@@ -536,7 +689,7 @@
                 stopBtn.disabled = false;
                 stopBtn.style.opacity = '1';
                 statusDot.className = 'w-3 h-3 rounded-full bg-green-500 mr-2 pulse-animation';
-                statusText.textContent = 'En cours';
+                statusText.textContent = DICTIONARY[currentLang].statusRunning;
                 statusText.className = 'text-green-600 font-semibold text-sm uppercase tracking-wider';
             } else {
                 playBtn.disabled = false;
@@ -544,7 +697,7 @@
                 stopBtn.disabled = true;
                 stopBtn.style.opacity = '0.5';
                 statusDot.className = 'w-3 h-3 rounded-full bg-gray-300 mr-2';
-                statusText.textContent = 'En pause';
+                statusText.textContent = DICTIONARY[currentLang].statusPause;
                 statusText.className = 'text-gray-500 font-medium text-sm uppercase tracking-wider';
                 document.getElementById('currentStartLabel').textContent = '–';
             }
@@ -623,56 +776,48 @@
 
             weekRangeEl.textContent = getWeekRangeLabel(start);
 
-            const dayLabels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-            let weeklySeconds = 0;
-            const rows = [];
+            const seconds = data.totalSeconds || 0;
+            weeklySeconds += seconds;
 
-            for (let i = 0; i < 7; i++) {
-                const d = new Date(start);
-                d.setDate(d.getDate() + i);
-                const data = loadDataForDate(d);
-                const seconds = data.totalSeconds || 0;
-                weeklySeconds += seconds;
+            const hours = seconds / 3600;
+            const isToday = (new Date()).toDateString() === d.toDateString();
+            const dateStr = `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}`;
+            const fullDateIso = d.toISOString();
 
-                const hours = seconds / 3600;
-                const isToday = (new Date()).toDateString() === d.toDateString();
-                const dateStr = `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}`;
-                const fullDateIso = d.toISOString();
+            // Danger sign if >11h
+            const dangerSign = hours > 11 ?
+                '<span title="Attention : dépassement dangereux" style="color:#ff0000; font-weight:bold; margin-left:4px;">⚠</span>' : '';
 
-                // Danger sign if >11h
-                const dangerSign = hours > 11 ?
-                    '<span title="Attention : dépassement dangereux" style="color:#ff0000; font-weight:bold; margin-left:4px;">⚠</span>' : '';
+            // Dynamic color
+            const color = getColorCode(hours);
 
-                // Dynamic color
-                const color = getColorCode(hours);
-
-                rows.push(`
+            rows.push(`
                     <div onclick="openOverrideModal('${fullDateIso}')" class="weekly-day-row flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3 transition-colors ${isToday ? 'ring-2 ring-[#fee600]/70' : ''}">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 text-gray-700 font-semibold">${dayLabels[i]}</div>
+                            <div class="w-10 text-gray-700 font-semibold">${DICTIONARY[currentLang].days[i]}</div>
                             <div class="text-xs text-gray-400">${dateStr}</div>
                             ${dangerSign}
                         </div>
                         <div class="time-display text-gray-800 font-bold" style="color:${color}">${formatTime(seconds)}</div>
                     </div>
                 `);
-            }
+        }
 
-            const weeklyHours = weeklySeconds / 3600;
-            const weeklyColor = getWeeklyColorCode(weeklyHours);
-            weeklyTotalEl.textContent = formatTime(weeklySeconds);
-            weeklyTotalEl.style.color = weeklyColor;
+        const weeklyHours = weeklySeconds / 3600;
+        const weeklyColor = getWeeklyColorCode(weeklyHours);
+        weeklyTotalEl.textContent = formatTime(weeklySeconds);
+        weeklyTotalEl.style.color = weeklyColor;
 
-            if (weeklyHours >= 50) {
-                weeklyDangerEl.classList.remove('hidden');
-                weeklyDangerEl.classList.add('inline-block');
-                weeklyDangerEl.style.color = '#fff';
-            } else {
-                weeklyDangerEl.classList.add('hidden');
-                weeklyDangerEl.classList.remove('inline-block');
-            }
+        if (weeklyHours >= 50) {
+            weeklyDangerEl.classList.remove('hidden');
+            weeklyDangerEl.classList.add('inline-block');
+            weeklyDangerEl.style.color = '#fff';
+        } else {
+            weeklyDangerEl.classList.add('hidden');
+            weeklyDangerEl.classList.remove('inline-block');
+        }
 
-            weekDaysEl.innerHTML = rows.join('');
+        weekDaysEl.innerHTML = rows.join('');
         }
 
         // Modal edit state
@@ -708,7 +853,7 @@
             const session = data.sessions[index];
             if (!session) return;
             if (isRunning) {
-                alert('Stoppez le chronomètre avant de modifier les sessions.');
+                alert(DICTIONARY[currentLang].alertStopFirst);
                 return;
             }
 
@@ -722,7 +867,11 @@
 
             const hintEl = document.getElementById('editHint');
             const dateStr = `${pad2(startDate.getDate())}/${pad2(startDate.getMonth() + 1)}/${startDate.getFullYear()}`;
-            hintEl.textContent = `Session du ${dateStr} · Durée actuelle : ${formatTime(session.duration || 0)}`;
+            // Use simple concatenation or make this a template in dictionary
+            // For simplicity, we keep it partially dynamic or hardcoded, but better to genericize "Session of [date]"
+            const sessionOf = currentLang === 'fr' ? 'Session du' : 'Session of';
+            const duration = currentLang === 'fr' ? 'Durée actuelle :' : 'Current duration:';
+            hintEl.textContent = `${sessionOf} ${dateStr} · ${duration} ${formatTime(session.duration || 0)}`;
 
             const modal = document.getElementById('editModal');
             modal.classList.remove('hidden');
@@ -754,11 +903,11 @@
             const newDur = computeDurationSecondsFromTimes(startVal, endVal);
 
             if (newDur === null) {
-                alert('Veuillez saisir des heures valides (HH:MM).');
+                alert(DICTIONARY[currentLang].alertInvalidTime);
                 return;
             }
             if (newDur === 0) {
-                alert('La durée ne peut pas être 00:00.');
+                alert(DICTIONARY[currentLang].alertZeroDuration);
                 return;
             }
 
@@ -800,7 +949,7 @@
         // Update sessions list
         function deleteSession(index) {
             // index refers to the original order in data.sessions
-            if (!confirm('Supprimer cette session ?')) return;
+            if (!confirm(DICTIONARY[currentLang].confirmDelete)) return;
             const data = loadData();
             if (!data.sessions[index]) return;
             data.sessions.splice(index, 1);
@@ -817,7 +966,7 @@
             const container = document.getElementById('sessionsList');
 
             if (data.sessions.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">Aucune session enregistrée</p>';
+                container.innerHTML = `<p class="text-gray-400 text-sm text-center py-4">${DICTIONARY[currentLang].noSessions}</p>`;
                 return;
             }
 
@@ -827,8 +976,9 @@
             container.innerHTML = items.map(({ session, index }) => {
                 const startDate = new Date(session.start);
                 const endDate = new Date(session.end);
-                const startStr = startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-                const endStr = endDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                const locale = currentLang === 'fr' ? 'fr-FR' : 'en-GB';
+                const startStr = startDate.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+                const endStr = endDate.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
                 const sessionHours = session.duration / 3600;
                 const color = getColorCode(sessionHours);
 
@@ -855,7 +1005,7 @@
 
         // Clear all sessions
         function clearSessions() {
-            if (confirm('Effacer toutes les sessions du jour ?')) {
+            if (confirm(DICTIONARY[currentLang].confirmClearDay)) {
                 if (isRunning) {
                     stopTimer();
                 }
@@ -899,7 +1049,7 @@
 
             const newDate = new Date(input.value);
             if (isNaN(newDate.getTime())) {
-                alert("Date invalide");
+                alert(DICTIONARY[currentLang].alertInvalidDate);
                 return;
             }
 
@@ -927,7 +1077,8 @@
             document.getElementById('overrideMinutes').value = mins;
 
             const dayStr = `${pad2(overrideTargetDate.getDate())}/${pad2(overrideTargetDate.getMonth() + 1)}`;
-            document.getElementById('overrideDayLabel').textContent = `Saisissez le temps total pour le ${dayStr}.`;
+            const prefix = currentLang === 'fr' ? 'Saisissez le temps total pour le' : 'Enter total time for';
+            document.getElementById('overrideDayLabel').textContent = `${prefix} ${dayStr}.`;
 
             const modal = document.getElementById('overrideModal');
             modal.classList.remove('hidden');
@@ -964,6 +1115,7 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
+            initLanguage();
             checkRunningSession();
             updateTotalTime();
             updateSessionsList();
