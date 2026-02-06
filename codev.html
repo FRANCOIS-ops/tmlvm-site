@@ -266,6 +266,13 @@
             STOP ALARM 🔔
         </button>
 
+        <!-- HTML5 Audio Fallback -->
+        <audio id="alarmAudio" preload="auto" loop>
+            <source
+                src="data:audio/wav;base64,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"
+                type="audio/wav">
+        </audio>
+
     </div>
 
     <script>
@@ -540,9 +547,7 @@
             audioEnabled: false
         };
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let alarmInterval = null;
-        let alarmOscillator = null;
+        // const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); // REPLACED BY HTML5 AUDIO
 
         function init() {
             // Load language from storage if any
@@ -552,21 +557,19 @@
             updateTimerCalculations();
             renderApp();
 
-            // Interaction to unlock audio - Improved for Mobile with Silent Buffer
+            // Interaction to unlock audio - HTML5 Audio Strategy
             const unlockAudio = () => {
-                // Resume Context
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
+                const audio = document.getElementById('alarmAudio');
+                if (audio) {
+                    // Try to play and immediately pause to bless the element
+                    audio.play().then(() => {
+                        audio.pause();
+                        audio.currentTime = 0;
+                        state.audioEnabled = true;
+                    }).catch(error => {
+                        console.log("Audio unlock failed (will retry):", error);
+                    });
                 }
-
-                // Play Silent Buffer (The "iOS Unlocker")
-                const buffer = audioCtx.createBuffer(1, 1, 22050);
-                const source = audioCtx.createBufferSource();
-                source.buffer = buffer;
-                source.connect(audioCtx.destination);
-                source.start(0);
-
-                state.audioEnabled = true;
 
                 // Remove listeners once unlocked (we keep click/touchstart on buttons, but global is done)
                 document.body.removeEventListener('click', unlockAudio);
@@ -579,10 +582,12 @@
             document.body.addEventListener('keydown', unlockAudio);
         }
 
-        // --- AUDIO ENGINE ---
+        // --- AUDIO ENGINE (HTML5) ---
         function playAlarmSound() {
-            if (!state.audioEnabled && audioCtx.state === 'suspended') {
-                audioCtx.resume();
+            const audio = document.getElementById('alarmAudio');
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(err => console.log('Audio play failed:', err));
             }
 
             // Un-hide Stop Button
@@ -593,39 +598,13 @@
             if (navigator.vibrate) {
                 navigator.vibrate([500, 200, 500, 200, 500]); // SOS-like pattern
             }
-
-            // 2. Web Audio Beep
-            // Function to play one beep
-            const beep = () => {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
-                osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.1);
-
-                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-
-                osc.start(audioCtx.currentTime);
-                osc.stop(audioCtx.currentTime + 0.4);
-            };
-
-            // Play immediate beep
-            beep();
-
-            // Loop beeps every 800ms
-            if (alarmInterval) clearInterval(alarmInterval);
-            alarmInterval = setInterval(beep, 800);
         }
 
         function stopAlarm() {
-            if (alarmInterval) {
-                clearInterval(alarmInterval);
-                alarmInterval = null;
+            const audio = document.getElementById('alarmAudio');
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
             }
             // Hide Stop Button
             const stopBtn = document.getElementById('stopAlarmBtn');
@@ -939,6 +918,7 @@
 
         function showTimeUp() {
             document.getElementById('timesUpModal').classList.remove('hidden');
+            playAlarmSound();
         }
 
         function closeModal() {
