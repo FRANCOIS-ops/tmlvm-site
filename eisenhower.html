@@ -146,7 +146,10 @@
         .text-box {
             position: absolute;
             min-width: 180px;
-            max-width: 280px;
+            max-width: none;
+            /* Allow resizing beyond initial */
+            min-height: 50px;
+            /* Minimum height for usability */
             background-color: white;
             border-radius: 4px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -159,6 +162,13 @@
             transition: transform 0.1s, box-shadow 0.2s;
             will-change: transform;
             touch-action: none;
+
+            /* Resizing properties */
+            resize: both;
+            overflow: hidden;
+            /* Required for resize handle */
+            container-type: size;
+            /* For auto-scaling font */
         }
 
         .text-box:hover {
@@ -170,13 +180,21 @@
             outline: none;
             min-height: 18px;
             cursor: text;
-            padding-right: 50px;
-            font-size: 13px;
+            padding-right: 20px;
+            /* Space for actions but keep text usable */
+
+            /* Auto-scaling font size based on container height/width */
+            font-size: clamp(14px, 25cqmin, 60px);
+
             font-weight: 500;
             color: var(--text-dark);
             line-height: 1.3;
             overflow-wrap: break-word;
             word-break: break-word;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
         }
 
         .text-box-content:empty:before {
@@ -875,6 +893,8 @@
                     content: content,
                     left: box.style.left,
                     top: box.style.top,
+                    width: box.style.width,
+                    height: box.style.height,
                     done: isDone,
                     rank: rank
                 });
@@ -913,6 +933,8 @@
                     if (!isMobile) {
                         textBox.style.left = task.left;
                         textBox.style.top = task.top;
+                        if (task.width) textBox.style.width = task.width;
+                        if (task.height) textBox.style.height = task.height;
                     }
 
                     const quadrantIdForColor = task.quadrantId === 'left-pane' ? null : task.quadrantId;
@@ -1204,6 +1226,16 @@
 
             const onStart = (e) => {
                 if (e.target.closest('.text-box-content') || e.target.closest('.text-box-actions')) return;
+
+                // Check for resize handle click (bottom-right corner)
+                const rect = element.getBoundingClientRect();
+                const clickX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+                const clickY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+
+                // If click is within 20px of the bottom-right corner, assume resize
+                if (clickX > rect.right - 20 && clickY > rect.bottom - 20) {
+                    return;
+                }
 
                 // For mobile, only one finger drag
                 const clientX = e.clientX || e.touches[0].clientX;
