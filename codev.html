@@ -156,7 +156,7 @@
 
         <!-- Header & Language -->
         <header class="py-6 px-4 text-center relative">
-            <div class="absolute top-6 right-4 flex flex-row items-center gap-4 z-10">
+            <div class="absolute top-6 right-4 flex flex-col items-end gap-2 z-10">
                 <button onclick="resetSession()"
                     class="text-xs font-700 text-slate-400 hover:text-red-500 flex items-center gap-1 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
@@ -191,8 +191,7 @@
         </header>
 
         <!-- Sticky Progress/Setup -->
-        <section
-            class="sticky-header bg-white/95 backdrop-blur-md border-b border-slate-100 p-4 md:p-6 mb-8 mx-0 md:rounded-b-3xl">
+        <section class="bg-white/95 backdrop-blur-md border-b border-slate-100 p-4 md:p-6 mb-0 mx-0 md:rounded-b-3xl">
             <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
                 <div class="w-full lg:w-2/5">
                     <h2 class="text-[10px] font-800 text-codev-blue mb-2 uppercase tracking-[0.2em]"
@@ -215,21 +214,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="w-full lg:w-3/5 flex flex-col gap-4">
-                    <!-- Buzzer / Test Button -->
-
-                    <div class="flex justify-between items-end mb-2">
-                        <span class="text-xs font-700 text-slate-700 uppercase tracking-wider"
-                            id="ui-progress-label">Session Progress</span>
-                        <span id="progressText" class="text-sm font-800 text-codev-blue">0%</span>
+        <!-- Sticky Progress Bar ONLY -->
+        <section
+            class="sticky-header bg-white/95 backdrop-blur-md border-b border-slate-100 p-4 mb-8 mx-0 z-40 shadow-sm">
+            <div class="w-full flex flex-col gap-4">
+                <div class="flex justify-between items-end mb-2">
+                    <span class="text-xs font-700 text-slate-700 uppercase tracking-wider"
+                        id="ui-progress-label">Session Progress</span>
+                    <span id="progressText" class="text-sm font-800 text-codev-blue">0%</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
+                    <div id="progressBar" class="bg-codev-blue h-full transition-all duration-500" style="width: 0%">
                     </div>
-                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
-                        <div id="progressBar" class="bg-codev-blue h-full transition-all duration-500"
-                            style="width: 0%"></div>
-                    </div>
-
-                    <!-- Test Buzzer (Relocated) -->
                 </div>
             </div>
         </section>
