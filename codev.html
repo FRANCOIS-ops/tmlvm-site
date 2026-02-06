@@ -209,8 +209,7 @@
 
                 <div class="w-full lg:w-3/5 flexflex-col gap-4">
                     <!-- Buzzer / Test Button -->
-                    <button onmousedown="playAlarmSound()" onmouseup="stopAlarm()" onmouseleave="stopAlarm()"
-                        ontouchstart="playAlarmSound()" ontouchend="stopAlarm()"
+                    <button onclick="playAlarmSound()"
                         class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 rounded-lg shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -557,32 +556,45 @@
             updateTimerCalculations();
             renderApp();
 
-            // Interaction to unlock audio - HTML5 Audio Strategy
-            const unlockAudio = () => {
-                const audio = document.getElementById('alarmAudio');
-                if (audio) {
-                    // Try to play and immediately pause to bless the element
-                    audio.play().then(() => {
-                        audio.pause();
-                        audio.currentTime = 0;
-                        state.audioEnabled = true;
-                    }).catch(error => {
-                        console.log("Audio unlock failed (will retry):", error);
-                    });
-                }
-
-                // Remove listeners once unlocked (we keep click/touchstart on buttons, but global is done)
-                document.body.removeEventListener('click', unlockAudio);
-                document.body.removeEventListener('touchstart', unlockAudio);
-                document.body.removeEventListener('keydown', unlockAudio);
-            };
-
-            document.body.addEventListener('click', unlockAudio);
-            document.body.addEventListener('touchstart', unlockAudio);
-            document.body.addEventListener('keydown', unlockAudio);
+            // Show Onboarding Modal
+            const modal = document.getElementById('onboardingModal');
+            if (modal) modal.classList.remove('hidden');
         }
 
         // --- AUDIO ENGINE (HTML5) ---
+        // New unlock function tied to onboarding button
+        function unlockAndStart() {
+            const audio = document.getElementById('alarmAudio');
+            const modal = document.getElementById('onboardingModal');
+
+            if (audio) {
+                // Play and immediately pause to bless the element on iOS
+                audio.play()
+                    .then(() => {
+                        // Success - stop it and hide modal
+                        audio.pause();
+                        audio.currentTime = 0;
+                        state.audioEnabled = true;
+
+                        // Hide modal with fade
+                        modal.style.transition = 'opacity 0.5s';
+                        modal.style.opacity = '0';
+                        setTimeout(() => modal.classList.add('hidden'), 500);
+
+                        // Small vibration to confirm
+                        if (navigator.vibrate) navigator.vibrate(50);
+                    })
+                    .catch(e => {
+                        // Error handling: still hide modal but log error
+                        console.error("Audio unlock check failed:", e);
+                        modal.classList.add('hidden');
+                        alert("Note: Audio auto-play might be blocked. Use the 'TEST BUZZER' button if needed.");
+                    });
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
         function playAlarmSound() {
             const audio = document.getElementById('alarmAudio');
             if (audio) {
