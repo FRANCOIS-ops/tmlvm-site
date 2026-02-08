@@ -186,9 +186,11 @@
 
                     <!-- LOSE CONTENT -->
                     <section id="loseContent" class="hidden">
-                        <div class="bg-red-600 text-white p-6 rounded-2xl mb-6 text-center shadow-xl">
+                        <div id="lostMessageLink"
+                            class="bg-red-600 text-white p-6 rounded-2xl mb-6 text-center shadow-xl cursor-pointer hover:bg-red-700 transition">
                             <div class="text-3xl font-black mb-2">LOST!</div>
-                            <div class="text-xl">Try Again – Spin the Wheel</div>
+                            <div class="text-xl underline decoration-2 underline-offset-4">Try Again – Spin the Wheel
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-5">
@@ -298,6 +300,11 @@
             // Modal buttons
             document.getElementById('closeOutcome').addEventListener('click', () => hideOutcome());
             document.getElementById('goToWheel').addEventListener('click', () => {
+                hideOutcome();
+                document.getElementById('scratchGame').classList.add('hidden');
+                document.getElementById('wheelGame').classList.remove('hidden');
+            });
+            document.getElementById('lostMessageLink').addEventListener('click', () => {
                 hideOutcome();
                 document.getElementById('scratchGame').classList.add('hidden');
                 document.getElementById('wheelGame').classList.remove('hidden');
@@ -663,7 +670,7 @@
             resultDiv.innerHTML = '';
             button.textContent = 'Spinning...';
 
-            const isWin = Math.random() < 1;// probability of winning
+            const isWin = Math.random() < 0.03;// probability of winning
 
             // Spin a lot + random
             let rotation = 3600 + Math.random() * 360;
