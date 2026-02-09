@@ -187,9 +187,10 @@
                     <!-- LOSE CONTENT -->
                     <section id="loseContent" class="hidden">
                         <div id="lostMessageLink"
-                            class="bg-red-600 text-white p-6 rounded-2xl mb-6 text-center shadow-xl cursor-pointer hover:bg-red-700 transition">
-                            <div class="text-3xl font-black mb-2">LOST!</div>
-                            <div class="text-xl underline decoration-2 underline-offset-4">Try Again – Spin the Wheel
+                            class="bg-[var(--blue)] text-white p-6 rounded-2xl mb-6 text-center shadow-xl cursor-pointer hover:brightness-110 transition">
+                            <div class="text-3xl font-black mb-2">Keep Going!</div>
+                            <div class="text-xl underline decoration-2 underline-offset-4">You get another chance to win
+                                : spin the wheel!
                             </div>
                         </div>
 
@@ -680,6 +681,7 @@
             const modal = document.getElementById('outcomeModal');
             const winContent = document.getElementById('winContent');
             const loseContent = document.getElementById('loseContent');
+            const closeBtn = document.getElementById('closeOutcome');
 
             const title = document.getElementById('outcomeTitle');
             const subtitle = document.getElementById('outcomeSubtitle');
@@ -690,11 +692,13 @@
                 subtitle.textContent = 'You might have won a free book.';
                 winContent.classList.remove('hidden');
                 loseContent.classList.add('hidden');
+                closeBtn.classList.remove('hidden');
             } else {
                 title.textContent = 'Not This Time';
                 subtitle.textContent = 'Spin the wheel for another chance.';
                 loseContent.classList.remove('hidden');
                 winContent.classList.add('hidden');
+                closeBtn.classList.add('hidden');
             }
 
             modal.classList.remove('hidden');
@@ -803,7 +807,7 @@
                     setTimeout(() => {
                         document.getElementById('wheelGame').classList.add('hidden');
                         document.getElementById('thankYou').classList.remove('hidden');
-                    }, 2400);
+                    }, 1800);
                 }
 
                 resultDiv.classList.remove('hidden');
