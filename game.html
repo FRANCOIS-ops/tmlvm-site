@@ -194,19 +194,11 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
-                            <img alt="Book cover"
-                                src="https://FRANCOIS-ops.github.io/tmlvm-site/assets/images/book-cover-en.png"
-                                class="w-full rounded-lg shadow-lg opacity-90" />
-                            <img alt="Book cover"
-                                src="https://FRANCOIS-ops.github.io/tmlvm-site/assets/images/book-cover-en.png"
-                                class="w-full rounded-lg shadow-lg opacity-90" />
-                            <img alt="Book cover"
-                                src="https://FRANCOIS-ops.github.io/tmlvm-site/assets/images/book-cover-en.png"
-                                class="w-full rounded-lg shadow-lg opacity-90 hidden sm:block" />
-                            <img alt="Book cover"
-                                src="https://FRANCOIS-ops.github.io/tmlvm-site/assets/images/book-cover-en.png"
-                                class="w-full rounded-lg shadow-lg opacity-90 hidden sm:block" />
+                        <div class="flex flex-row justify-center gap-4 mb-6">
+                            <img alt="Book cover English" src="assets/images/book-cover-en.png"
+                                class="h-32 sm:h-48 w-auto rounded-lg shadow-lg opacity-90 object-contain" />
+                            <img alt="Book cover French" src="assets/images/book-cover-fr.png"
+                                class="h-32 sm:h-48 w-auto rounded-lg shadow-lg opacity-90 object-contain" />
                         </div>
 
                         <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center">
@@ -251,7 +243,7 @@
 
 
             <div class="w-full max-w-2xl bg-white border border-gray-200 rounded-3xl shadow-lg p-3 sm:p-4">
-                <div class="h-[100vh] sm:h-[120vh] w-full">
+                <div class="h-[65vh] sm:h-[80vh] w-full">
                     <iframe
                         src="https://docs.google.com/forms/d/e/1FAIpQLSeyoASer3cOZ5sGwz-8j8zGCDi2hhYLXvWDbfzi-XJ-DHG39g/viewform?embedded=true"
                         class="w-full h-full rounded-2xl" frameborder="0" marginheight="0"
@@ -262,6 +254,13 @@
                     Your data is processed in accordance with GDPR. You can unsubscribe at any time using the link
                     provided in our emails.
                 </p>
+            </div>
+
+            <div class="mt-8 mb-12">
+                <button id="replayGame"
+                    class="px-6 py-3 rounded-full bg-gray-200 text-gray-700 font-bold hover:bg-gray-300 transition shadow-sm">
+                    Replay Game (Reset)
+                </button>
             </div>
         </div>
     </section>
@@ -350,6 +349,13 @@
                 } catch {
                     alert('Email: francois.leborgne@gmail.com');
                 }
+            });
+
+            // Replay button
+            document.getElementById('replayGame').addEventListener('click', () => {
+                localStorage.removeItem('tmlvm_scratch');
+                localStorage.removeItem('tmlvm_wheel');
+                location.reload();
             });
 
             // Swipe Gesture for Wheel
