@@ -292,7 +292,7 @@
 
             // If state wasn't loaded (new game), init random
             if (scratch.isWin === null) {
-                scratch.isWin = Math.random() < 0.03;
+                scratch.isWin = Math.random() < 0.2;
                 saveState();
             } else {
                 // State loaded. If revealed, hide scratch and show outcome/wheel
@@ -723,7 +723,7 @@
             document.getElementById('thankYou').classList.add('hidden');
 
             // Re-roll outcome
-            scratch.isWin = Math.random() < 0.03;//probability of winning
+            scratch.isWin = Math.random() < 0.2;//probability of winning
 
             // Note: restart is only for resizing, we don't clear persistence here
             // because a resize shouldn't reset the game progress if they already won/lost.
@@ -779,7 +779,7 @@
             // Save that we spun
             localStorage.setItem('tmlvm_wheel', JSON.stringify({ spun: true }));
 
-            const isWin = Math.random() < 0.03;// probability of winning
+            const isWin = Math.random() < 0.2;// probability of winning
 
             // Spin a lot + random
             let rotation = 3600 + Math.random() * 360;
