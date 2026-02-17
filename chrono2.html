@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BR9V0WPVZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-0BR9V0WPVZ');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronomètre par Catégorie | Travailler moins, vivre mieux</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        :root {
+            --yellow: #fee600;
+            --blue: #00aee3;
+            --white: #ffffff;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--blue) 0%, #0095c4 100%);
+            min-height: 100vh;
+        }
+
+        .btn-play {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-play:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-play.active {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+            animation: pulse-border 2s infinite;
+        }
+
+        .btn-stop {
+            background-color: var(--white);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-stop:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 255, 255, 0.4);
+        }
+
+        .time-display {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes pulse-border {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+
+        /* Category Button Colors */
+        .cat-email {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .cat-meeting {
+            background-color: #8b5cf6;
+            color: white;
+        }
+
+        .cat-admin {
+            background-color: #6b7280;
+            color: white;
+        }
+
+        .cat-projects {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .cat-customer {
+            background-color: #f97316;
+            color: white;
+        }
+
+        .cat-travel {
+            background-color: #6366f1;
+            color: white;
+        }
+
+        .cat-others {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.75rem;
+        }
+
+        [contenteditable]:focus {
+            outline: 1px dashed white;
+            background: rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .session-item {
+            border-left: 4px solid transparent;
+        }
+
+        .modal-backdrop {
+            backdrop-filter: blur(6px);
+        }
+
+        .clickable-time:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-center justify-center p-4">
+    <!-- Return Link -->
+    <a href="index.html"
+        class="fixed top-5 left-5 z-50 text-white/50 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all"
+        title="Retour à l'accueil">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+    </a>
+
+    <div class="w-full max-w-2xl relative">
+        <!-- Language Toggles -->
+        <div class="flex justify-end gap-2 mb-2">
+            <button onclick="setLanguage('fr')" id="btn-fr"
+                class="text-xs font-bold uppercase py-1 px-2 rounded hover:bg-white/20 text-white transition-colors border border-white/20"
+                title="Français">FR</button>
+            <button onclick="setLanguage('en')" id="btn-en"
+                class="text-xs font-bold uppercase py-1 px-2 rounded hover:bg-white/20 text-white transition-colors border border-white/20 opacity-50"
+                title="English">EN</button>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <h1 class="text-white text-2xl font-bold mb-2" data-i18n="title">Chronomètre par Catégorie</h1>
+            <p class="text-white/80 font-light text-sm" data-i18n="subtitle">Cliquez sur une catégorie pour démarrer</p>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="category-grid mb-6">
+            <!-- Buttons injected by JS -->
+        </div>
+
+        <!-- Main Timer Card -->
+        <div class="card rounded-3xl shadow-2xl p-8 mb-6">
+            <div class="flex items-center justify-center mb-6">
+                <div id="statusDot" class="w-3 h-3 rounded-full bg-gray-300 mr-2"></div>
+                <span id="statusText" class="text-gray-500 font-medium text-sm uppercase tracking-wider"
+                    data-i18n="statusPause">En pause</span>
+            </div>
+
+            <!-- Current Session Timer -->
+            <div class="text-center mb-8">
+                <p class="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2" data-i18n="sessionCurrent">
+                    Session en cours</p>
+                <div id="currentTime" class="time-display text-6xl font-bold text-gray-800">
+                    00:00:00
+                </div>
+                <button id="currentStart" onclick="openRunningStartModal()"
+                    class="mt-2 inline-flex items-center justify-center gap-2 text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors clickable-time opacity-0"
+                    title="Cliquer pour modifier l’heure de départ">
+                    <span data-i18n="startLabel">Début :</span>
+                    <span id="currentStartLabel" class="time-display">–</span>
+                </button>
+                <div id="currentCategoryDisplay" class="mt-1 text-xl font-bold text-[#00aee3] min-h-[1.75rem]"></div>
+            </div>
+
+            <!-- Control Buttons (Main Stop/Play) -->
+            <div class="flex justify-center gap-4 mb-8">
+                <!-- Main Play button acts as Resume (starts last category or default) -->
+                <button id="playBtn" onclick="resumeTimer()"
+                    class="btn-dummy w-20 h-20 rounded-full bg-[#fee600] flex items-center justify-center hover:scale-105 transition-transform shadow-lg">
+                    <svg class="w-10 h-10 text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                </button>
+                <button id="stopBtn" onclick="stopTimer()"
+                    class="btn-stop w-20 h-20 rounded-full flex items-center justify-center" disabled
+                    style="opacity: 0.5;">
+                    <svg class="w-8 h-8 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 6h12v12H6z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Today's Total -->
+            <div class="bg-gradient-to-r from-[#00aee3] to-[#0095c4] rounded-2xl p-6 text-center">
+                <p class="text-white/80 font-medium text-xs uppercase tracking-wider mb-1" data-i18n="totalToday">Total
+                    aujourd'hui</p>
+                <div id="totalTime" class="time-display text-4xl font-bold text-white">
+                    00:00:00
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="card rounded-3xl shadow-2xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-bold text-gray-800" data-i18n="breakdownTitle">Répartition du temps</h2>
+                <div id="summaryTotalCheck" class="text-xs text-gray-400">Total: 0%</div>
+            </div>
+            <div id="summaryList" class="space-y-3">
+                <!-- Summary items injected by JS -->
+            </div>
+        </div>
+
+        <!-- Sessions History -->
+        <div class="card rounded-3xl shadow-2xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-bold text-gray-800" data-i18n="sessionsTitle">Sessions du jour</h2>
+            </div>
+            <div id="sessionsList" class="space-y-2 max-h-48 overflow-y-auto">
+                <p class="text-gray-400 text-sm text-center py-4" data-i18n="noSessions">Aucune session enregistrée</p>
+            </div>
+        </div>
+
+        <!-- Weekly Summary -->
+        <div class="card rounded-3xl shadow-2xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-bold text-gray-800" data-i18n="weekTitle">Semaine en cours</h2>
+                <span id="weekRange" class="text-xs text-gray-400 font-medium"></span>
+            </div>
+
+            <div class="bg-gradient-to-r from-[#00aee3] to-[#0095c4] rounded-2xl p-5 text-center mb-4">
+                <p class="text-white/80 font-medium text-xs uppercase tracking-wider mb-1" data-i18n="totalWeek">Total
+                    semaine</p>
+                <div class="flex items-center justify-center gap-2">
+                    <div id="weeklyTotal" class="time-display text-3xl font-bold text-white">00:00:00</div>
+                    <span id="weeklyDanger" class="hidden text-2xl" title="> 50h">⚠</span>
+                </div>
+            </div>
+
+            <div id="weekDays" class="space-y-2"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mb-4 flex flex-col items-center gap-3">
+            <button onclick="exportToExcel()"
+                class="bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-3 px-6 rounded-xl transition-colors flex items-center gap-2 shadow-lg w-full max-w-xs justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                <span data-i18n="btnExport">Exporter vers Excel</span>
+            </button>
+            <button onclick="resetWeek()"
+                class="bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-4 rounded-full transition-colors mt-2"
+                data-i18n="btnReset">
+                Réinitialiser les compteurs
+            </button>
+        </div>
+        <p class="text-center text-white/60 text-xs mt-6 font-light" data-i18n="footerStorage">
+            Les données sont sauvegardées localement (navigateur)
+        </p>
+    </div>
+
+    <!-- Edit Session Modal -->
+    <div id="editModal" class="fixed inset-0 hidden items-center justify-center p-4 z-50">
+        <div class="absolute inset-0 bg-black/40 modal-backdrop" onclick="closeEditModal()"></div>
+        <div class="relative w-full max-w-md card rounded-3xl shadow-2xl p-6">
+            <div class="flex items-start justify-between gap-4 mb-4">
+                <div>
+                    <h3 class="text-gray-800 font-extrabold text-lg" data-i18n="modalEditTitle">Modifier une session
+                    </h3>
+                    <p class="text-gray-500 text-sm" data-i18n="modalEditDesc">Ajustez l’heure de début et de fin.</p>
+                </div>
+                <button
+                    class="w-10 h-10 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-500 flex items-center justify-center"
+                    onclick="closeEditModal()" aria-label="Fermer">
+                    <span class="text-2xl leading-none">×</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <label class="block">
+                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                        data-i18n="labelStart">Début</span>
+                    <input id="editStart" type="time"
+                        class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#00aee3]/40" />
+                </label>
+                <label class="block">
+                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                        data-i18n="labelEnd">Fin</span>
+                    <input id="editEnd" type="time"
+                        class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#00aee3]/40" />
+                </label>
+            </div>
+
+            <div id="editHint" class="text-sm text-gray-500 mb-4"></div>
+
+            <div class="flex items-center justify-between gap-3">
+                <button onclick="deleteSessionFromModal()"
+                    class="px-4 py-3 rounded-xl bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors"
+                    data-i18n="btnDelete">
+                    Supprimer
+                </button>
+                <div class="flex items-center gap-3">
+                    <button onclick="closeEditModal()"
+                        class="px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-colors"
+                        data-i18n="btnCancel">
+                        Annuler
+                    </button>
+                    <button onclick="saveEditedSession()"
+                        class="px-5 py-3 rounded-xl bg-[#fee600] text-gray-900 font-extrabold hover:brightness-95 transition-all shadow-[0_10px_25px_rgba(254,230,0,.35)]"
+                        data-i18n="btnSave">
+                        Enregistrer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Running Session Start Modal -->
+    <div id="runningStartModal" class="fixed inset-0 hidden items-center justify-center p-4 z-50">
+        <div class="absolute inset-0 bg-black/40 modal-backdrop" onclick="closeRunningStartModal()"></div>
+        <div class="relative w-full max-w-md card rounded-3xl shadow-2xl p-6">
+            <div class="flex items-start justify-between gap-4 mb-4">
+                <div>
+                    <h3 class="text-gray-800 font-extrabold text-lg" data-i18n="modalStartTitle">Modifier le départ</h3>
+                    <p class="text-gray-500 text-sm" data-i18n="modalStartDesc">Changez la date et l’heure de départ.
+                    </p>
+                </div>
+                <button
+                    class="w-10 h-10 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-500 flex items-center justify-center"
+                    onclick="closeRunningStartModal()" aria-label="Fermer">
+                    <span class="text-2xl leading-none">×</span>
+                </button>
+            </div>
+
+            <label class="block mb-4">
+                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    data-i18n="labelStartDateTime">Départ (date + heure)</span>
+                <input id="runningStartInput" type="datetime-local"
+                    class="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#00aee3]/40" />
+            </label>
+
+            <div class="flex items-center justify-end gap-3">
+                <button onclick="closeRunningStartModal()"
+                    class="px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-colors"
+                    data-i18n="btnCancel">
+                    Annuler
+                </button>
+                <button onclick="saveRunningStart()"
+                    class="px-5 py-3 rounded-xl bg-[#fee600] text-gray-900 font-extrabold hover:brightness-95 transition-all shadow-[0_10px_25px_rgba(254,230,0,.35)]"
+                    data-i18n="btnSave">
+                    Enregistrer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SheetJS Library for Excel Export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+    <script>
+        // --- Internationalization ---
+        const DICTIONARY = {
+            fr: {
+                title: "Chronomètre par Catégorie",
+                subtitle: "Cliquez sur une catégorie pour démarrer",
+                statusPause: "En pause",
+                statusRunning: "En cours",
+                sessionCurrent: "Session en cours",
+                startLabel: "Début :",
+                totalToday: "Total aujourd'hui",
+                breakdownTitle: "Répartition du temps",
+                sessionsTitle: "Sessions du jour",
+                noSessions: "Aucune session enregistrée",
+                weekTitle: "Semaine en cours",
+                totalWeek: "Total semaine",
+                btnExport: "Exporter vers Excel",
+                btnReset: "Réinitialiser les compteurs",
+                footerStorage: "Les données sont sauvegardées localement (navigateur)",
+                modalEditTitle: "Modifier une session",
+                modalEditDesc: "Ajustez l’heure de début et de fin.",
+                labelStart: "Début",
+                labelEnd: "Fin",
+                btnDelete: "Supprimer",
+                btnCancel: "Annuler",
+                btnSave: "Enregistrer",
+                modalStartTitle: "Modifier le départ",
+                modalStartDesc: "Changez la date et l’heure de départ.",
+                labelStartDateTime: "Départ (date + heure)",
+                alertInvalidDate: "Date invalide",
+                confirmDelete: "Supprimer cette session ?",
+                confirmReset: "Effacer toutes les données de la semaine ?",
+                alertReset: "Semaine réinitialisée.",
+                days: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
+            },
+            en: {
+                title: "Category Time Tracker",
+                subtitle: "Click a category to start tracking",
+                statusPause: "Paused",
+                statusRunning: "Running",
+                sessionCurrent: "Current Session",
+                startLabel: "Start:",
+                totalToday: "Total Today",
+                breakdownTitle: "Time Breakdown",
+                sessionsTitle: "Today's Sessions",
+                noSessions: "No sessions recorded",
+                weekTitle: "Current Week",
+                totalWeek: "Total Week",
+                btnExport: "Export to Excel",
+                btnReset: "Reset Counters",
+                footerStorage: "Data is saved locally in your browser",
+                modalEditTitle: "Edit Session",
+                modalEditDesc: "Adjust start and end times.",
+                labelStart: "Start",
+                labelEnd: "End",
+                btnDelete: "Delete",
+                btnCancel: "Cancel",
+                btnSave: "Save",
+                modalStartTitle: "Edit Start Time",
+                modalStartDesc: "Change the start date and time.",
+                labelStartDateTime: "Start (Date + Time)",
+                alertInvalidDate: "Invalid Date",
+                confirmDelete: "Delete this session?",
+                confirmReset: "Clear all data for this week?",
+                alertReset: "Week reset.",
+                days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            }
+        };
+
+        let currentLang = 'fr';
+
+        function setLanguage(lang) {
+            if (!DICTIONARY[lang]) return;
+            currentLang = lang;
+            localStorage.setItem('chrono2_lang', lang);
+
+            // Update Toggles
+            document.getElementById('btn-fr').style.opacity = lang === 'fr' ? '1' : '0.5';
+            document.getElementById('btn-en').style.opacity = lang === 'en' ? '1' : '0.5';
+
+            // Update Static Texts
+            const dict = DICTIONARY[lang];
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    if (el.tagName === 'INPUT' && el.getAttribute('placeholder')) {
+                        el.setAttribute('placeholder', dict[key]);
+                    } else {
+                        // Preserve icon if present in buttons
+                        if (el.children.length > 0 && el.tagName === 'BUTTON') {
+                            // find text node
+                            Array.from(el.childNodes).forEach(node => {
+                                if (node.nodeType === 3 && node.textContent.trim()) {
+                                    node.textContent = dict[key];
+                                }
+                            });
+                        } else {
+                            el.textContent = dict[key];
+                        }
+                    }
+                }
+            });
+
+            // Refresh Dynamic Parts
+            updateUI();
+            updateWeeklySummary();
+            updateSessionsList();
+        }
+
+
+        // --- State ---
+        let isRunning = false;
+        let startTime = null;
+        let timerInterval = null;
+        let pActiveCategory = null;
+        let editingSessionIndex = null; // for modal
+
+        // Default Categories
+        const DEFAULT_CATEGORIES = [
+            { id: 'email', label: 'Email', colorClass: 'cat-email' },
+            { id: 'meeting', label: 'Meeting', colorClass: 'cat-meeting' },
+            { id: 'admin', label: 'Admin', colorClass: 'cat-admin' },
+            { id: 'projects', label: 'Projects', colorClass: 'cat-projects' },
+            { id: 'customer', label: 'Customer Facing', colorClass: 'cat-customer' },
+            { id: 'travel', label: 'Travel', colorClass: 'cat-travel' },
+            { id: 'others', label: 'Others', colorClass: 'cat-others' }
+        ];
+
+        let categories = JSON.parse(localStorage.getItem('chrono2_categories')) || DEFAULT_CATEGORIES;
+
+        // --- Helpers ---
+        function pad2(n) { return String(n).padStart(2, '0'); }
+        function dateKeyFromDate(d) { return `chrono2_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`; }
+        function getTodayKey() { return dateKeyFromDate(new Date()); }
+
+        function formatTime(totalSeconds) {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function parseHHMM(str) {
+            const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(String(str || '').trim());
+            if (!m) return null;
+            return { h: parseInt(m[1], 10), min: parseInt(m[2], 10) };
+        }
+
+        function hhmmFromDate(d) {
+            return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+        }
+
+        // Week helpers
+        function getStartOfWeek(d) {
+            const date = new Date(d);
+            date.setHours(0, 0, 0, 0);
+            const day = date.getDay(); // 0 Sun..6 Sat
+            const diff = (day === 0 ? -6 : 1 - day); // move to Monday
+            date.setDate(date.getDate() + diff);
+            return date;
+        }
+        function getWeekRangeLabel(start) {
+            const end = new Date(start);
+            end.setDate(end.getDate() + 6);
+            const fmt = (x) => `${pad2(x.getDate())}/${pad2(x.getMonth() + 1)}`;
+            return `${fmt(start)} – ${fmt(end)}`;
+        }
+
+        function getColorCode(hours) {
+            if (hours >= 10) return '#ff0000';
+            if (hours >= 8) return '#ffa500';
+            if (hours > 0) return '#10b981';
+            return '#6B7280';
+        }
+
+        function getWeeklyColorCode(hours) {
+            if (hours >= 50) return '#ff0000';
+            if (hours >= 40) return '#ffa500';
+            if (hours > 0) return '#10b981';
+            return '#6B7280';
+        }
+
+        // --- Storage ---
+        function loadData() {
+            const key = getTodayKey();
+            try {
+                const data = localStorage.getItem(key);
+                if (data) return JSON.parse(data);
+            } catch (e) { console.error('Error loading data', e); }
+            return { sessions: [], totalSeconds: 0 };
+        }
+
+        function loadDataForDate(d) {
+            const key = dateKeyFromDate(d);
+            const data = localStorage.getItem(key);
+            if (data) return JSON.parse(data);
+            return { sessions: [], totalSeconds: 0 };
+        }
+
+        function saveData(data) {
+            const key = getTodayKey();
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function saveCategories() {
+            localStorage.setItem('chrono2_categories', JSON.stringify(categories));
+        }
+
+        // --- Core Logic ---
+        function checkRunningSession() {
+            const runningSession = localStorage.getItem('chrono2_running');
+            if (runningSession) {
+                try {
+                    const session = JSON.parse(runningSession);
+                    startTime = session.startTime;
+                    pActiveCategory = session.category;
+                    isRunning = true;
+                    if (timerInterval) clearInterval(timerInterval);
+                    timerInterval = setInterval(updateTimerDisplay, 1000);
+                    updateTimerDisplay();
+                } catch (e) {
+                    console.error("Error parsing running session", e);
+                }
+            }
+            renderCategories();
+            updateUI();
+            updateSummary();
+            updateSessionsList();
+            updateWeeklySummary();
+        }
+
+        function startTimer(categoryId) {
+            if (isRunning && pActiveCategory === categoryId) {
+                stopTimer();
+                return;
+            }
+            if (isRunning) {
+                stopTimer();
+            }
+
+            isRunning = true;
+            startTime = Date.now();
+            pActiveCategory = categoryId;
+
+            localStorage.setItem('chrono2_running', JSON.stringify({
+                startTime: startTime,
+                category: categoryId
+            }));
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimerDisplay, 1000);
+
+            updateTimerDisplay();
+            updateUI();
+            renderCategories();
+        }
+
+        function stopTimer() {
+            if (!isRunning) return;
+
+            clearInterval(timerInterval);
+            const now = Date.now();
+            const sessionSeconds = Math.floor((now - startTime) / 1000);
+
+            if (sessionSeconds > 0) {
+                const data = loadData();
+                const session = {
+                    start: startTime,
+                    end: now,
+                    duration: sessionSeconds,
+                    category: pActiveCategory
+                };
+                data.sessions.push(session);
+                data.totalSeconds += sessionSeconds;
+                saveData(data);
+            }
+
+            localStorage.removeItem('chrono2_running');
+            isRunning = false;
+            startTime = null;
+            pActiveCategory = null;
+
+            document.getElementById('currentTime').textContent = '00:00:00';
+            document.getElementById('currentCategoryDisplay').textContent = '';
+
+            updateUI();
+            updateSummary();
+            updateSessionsList();
+            updateWeeklySummary();
+            renderCategories();
+        }
+
+        function resumeTimer() {
+            if (isRunning) return;
+            const catToStart = pActiveCategory || categories[0].id;
+            startTimer(catToStart);
+        }
+
+        function updateTimerDisplay() {
+            if (isRunning && startTime) {
+                const now = Date.now();
+                const elapsed = Math.floor((now - startTime) / 1000);
+                document.getElementById('currentTime').textContent = formatTime(elapsed);
+
+                const cat = categories.find(c => c.id === pActiveCategory);
+                if (cat) {
+                    document.getElementById('currentCategoryDisplay').textContent = cat.label;
+                    document.getElementById('currentCategoryDisplay').style.color = getComputedStyle(document.body).getPropertyValue('--gray-800');
+                    document.getElementById('currentCategoryDisplay').className = `mt-2 text-xl font-bold min-h-[1.75rem]`;
+                }
+
+                // Show start time edit button
+                const startDate = new Date(startTime);
+                const locale = currentLang === 'fr' ? 'fr-FR' : 'en-GB';
+                const startStr = startDate.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('currentStartLabel').textContent = startStr;
+
+                const data = loadData();
+                const total = (data.totalSeconds || 0) + elapsed;
+                document.getElementById('totalTime').textContent = formatTime(total);
+
+                updateSummary();
+            }
+        }
+
+        function updateUI() {
+            const playBtn = document.getElementById('playBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const startBtn = document.getElementById('currentStart');
+
+            if (isRunning) {
+                playBtn.disabled = true;
+                playBtn.style.opacity = '0.5';
+                playBtn.classList.remove('hover:scale-105');
+                stopBtn.disabled = false;
+                stopBtn.style.opacity = '1';
+                statusDot.className = 'w-3 h-3 rounded-full bg-green-500 mr-2 pulse-animation';
+                statusText.textContent = DICTIONARY[currentLang].statusRunning;
+                statusText.className = 'text-green-600 font-semibold text-sm uppercase tracking-wider';
+                startBtn.classList.remove('opacity-0');
+            } else {
+                playBtn.disabled = false;
+                playBtn.style.opacity = '1';
+                playBtn.classList.add('hover:scale-105');
+                stopBtn.disabled = true;
+                stopBtn.style.opacity = '0.5';
+                statusDot.className = 'w-3 h-3 rounded-full bg-gray-300 mr-2';
+                statusText.textContent = DICTIONARY[currentLang].statusPause;
+                statusText.className = 'text-gray-500 font-medium text-sm uppercase tracking-wider';
+                startBtn.classList.add('opacity-0');
+            }
+
+            const data = loadData();
+            if (!isRunning) {
+                document.getElementById('totalTime').textContent = formatTime(data.totalSeconds);
+            }
+        }
+
+        function renderCategories() {
+            const container = document.querySelector('.category-grid');
+            if (!container) return;
+
+            container.innerHTML = categories.map(cat => {
+                const isActive = isRunning && pActiveCategory === cat.id;
+                return `
+                    <button 
+                        onclick="startTimer('${cat.id}')"
+                        class="${cat.colorClass} ${isActive ? 'active' : ''} btn-play flex flex-col items-center justify-center p-3 rounded-2xl h-24 relative overflow-hidden text-center group w-full shadow-sm hover:shadow-md transition-all"
+                    >
+                        <div class="z-10 w-full flex flex-col items-center">
+                            <svg class="w-6 h-6 mb-1 ${isActive ? 'animate-bounce' : ''}" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="${isActive ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z' : 'M8 5v14l11-7z'}" />
+                            </svg>
+                            <span 
+                                contenteditable="true" 
+                                onclick="event.stopPropagation();"
+                                onblur="updateCategoryLabel('${cat.id}', this.innerText)"
+                                onkeydown="handleEnter(event, this)"
+                                class="font-bold text-[11px] sm:text-xs uppercase tracking-wide block w-full outline-none border-b border-transparent hover:border-white/50 focus:border-white transition-colors truncate px-1"
+                            >${cat.label}</span>
+                        </div>
+                        ${isActive ? '<div class="absolute inset-0 bg-white/20"></div>' : ''}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function updateCategoryLabel(id, newLabel) {
+            if (!newLabel.trim()) return;
+            const cat = categories.find(c => c.id === id);
+            if (cat) {
+                cat.label = newLabel.trim();
+                saveCategories();
+                if (isRunning && pActiveCategory === id) {
+                    document.getElementById('currentCategoryDisplay').textContent = cat.label;
+                }
+                updateSummary();
+            }
+        }
+
+        function handleEnter(e, el) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                el.blur();
+            }
+        }
+
+        function updateSummary() {
+            const data = loadData();
+            const sums = {};
+            categories.forEach(c => sums[c.id] = 0);
+
+            (data.sessions || []).forEach(s => {
+                let catId = s.category;
+                if (!categories.find(c => c.id === catId)) catId = 'others';
+                if (sums[catId] !== undefined) {
+                    sums[catId] += (s.duration || 0);
+                }
+            });
+
+            let currentElapsed = 0;
+            if (isRunning && startTime && pActiveCategory) {
+                currentElapsed = Math.floor((Date.now() - startTime) / 1000);
+                if (sums[pActiveCategory] !== undefined) {
+                    sums[pActiveCategory] += currentElapsed;
+                }
+            }
+
+            let total = 0;
+            Object.values(sums).forEach(v => total += v);
+
+            const container = document.getElementById('summaryList');
+            if (!container) return;
+
+            let rows = '';
+            categories.forEach(cat => {
+                const duration = sums[cat.id] || 0;
+                const percent = total > 0 ? ((duration / total) * 100).toFixed(1) : '0.0';
+                const timeStr = formatTime(duration);
+
+                rows += `
+                    <div class="mb-3">
+                        <div class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <div class="w-3 h-3 rounded-full flex-shrink-0 ${cat.colorClass}"></div>
+                                <span class="text-sm font-bold text-gray-700 truncate">${cat.label}</span>
+                            </div>
+                            <div class="text-right flex-shrink-0 ml-2">
+                                <div class="font-mono font-bold text-gray-800 text-sm">${timeStr}</div>
+                                <div class="text-xs text-gray-400 font-medium">${percent}%</div>
+                            </div>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1 overflow-hidden">
+                            <div class="${cat.colorClass} h-full transition-all duration-300 ease-linear" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = rows;
+            const checkEl = document.getElementById('summaryTotalCheck');
+            if (checkEl) checkEl.textContent = `Total: ${formatTime(total)}`;
+        }
+
+        function updateSessionsList() {
+            const data = loadData();
+            const container = document.getElementById('sessionsList');
+            if (!container) return;
+
+            if (data.sessions.length === 0) {
+                container.innerHTML = `<p class="text-gray-400 text-sm text-center py-4">${DICTIONARY[currentLang].noSessions}</p>`;
+                return;
+            }
+
+            const items = data.sessions.map((session, index) => ({ session, index })).reverse();
+            const locale = currentLang === 'fr' ? 'fr-FR' : 'en-GB';
+
+            container.innerHTML = items.map(({ session, index }) => {
+                const startDate = new Date(session.start);
+                const endDate = new Date(session.end);
+                const startStr = startDate.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+                const endStr = endDate.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+                const cat = categories.find(c => c.id === session.category) || { label: '?', colorClass: 'bg-gray-400' };
+
+                return `
+                    <div class="session-item flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group">
+                        <div class="flex items-center gap-3 flex-1 min-w-0">
+                            <div class="w-2 h-8 rounded-full ${cat.colorClass}"></div>
+                            <div onclick="openEditModal(${index})" class="cursor-pointer overflow-hidden">
+                                <div class="text-xs font-bold text-gray-500 uppercase truncate">${cat.label}</div>
+                                <div class="text-sm font-semibold text-gray-800 hover:text-blue-600 transition-colors whitespace-nowrap">
+                                    ${startStr} - ${endStr}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                             <div class="font-mono text-sm font-bold text-gray-600">
+                                ${formatTime(session.duration)}
+                            </div>
+                            <button onclick="openEditModal(${index})" class="w-8 h-8 rounded-full bg-white text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100" title="Edit">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- Modal Logic ---
+
+        // Open Edit Modal
+        function openEditModal(index) {
+            if (isRunning) {
+                // We don't forbid editing past sessions while running, but safeguard correctness
+                // It's safer to allow it.
+            }
+            const data = loadData();
+            const session = data.sessions[index];
+            if (!session) return;
+
+            editingSessionIndex = index;
+            const startDate = new Date(session.start);
+            const endDate = new Date(session.end);
+
+            document.getElementById('editStart').value = hhmmFromDate(startDate);
+            document.getElementById('editEnd').value = hhmmFromDate(endDate);
+
+            const hintEl = document.getElementById('editHint');
+            // Basic hint
+            hintEl.textContent = `${categories.find(c => c.id === session.category)?.label || ''} - ${formatTime(session.duration)}`;
+
+            const modal = document.getElementById('editModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            editingSessionIndex = null;
+        }
+
+        function saveEditedSession() {
+            if (editingSessionIndex === null) return;
+            const data = loadData();
+            const session = data.sessions[editingSessionIndex];
+            if (!session) return;
+
+            const startVal = document.getElementById('editStart').value;
+            const endVal = document.getElementById('editEnd').value;
+
+            const s = parseHHMM(startVal);
+            const e = parseHHMM(endVal);
+            if (!s || !e) return;
+
+            // Reconstruct dates based on original session date
+            const baseDate = new Date(session.start); // Keeps the day
+            const newStart = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate(), s.h, s.min);
+            let newEnd = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate(), e.h, e.min);
+
+            if (newEnd < newStart) {
+                // assume next day
+                newEnd.setDate(newEnd.getDate() + 1);
+            }
+
+            session.start = newStart.getTime();
+            session.end = newEnd.getTime();
+            session.duration = Math.floor((session.end - session.start) / 1000);
+
+            // Recompute total
+            data.totalSeconds = data.sessions.reduce((acc, s) => acc + s.duration, 0);
+
+            saveData(data);
+            closeEditModal();
+            updateTotalTime(); // helper
+            updateSessionsList();
+            updateSummary();
+            updateWeeklySummary();
+        }
+
+        function deleteSessionFromModal() {
+            if (editingSessionIndex === null) return;
+            if (!confirm(DICTIONARY[currentLang].confirmDelete)) return;
+
+            const data = loadData();
+            data.sessions.splice(editingSessionIndex, 1);
+            data.totalSeconds = data.sessions.reduce((acc, s) => acc + s.duration, 0);
+            saveData(data);
+
+            closeEditModal();
+            updateTotalTime();
+            updateSessionsList();
+            updateSummary();
+            updateWeeklySummary();
+        }
+
+        function updateTotalTime() {
+            const data = loadData();
+            if (!isRunning) {
+                document.getElementById('totalTime').textContent = formatTime(data.totalSeconds);
+            }
+        }
+
+        // Running Start Modal
+        function openRunningStartModal() {
+            if (!isRunning || !startTime) return;
+            const modal = document.getElementById('runningStartModal');
+            const input = document.getElementById('runningStartInput');
+
+            const d = new Date(startTime);
+            const year = d.getFullYear();
+            const month = pad2(d.getMonth() + 1);
+            const day = pad2(d.getDate());
+            const hours = pad2(d.getHours());
+            const minutes = pad2(d.getMinutes());
+
+            input.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeRunningStartModal() {
+            const modal = document.getElementById('runningStartModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveRunningStart() {
+            const input = document.getElementById('runningStartInput');
+            if (!input.value) return;
+
+            const newDate = new Date(input.value);
+            if (isNaN(newDate.getTime())) {
+                alert(DICTIONARY[currentLang].alertInvalidDate);
+                return;
+            }
+
+            startTime = newDate.getTime();
+            localStorage.setItem('chrono2_running', JSON.stringify({
+                startTime: startTime,
+                category: pActiveCategory
+            }));
+
+            updateTimerDisplay();
+            closeRunningStartModal();
+        }
+
+        function updateWeeklySummary() {
+            const start = getStartOfWeek(new Date());
+            const weekRangeEl = document.getElementById('weekRange');
+            const weeklyTotalEl = document.getElementById('weeklyTotal');
+            const weekDaysEl = document.getElementById('weekDays');
+            const weeklyDangerEl = document.getElementById('weeklyDanger');
+
+            if (!weekRangeEl || !weeklyTotalEl || !weekDaysEl) return;
+
+            weekRangeEl.textContent = getWeekRangeLabel(start);
+
+            const dayLabels = DICTIONARY[currentLang].days;
+            let weeklySeconds = 0;
+            const rows = [];
+
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(start);
+                d.setDate(d.getDate() + i);
+                const data = loadDataForDate(d);
+                const seconds = data.totalSeconds || 0;
+                weeklySeconds += seconds;
+
+                const hours = seconds / 3600;
+                const isToday = (new Date()).toDateString() === d.toDateString();
+                const dateStr = `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}`;
+
+                const color = getColorCode(hours);
+                const dangerSign = hours > 11 ? '<span title="Attention" style="color:#ff0000; font-weight:bold; margin-left:4px;">⚠</span>' : '';
+
+                rows.push(`
+                    <div class="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3 ${isToday ? 'ring-2 ring-[#fee600]/70' : ''}">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 text-gray-700 font-semibold">${dayLabels[i]}</div>
+                            <div class="text-xs text-gray-400">${dateStr}</div>
+                            ${dangerSign}
+                        </div>
+                        <div class="time-display text-gray-800 font-bold" style="color:${color}">${formatTime(seconds)}</div>
+                    </div>
+                `);
+            }
+
+            const weeklyHours = weeklySeconds / 3600;
+            weeklyTotalEl.textContent = formatTime(weeklySeconds);
+            weeklyTotalEl.style.color = getWeeklyColorCode(weeklyHours);
+
+            if (weeklyDangerEl) {
+                if (weeklyHours >= 50) {
+                    weeklyDangerEl.classList.remove('hidden');
+                    weeklyDangerEl.classList.add('inline-block');
+                } else {
+                    weeklyDangerEl.classList.add('hidden');
+                    weeklyDangerEl.classList.remove('inline-block');
+                }
+            }
+            weekDaysEl.innerHTML = rows.join('');
+        }
+
+        function exportToExcel() {
+            const wb = XLSX.utils.book_new();
+
+            let allSessions = [];
+            let categoryTotals = {};
+            categories.forEach(c => categoryTotals[c.label] = 0);
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('chrono2_') && !key.includes('running') && !key.includes('categories')) {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data.sessions) {
+                        data.sessions.forEach(s => {
+                            const cat = categories.find(c => c.id === s.category) || { label: 'Inconnu', id: 'unknown' };
+                            if (categoryTotals[cat.label] === undefined) categoryTotals[cat.label] = 0;
+                            categoryTotals[cat.label] += (s.duration || 0);
+
+                            const dateObj = new Date(s.start);
+                            const dateStr = dateObj.toLocaleDateString();
+                            const startStr = dateObj.toLocaleTimeString();
+                            const endStr = new Date(s.end).toLocaleTimeString();
+
+                            allSessions.push({
+                                "Date": dateStr,
+                                "Catégorie": cat.label,
+                                "Heure Début": startStr,
+                                "Heure Fin": endStr,
+                                "Durée (s)": s.duration,
+                                "Durée (h)": (s.duration / 3600).toFixed(2)
+                            });
+                        });
+                    }
+                }
+            }
+
+            const sheet1Data = Object.keys(categoryTotals).map(catLabel => ({
+                "Catégorie": catLabel,
+                "Durée Totale (s)": categoryTotals[catLabel],
+                "Durée Totale (h)": (categoryTotals[catLabel] / 3600).toFixed(2)
+            }));
+
+            const ws1 = XLSX.utils.json_to_sheet(sheet1Data);
+            XLSX.utils.book_append_sheet(wb, ws1, "Totaux par Catégorie");
+
+            allSessions.sort((a, b) => new Date(a.Date + ' ' + a["Heure Début"]) - new Date(b.Date + ' ' + b["Heure Début"]));
+
+            const ws2 = XLSX.utils.json_to_sheet(allSessions);
+            XLSX.utils.book_append_sheet(wb, ws2, "Détail des Sessions");
+
+            XLSX.writeFile(wb, "Chrono2_Export.xlsx");
+        }
+
+        function resetWeek() {
+            if (!confirm(DICTIONARY[currentLang].confirmReset)) return;
+            try {
+                const key = getTodayKey();
+                localStorage.removeItem(key);
+                localStorage.removeItem('chrono2_running');
+            } catch (e) { }
+            isRunning = false;
+            startTime = null;
+            pActiveCategory = null;
+            document.getElementById('currentTime').textContent = '00:00:00';
+            document.getElementById('totalTime').textContent = '00:00:00';
+            checkRunningSession();
+            alert(DICTIONARY[currentLang].alertReset);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('chrono2_lang');
+            if (savedLang) {
+                setLanguage(savedLang);
+            } else {
+                setLanguage('fr');
+            }
+            renderCategories();
+            checkRunningSession();
+
+            // Re-apply texts if language was set before render
+            setLanguage(currentLang);
+        });
+
+    </script>
+</body>
+
+</html>
