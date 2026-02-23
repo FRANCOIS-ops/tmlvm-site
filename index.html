@@ -252,18 +252,24 @@
   <script>
     const btn = document.getElementById("mobile-menu-btn");
     const menu = document.getElementById("mobile-menu");
-    const menuLinks = menu.querySelectorAll("a");
 
-    btn.addEventListener("click", () => {
+    function closeMenu() {
+      menu.classList.add("hidden");
+      menu.classList.remove("flex");
+    }
+
+    function toggleMenu() {
       menu.classList.toggle("hidden");
       menu.classList.toggle("flex");
-    });
+    }
 
-    menuLinks.forEach(link => {
-      link.addEventListener("click", () => {
-        menu.classList.add("hidden");
-        menu.classList.remove("flex");
-      });
+    btn.addEventListener("click", toggleMenu);
+
+    // Use event delegation on the menu — works for all links inside
+    menu.addEventListener("click", function (e) {
+      if (e.target.closest("a")) {
+        closeMenu();
+      }
     });
   </script>
 </body>
