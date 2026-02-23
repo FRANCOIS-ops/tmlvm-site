@@ -1,19 +1,18 @@
 [
   {
-    "slug": "podcast-courrier-cadres",
-    "title": "Podcast Courrier Cadres: Non, ça ne va pas.",
-    "category": "Actualités",
-    "publishedAt": "2026-01-31",
-    "excerpt": "C'est ce que j'ai répondu dans le podcast Good Job. J'ai un peu cassé l'ambiance, mais je n'avais pas envie de donner la réponse automatique.",
+    "slug": "why-codev-works",
+    "title": "Le Codev, une machine à générer des idées",
+    "category": "Efficacité Collective",
+    "publishedAt": "2026-02-23",
+    "excerpt": "Le Codev est un outil permettant de canaliser la puissance créative d'un groupe de manière structurée et très efficace. En structurant le temps, les rôles et les temps de parole, il évite les solutions prématurées et les discussions dispersées.",
     "keywords": [
-      "\"podcast\"",
-      " \"good job\"",
-      " \"courrier cadres\"",
-      " \"burnout\"",
-      " \"santé mentale\"",
-      " \"travail\""
+      "\"codev\"",
+      " \"efficacité logicielle\"",
+      " \"réunions\"",
+      " \"management\"",
+      " \"intelligence collective\""
     ],
-    "file": "content/blog/podcast-courrier-cadres.md"
+    "file": "content/blog/why-codev-works.md"
   },
   {
     "slug": "working-less-living-better",
@@ -144,5 +143,16 @@
       " \"équilibre\""
     ],
     "file": "content/blog/lancement-livre.md"
+  },
+  {
+    "slug": "podcast-courrier-cadres",
+    "title": "Podcast Courrier Cadres: Non, ça ne va pas.",
+    "category": "Actualités",
+    "publishedAt": "1970-01-01",
+    "excerpt": "C'est ce que j'ai répondu dans le podcast Good Job. J'ai un peu cassé l'ambiance, mais je n'avais pas envie de donner la réponse automatique.",
+    "keywords": [
+      ""
+    ],
+    "file": "content/blog/podcast-courrier-cadres.md"
   }
 ]
