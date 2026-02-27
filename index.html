@@ -29,9 +29,27 @@
         <a href="#livre" class="hover:text-cyan-200">Le livre</a>
         <a href="#methode" class="hover:text-cyan-200">Méthode 14 jours</a>
         <a href="#blog" class="hover:text-cyan-200">Blog</a>
-        <a href="eisenhower.html" class="hover:text-cyan-200">Matrice Eisenhower</a>
-        <a href="chrono.html" class="hover:text-cyan-200">Chrono</a>
-        <a href="codev.html" class="hover:text-cyan-200">Codev</a>
+        <div class="relative group">
+          <button class="hover:text-cyan-200 items-center gap-1 focus:outline-none flex">
+            Outils
+            <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div
+            class="absolute left-0 top-full pt-4 w-52 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+            <div class="bg-white rounded-xl shadow-xl border border-slate-100 flex flex-col py-2 overflow-hidden">
+              <a href="eisenhower.html"
+                class="px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">Matrice
+                Eisenhower</a>
+              <a href="chrono.html"
+                class="px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">Chrono</a>
+              <a href="codev.html"
+                class="px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-cyan-600 transition-colors">Codev</a>
+            </div>
+          </div>
+        </div>
         <a href="stay-updated.html" class="hover:text-cyan-200">Restons en contact</a>
         <a href="map.html" class="bg-white text-slate-900 font-semibold px-4 py-2 rounded-full shadow-lg ml-2">
           Commander
@@ -52,9 +70,14 @@
         <a href="#livre" class="block hover:text-cyan-200 text-lg">Le livre</a>
         <a href="#methode" class="block hover:text-cyan-200 text-lg">Méthode 14 jours</a>
         <a href="#blog" class="block hover:text-cyan-200 text-lg">Blog</a>
-        <a href="eisenhower.html" class="block hover:text-cyan-200 text-lg">Matrice Eisenhower</a>
-        <a href="chrono.html" class="block hover:text-cyan-200 text-lg">Chrono</a>
-        <a href="codev.html" class="block hover:text-cyan-200 text-lg">Codev</a>
+        <div class="flex flex-col space-y-3">
+          <div class="text-slate-500 text-sm font-bold uppercase tracking-wider mt-2">Outils</div>
+          <div class="flex flex-col space-y-4 pl-4 border-l-2 border-slate-700 ml-1">
+            <a href="eisenhower.html" class="block hover:text-cyan-200 text-lg">Matrice Eisenhower</a>
+            <a href="chrono.html" class="block hover:text-cyan-200 text-lg">Chrono</a>
+            <a href="codev.html" class="block hover:text-cyan-200 text-lg">Codev</a>
+          </div>
+        </div>
         <a href="stay-updated.html" class="block hover:text-cyan-200 text-lg">Restons en contact</a>
         <a href="map.html"
           class="inline-block bg-white text-slate-900 font-semibold px-6 py-3 rounded-full text-center mt-4">
