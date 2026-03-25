@@ -1,15 +1,49 @@
 [
   {
+    "slug": "6-conseils-pour-arreter-la-reunionite",
+    "title": "6 conseils pour arrêter la réunionite",
+    "category": "Efficacité Collective",
+    "publishedAt": "2026-03-05",
+    "excerpt": "2 mois par an, c’est le temps que vous perdez, en moyenne, en réunions inutiles, ce qui concernerait un tiers d'entre elles.",
+    "keywords": [
+      "\"réunions\"",
+      " \"efficacité\"",
+      " \"management\"",
+      " \"temps\"",
+      " \"réunionite\"",
+      " \"Louis VAREILLE\""
+    ],
+    "file": "content/blog/6-conseils-pour-arreter-la-reunionite.md"
+  },
+  {
+    "slug": "mercredi-temps-partiel",
+    "title": "Dimanche, c'était la journée de la femme. Mercredi, c'est la journée des enfants. ",
+    "category": "Vie Personnelle",
+    "publishedAt": "2026-03-12",
+    "excerpt": "77 % des salariés à temps partiel sont des femmes, et dans 50 % des cas c'est pour des raisons familiales. Mais sont-elles vraiment à temps partiel ? Ou travaillent-elles autant pour moins ?",
+    "keywords": [
+      "\"temps partiel\"",
+      " \"inégalités hommes femmes\"",
+      " \"travail\"",
+      " \"vie perso\"",
+      " \"femmes\"",
+      " \"charge de travail\"",
+      " \"Toggl\"",
+      " \"salaire\""
+    ],
+    "file": "content/blog/mercredi-temps-partiel.md"
+  },
+  {
     "slug": "amazons-secret-sauce",
     "title": "Amazon's secret sauce",
     "category": "Management",
     "publishedAt": "2026-02-25",
     "excerpt": "You know Amazon’s secret sauce? Kindle. Prime Video. AWS. They all started the same way. With a fake press release.",
     "keywords": [
-      "\"amazon\"",
-      " \"working backwards\"",
+      "\"working backwards\"",
+      " \"amazon\"",
       " \"press release\"",
-      " \"product\""
+      " \"prompt\""
     ],
     "file": "content/blog/amazons-secret-sauce.md"
   },
