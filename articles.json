@@ -1,5 +1,20 @@
 [
   {
+    "slug": "le-sens-moteur-efficacite",
+    "title": "Le sens est le moteur de l’efficacité.",
+    "category": "Philosophie et Travail",
+    "publishedAt": "2026-03-27",
+    "excerpt": "Plus d’un Français sur quatre juge avoir un travail qui n’a pas de sens. L’efficacité est le gain de vitesse, le sens en est la direction. Découvrez les cinq critères du travail SENSÉ.",
+    "keywords": [
+      "\"sens\"",
+      " \"efficacité\"",
+      " \"philosophie\"",
+      " \"bullshit job\"",
+      " \"équilibre\""
+    ],
+    "file": "content/blog/le-sens-moteur-efficacite.md"
+  },
+  {
     "slug": "interview-ici-paris",
     "title": "Interview Ici Paris",
     "category": "Actualités",
