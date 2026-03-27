@@ -1,5 +1,20 @@
 [
   {
+    "slug": "interview-ici-paris",
+    "title": "Interview Ici Paris",
+    "category": "Actualités",
+    "publishedAt": "2026-03-27",
+    "excerpt": "Hier, Marie Leborgne Lucas était invitée sur ici Paris Ile-de-France, une radio de Radio France. Une interview très sympa, avec Corentine Feltz.",
+    "keywords": [
+      "\"radio france\"",
+      " \"ici paris\"",
+      " \"interview\"",
+      " \"temps de travail\"",
+      " \"toggl\""
+    ],
+    "file": "content/blog/interview-ici-paris.md"
+  },
+  {
     "slug": "6-conseils-pour-arreter-la-reunionite",
     "title": "6 conseils pour arrêter la réunionite",
     "category": "Efficacité Collective",
