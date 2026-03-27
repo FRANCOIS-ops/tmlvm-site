@@ -1,5 +1,22 @@
 [
   {
+    "slug": "the-eisenhower-matrix",
+    "title": "The Eisenhower Matrix",
+    "category": "Efficacité Personnelle",
+    "publishedAt": "2026-03-27",
+    "excerpt": "I have two kinds of problems: the urgent and the important. The urgent are not important, and the important are never urgent. Stephen Covey's matrix allows you to exit the trap.",
+    "keywords": [
+      "\"Eisenhower\"",
+      " \"matrix\"",
+      " \"urgent\"",
+      " \"important\"",
+      " \"Stephen Covey\"",
+      " \"efficiency\"",
+      " \"priorities\""
+    ],
+    "file": "content/blog/the-eisenhower-matrix.md"
+  },
+  {
     "slug": "top-5-conseils",
     "title": "Top 5 conseils",
     "category": "Efficacité Personnelle",
