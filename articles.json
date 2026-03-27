@@ -1,5 +1,20 @@
 [
   {
+    "slug": "top-5-conseils",
+    "title": "Top 5 conseils",
+    "category": "Efficacité Personnelle",
+    "publishedAt": "2026-03-27",
+    "excerpt": "Quels sont vos top 5 conseils pour travailler moins et vivre mieux ? Ma réponse est que vous n’aurez jamais moins de travail. La question est donc : qu’est-ce que vous choisissez de ne pas faire ?",
+    "keywords": [
+      "\"conseils\"",
+      " \"efficacité\"",
+      " \"priorités\"",
+      " \"challenges\"",
+      " \"temps\""
+    ],
+    "file": "content/blog/top-5-conseils.md"
+  },
+  {
     "slug": "le-sens-moteur-efficacite",
     "title": "Le sens est le moteur de l’efficacité.",
     "category": "Philosophie et Travail",
