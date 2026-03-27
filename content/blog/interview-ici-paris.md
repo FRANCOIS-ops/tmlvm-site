@@ -32,4 +32,4 @@ Combien d’heures travaille-t-on vraiment ?
 
 \#YouGetWhatYouMeasure
 
-*Article de Marie Leborgne Lucas*
+*François Leborgne*
