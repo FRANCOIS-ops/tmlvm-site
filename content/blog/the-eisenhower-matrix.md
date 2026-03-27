@@ -41,14 +41,6 @@ Here are four questions to help you put tasks in the right box:
 
 If you want to try it out, we built a simple free tool: access it here [https://travaillermieux.fr/eisenhower.html](https://travaillermieux.fr/eisenhower.html)
 
-![Eisenhower Matrix Step 1](/assets/images/blog/the-eisenhower-matrix/img-1.png)
-<br><br>
-![Eisenhower Matrix Step 2](/assets/images/blog/the-eisenhower-matrix/img-2.png)
-<br><br>
-![Eisenhower Matrix Step 3](/assets/images/blog/the-eisenhower-matrix/img-3.png)
-<br><br>
-![Eisenhower Matrix Step 4](/assets/images/blog/the-eisenhower-matrix/img-4.png)
-<br><br>
-![Eisenhower Matrix Step 5](/assets/images/blog/the-eisenhower-matrix/img-5.png)
+![Eisenhower Matrix](/assets/images/blog/the-eisenhower-matrix/img.png)
 
 *Article by Francois Leborgne*
