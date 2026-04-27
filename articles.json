@@ -1,5 +1,53 @@
 [
   {
+    "slug": "sur-france-3",
+    "title": "Sur France 3!",
+    "category": "Actualités",
+    "publishedAt": "2026-04-21",
+    "excerpt": "« Ce livre, c'est une mine d'or pour aller mieux et trouver enfin cet équilibre ». Ce n'est pas moi qui le dis, c'est Christelle Juteau, journaliste chez France 3, sur le plateau de l'émission Hauts Féminin.",
+    "keywords": [
+      "\"france 3\"",
+      " \"hauts féminin\"",
+      " \"interview\"",
+      " \"télévision\"",
+      " \"christelle juteau\"",
+      " \"équilibre\""
+    ],
+    "file": "content/blog/sur-france-3.md"
+  },
+  {
+    "slug": "interview-ici-paris",
+    "title": "Interview Ici Paris",
+    "category": "Actualités",
+    "publishedAt": "2026-03-27",
+    "excerpt": "Hier, Marie Leborgne Lucas était invitée sur ici Paris Ile-de-France, une radio de Radio France. Une interview très sympa, avec Corentine Feltz.",
+    "keywords": [
+      "\"radio france\"",
+      " \"ici paris\"",
+      " \"interview\"",
+      " \"temps de travail\"",
+      " \"toggl\""
+    ],
+    "file": "content/blog/interview-ici-paris.md"
+  },
+  {
+    "slug": "le-sens-moteur-efficacite",
+    "title": "Le sens est le moteur de l’efficacité.",
+    "category": "Philosophie et Travail",
+    "publishedAt": "2026-03-27",
+    "excerpt": "Plus d’un Français sur quatre juge avoir un travail qui n’a pas de sens. L’efficacité est le gain de vitesse, le sens en est la direction. Découvrez les cinq critères du travail SENSÉ.",
+    "keywords": [
+      "\"sens\"",
+      " \"bullshit job\"",
+      " \"efficacité\"",
+      " \"philosophie\"",
+      " \"équilibre\"",
+      " \"salaire\"",
+      " \"reconnaissance\""
+    ],
+    "file": "content/blog/le-sens-moteur-efficacite.md"
+  },
+  {
     "slug": "the-eisenhower-matrix",
     "title": "The Eisenhower Matrix",
     "category": "Efficacité Personnelle",
@@ -21,61 +69,15 @@
     "title": "Top 5 conseils",
     "category": "Efficacité Personnelle",
     "publishedAt": "2026-03-27",
-    "excerpt": "Quels sont vos top 5 conseils pour travailler moins et vivre mieux ? Ma réponse est que vous n’aurez jamais moins de travail. La question est donc : qu’est-ce que vous choisissez de ne pas faire ?",
+    "excerpt": "Quels sont vos top 5 conseils pour travailler moins et vivre mieux? Ma réponse est que vous n’aurez jamais moins de travail. La question est donc : qu’est-ce que vous choisissez de ne pas faire ?",
     "keywords": [
       "\"conseils\"",
       " \"efficacité\"",
+      " \"temps de travail\"",
       " \"priorités\"",
-      " \"challenges\"",
-      " \"temps\""
+      " \"crise cardiaque\""
     ],
     "file": "content/blog/top-5-conseils.md"
-  },
-  {
-    "slug": "le-sens-moteur-efficacite",
-    "title": "Le sens est le moteur de l’efficacité.",
-    "category": "Philosophie et Travail",
-    "publishedAt": "2026-03-27",
-    "excerpt": "Plus d’un Français sur quatre juge avoir un travail qui n’a pas de sens. L’efficacité est le gain de vitesse, le sens en est la direction. Découvrez les cinq critères du travail SENSÉ.",
-    "keywords": [
-      "\"sens\"",
-      " \"efficacité\"",
-      " \"philosophie\"",
-      " \"bullshit job\"",
-      " \"équilibre\""
-    ],
-    "file": "content/blog/le-sens-moteur-efficacite.md"
-  },
-  {
-    "slug": "interview-ici-paris",
-    "title": "Interview Ici Paris",
-    "category": "Actualités",
-    "publishedAt": "2026-03-27",
-    "excerpt": "Hier, Marie Leborgne Lucas était invitée sur ici Paris Ile-de-France, une radio de Radio France. Une interview très sympa, avec Corentine Feltz.",
-    "keywords": [
-      "\"radio france\"",
-      " \"ici paris\"",
-      " \"interview\"",
-      " \"temps de travail\"",
-      " \"toggl\""
-    ],
-    "file": "content/blog/interview-ici-paris.md"
-  },
-  {
-    "slug": "6-conseils-pour-arreter-la-reunionite",
-    "title": "6 conseils pour arrêter la réunionite",
-    "category": "Efficacité Collective",
-    "publishedAt": "2026-03-05",
-    "excerpt": "2 mois par an, c’est le temps que vous perdez, en moyenne, en réunions inutiles, ce qui concernerait un tiers d'entre elles.",
-    "keywords": [
-      "\"réunions\"",
-      " \"efficacité\"",
-      " \"management\"",
-      " \"temps\"",
-      " \"réunionite\"",
-      " \"Louis VAREILLE\""
-    ],
-    "file": "content/blog/6-conseils-pour-arreter-la-reunionite.md"
   },
   {
     "slug": "mercredi-temps-partiel",
@@ -94,6 +96,22 @@
       " \"salaire\""
     ],
     "file": "content/blog/mercredi-temps-partiel.md"
+  },
+  {
+    "slug": "6-conseils-pour-arreter-la-reunionite",
+    "title": "6 conseils pour arrêter la réunionite",
+    "category": "Efficacité Collective",
+    "publishedAt": "2026-03-05",
+    "excerpt": "2 mois par an, c’est le temps que vous perdez, en moyenne, en réunions inutiles, ce qui concernerait un tiers d'entre elles.",
+    "keywords": [
+      "\"réunions\"",
+      " \"efficacité\"",
+      " \"management\"",
+      " \"temps\"",
+      " \"réunionite\"",
+      " \"Louis VAREILLE\""
+    ],
+    "file": "content/blog/6-conseils-pour-arreter-la-reunionite.md"
   },
   {
     "slug": "amazons-secret-sauce",
