@@ -13,4 +13,4 @@ Le livre, résumé en 5 minutes !
 
 Promis, vous ne perdrez pas votre temps ! 😁 
 
-[![Voir la vidéo](https://img.youtube.com/vi/H2xgfwPOfmY/maxresdefault.jpg)](https://www.youtube.com/watch?v=H2xgfwPOfmY)
+[![Voir la vidéo](https://img.youtube.com/vi/H2xgfwPOfmY/maxresdefault.jpg)](https://www.youtube.com/watch?v=H2xgfwPOfmY&t=1562s)
