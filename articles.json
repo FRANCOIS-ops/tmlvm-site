@@ -1,5 +1,21 @@
 [
   {
+    "slug": "B-Smart",
+    "title": "Interview B-Smart 4Change",
+    "category": "Interview",
+    "publishedAt": "2026-07-02",
+    "excerpt": "Le temps de travail est élastique - pour devenir efficace il faut commencer par le limiter. On peut faire mieux avec moins",
+    "keywords": [
+      "\"B Smart 4Change 3\"",
+      " \"efficacité\"",
+      " \"temps de travail\"",
+      " \"loi de parkinson\"",
+      " \"producitivité\"",
+      " \"équilibre\""
+    ],
+    "file": "B-smart-interview.md"
+  },
+  {
     "slug": "sur-france-3",
     "title": "Sur France 3!",
     "category": "Actualités",
