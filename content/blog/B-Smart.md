@@ -10,7 +10,7 @@ keywords: ["B Smart 4Change 3", "efficacité", "temps de travail", "loi de parki
 Combien de temps travaillez-vous chaque semaine ? 
 Au micro de Arnaud Ardouin pour BSMART 4Change, nous avons parlé du travail, de la place qu'on lui donne... et de la vie, qu'on oublie bien souvent de vivre. 
 Le livre, résumé en 5 minutes ! 
-Lien en commentaire pour écouter l'émission. 
+
 Promis, vous ne perdrez pas votre temps ! 😁 
 
 [![Voir la vidéo](https://img.youtube.com/vi/H2xgfwPOfmY/maxresdefault.jpg)](https://www.youtube.com/watch?v=H2xgfwPOfmY)
