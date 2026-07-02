@@ -21,8 +21,8 @@ def parse_frontmatter(content):
     return data
 
 def main():
-    # Adjust paths relative to script location or absolute
-    base_dir = r"c:\Users\FLEBORGNE\OneDrive - ACCOR\Documents\GitHub\tmlvm-site"
+    # Adjust paths relative to script location
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     content_dir = os.path.join(base_dir, "content", "blog")
     output_file = os.path.join(base_dir, "articles.json")
 
@@ -45,13 +45,17 @@ def main():
             match = FM_REGEX.match(content)
             body = content[match.end():].strip() if match else content
 
+            # Simple parse keywords and clean up quotes/spaces
+            raw_keywords = data.get("keywords", "").replace('[', '').replace(']', '')
+            keywords = [k.strip().strip('"').strip("'") for k in raw_keywords.split(',') if k.strip()]
+
             post = {
                 "slug": slug,
                 "title": data.get("title", slug),
                 "category": data.get("category", "Général"),
                 "publishedAt": data.get("publishedAt", "1970-01-01"),
                 "excerpt": data.get("excerpt", ""),
-                "keywords": data.get("keywords", "").replace('[', '').replace(']', '').split(','), # simple parse
+                "keywords": keywords,
                 "file": f"content/blog/{filename}" # Relative path for fetching
             }
             posts.append(post)
