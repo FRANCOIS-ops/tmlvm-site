@@ -11,7 +11,7 @@ let filteredArticles = [];
 let currentPage = 1;
 
 // Chargement de l’index des articles
-fetch("articles.json")
+fetch("articles.json", { cache: "no-store" })
   .then(res => {
     if (!res.ok) throw new Error("Impossible de charger l’index du blog");
     return res.json();

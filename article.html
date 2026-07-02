@@ -129,7 +129,7 @@
 
             try {
                 // 1. Get metadata from index
-                const indexRes = await fetch('articles.json');
+                const indexRes = await fetch('articles.json', { cache: 'no-store' });
                 if (!indexRes.ok) throw new Error("Index fetch failed");
                 const index = await indexRes.json();
 
